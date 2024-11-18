@@ -55,6 +55,8 @@ model Team {
   id        Int       @id @default(autoincrement())
   team_name String
   Account   Account[]
+
+  @@map("team")
 }
 
 model AttendanceRecord {
@@ -100,4 +102,6 @@ model MonthlyRequest {
   content    String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+
+  @@map("monthly_request")
 }
