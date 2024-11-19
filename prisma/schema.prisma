@@ -1,0 +1,114 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                      Int                @id @default(autoincrement())
+  email                   String
+  first_name              String
+  last_name               String
+  birthdate               DateTime
+  is_admin                Boolean
+  is_approver             Boolean
+  approver                Account?           @relation("ApproverRelation", fields: [approver_id], references: [id])
+  approver_id             Int?
+  approverAccount         Account[]          @relation("ApproverRelation")
+  company                 Company            @relation(fields: [company_id], references: [id])
+  company_id              Int
+  days_off_remain         Int
+  account_created         DateTime           @default(now())
+  last_login              DateTime
+  join_date               DateTime
+  leave_date              DateTime?
+  username                String
+  salted_hash             String?
+  role                    String
+  team                    Team               @relation(fields: [team_id], references: [id])
+  team_id                 Int
+  AttendanceRecord        AttendanceRecord[]
+  ptoRequests             PTORequest[]       @relation("PTORequester")
+  approvedPTORequests     PTORequest[]       @relation("PTORequestApprover")
+  monthlyRequests         MonthlyRequest[]   @relation("MonthlyRequester")
+  approverMonthlyRequests MonthlyRequest[]   @relation("MonthlyRequestApprover")
+
+  @@map("account")
+}
+
+model Company {
+  id      Int       @id @default(autoincrement())
+  name    String
+  Account Account[]
+
+  @@map("company")
+}
+
+model Team {
+  id        Int       @id @default(autoincrement())
+  team_name String
+  Account   Account[]
+
+  @@map("team")
+}
+
+model AttendanceRecord {
+  id           Int      @id @default(autoincrement())
+  account      Account  @relation(fields: [account_id], references: [id])
+  account_id   Int
+  day          DateTime
+  punch_in     DateTime
+  punch_out    DateTime
+  break_amount Float
+  totalHours   Float
+  absence      Boolean  @default(false)
+  full_pto     Boolean
+  half_pto     Boolean
+
+  @@map("attendance_record")
+}
+
+model PTORequest {
+  id          Int       @id @default(autoincrement())
+  account     Account   @relation("PTORequester", fields: [account_id], references: [id])
+  account_id  Int
+  approver    Account   @relation("PTORequestApprover", fields: [approver_id], references: [id])
+  approver_id Int
+  content     String
+  status      String
+  day_start   DateTime?
+  day_end     DateTime?
+  day         DateTime?
+  all_day     Boolean
+  hour_start  DateTime?
+  hour_end    DateTime?
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  @@map("pto_request")
+}
+
+model MonthlyRequest {
+  id          Int      @id @default(autoincrement())
+  account     Account  @relation("MonthlyRequester", fields: [account_id], references: [id])
+  account_id  Int
+  approver    Account  @relation("MonthlyRequestApprover", fields: [approver_id], references: [id])
+  approver_id Int
+  month       Int
+  year        Int
+  content     String
+  status String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  @@map("monthly_request")
+}
