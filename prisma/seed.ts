@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 async function main() {
+
   const seedCompany = await prisma.company.upsert({
     where: { id: 1 },
     update: {},
@@ -27,7 +28,21 @@ async function main() {
     }
   });
 
-  console.log("Seed data inserted successfully:", { seedCompany, seedGuy })
+  const seedAttendance = await prisma.attendanceRecord.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      id: 1,
+      account_id: 1,
+      day: new Date('2024-11-20'),
+      punch_in: new Date(2024, 10, 20, 9, 0, 0),
+      punch_out: new Date(2024, 10, 20, 17, 0, 0),
+      break_amount: 1.0,
+      totalHours: 7.0,
+    }
+  })
+
+  console.log("Seed data inserted successfully:", { seedCompany, seedGuy, seedAttendance })
 }
 main()
   .then(async () => {

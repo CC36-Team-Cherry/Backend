@@ -69,8 +69,8 @@ model AttendanceRecord {
   break_amount Float
   totalHours   Float
   absence      Boolean  @default(false)
-  full_pto     Boolean
-  half_pto     Boolean
+  full_pto     Boolean  @default(false)
+  half_pto     Boolean  @default(false)
 
   @@map("attendance_record")
 }
