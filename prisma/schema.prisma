@@ -15,7 +15,7 @@ datasource db {
 
 model Account {
   id                      Int                @id @default(autoincrement())
-  email                   String
+  email                   String             @unique
   first_name              String
   last_name               String
   birthdate               DateTime
@@ -28,14 +28,12 @@ model Account {
   company_id              Int
   days_off_remain         Int
   account_created         DateTime           @default(now())
-  last_login              DateTime
+  last_login              DateTime           @default(now())
   join_date               DateTime
   leave_date              DateTime?
-  username                String
-  salted_hash             String?
   role                    String
-  team                    Team               @relation(fields: [team_id], references: [id])
-  team_id                 Int
+  team                    Team?              @relation(fields: [team_id], references: [id])
+  team_id                 Int?
   AttendanceRecord        AttendanceRecord[]
   ptoRequests             PTORequest[]       @relation("PTORequester")
   approvedPTORequests     PTORequest[]       @relation("PTORequestApprover")
@@ -106,7 +104,7 @@ model MonthlyRequest {
   month       Int
   year        Int
   content     String
-  status String
+  status      String
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
 
