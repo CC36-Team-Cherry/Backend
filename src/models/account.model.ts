@@ -1,38 +1,38 @@
-// const prisma = import("../prisma");
+const prisma = import("../prisma");
 
-// class Account {
-//     constructor() {}
+class Account {
+    constructor() {}
 
-//     static getAccounts() {
-//         return prisma.account.findMany({
-//             data: {
+    static getAccounts() {
+        return prisma.account.findMany({
+            data: {
 
-//             }
-//         })
-//     }
+            }
+        })
+    }
 
-//     static addAccount() {
-//         return prisma.account.create({
-//             data: {
+    // static addAccount() {
+    //     return prisma.account.create({
+    //         data: {
 
-//             }
-//         })
-//     }
+    //         }
+    //     })
+    // }
 
-//     static editAccount() {
-//         return prisma.account.update({
-//             data: {
+    // static editAccount() {
+    //     return prisma.account.update({
+    //         data: {
 
-//             }
-//         })
-//     }
+    //         }
+    //     })
+    // }
 
-//     static deleteAccount(accountId) {
-//         return prisma.account.delete({
-//             where: { id: accountId }
-//         })
-//     }
+    // static deleteAccount(accountId) {
+    //     return prisma.account.delete({
+    //         where: { id: accountId }
+    //     })
+    // }
 
-// };
+};
 
-// export default { Account };
+export default { Account };
