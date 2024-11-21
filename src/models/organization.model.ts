@@ -1,9 +1,34 @@
-const prisma = require("../prisma");
+// const prisma = require("../prisma");
 
-class Organization {
-    constructor() {}
+// class Organization {
+//     constructor() {}
 
+//     static addAdmin(adminData) {
+//         return prisma.account.create({
+//             data: {
 
-};
+//             }
+//         })
+//     }
 
-module.exports = Organization;
+//     static addOrg(orgData) {
+//         return prisma.company.create({
+//             data: {
+
+//             }
+//         })
+//     }
+
+//     static editOrg(orgEditData) {
+//         return prisma.company.update({
+//             where: {
+
+//             },
+//             data: {
+
+//             }
+//         })
+//     }
+// }
+
+// module.exports = Organization;
