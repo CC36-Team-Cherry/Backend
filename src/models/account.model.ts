@@ -1,15 +1,15 @@
-const prisma = import("../prisma");
+// const prisma = import("../prisma");
 
-class Account {
-    constructor() {}
+// class Account {
+//     constructor() {}
 
-    static getAccounts() {
-        return prisma.account.findMany({
-            data: {
+//     static getAccounts() {
+//         return prisma.account.findMany({
+//             data: {
 
-            }
-        })
-    }
+//             }
+//         })
+//     }
 
     // static addAccount() {
     //     return prisma.account.create({
@@ -33,6 +33,6 @@ class Account {
     //     })
     // }
 
-};
+// };
 
-export default { Account };
+// export default { Account };

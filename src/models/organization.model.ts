@@ -1,34 +1,35 @@
-// const prisma = require("../prisma");
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 
-// class Organization {
-//     constructor() {}
+class Organization {
+    constructor() {}
 
-//     static addAdmin(adminData) {
-//         return prisma.account.create({
-//             data: {
+    // static addAdmin(adminData) {
+    //     return prisma.account.create({
+    //         data: {
 
-//             }
-//         })
-//     }
+    //         }
+    //     })
+    // }
 
-//     static addOrg(orgData) {
-//         return prisma.company.create({
-//             data: {
+    static addOrg(orgName : any) {
+        return prisma.company.create({
+            data: {
+                name: orgName,
+            }
+        })
+    }
 
-//             }
-//         })
-//     }
+    // static editOrg(orgEditData) {
+    //     return prisma.company.update({
+    //         where: {
 
-//     static editOrg(orgEditData) {
-//         return prisma.company.update({
-//             where: {
+    //         },
+    //         data: {
 
-//             },
-//             data: {
+    //         }
+    //     })
+    // }
+}
 
-//             }
-//         })
-//     }
-// }
-
-// module.exports = Organization;
+export default Organization;

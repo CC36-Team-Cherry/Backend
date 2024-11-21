@@ -1,10 +1,10 @@
-const accountModel = import("../models/account.model");
+// const accountModel = import("../models/account.model");
 
-// get all accounts 
-const getAccounts = async (req, res) => {
-    const allAccounts = await accountModel.getAccounts();
-    return res.json(allAccounts);
-};
+// // get all accounts 
+// const getAccounts = async (req, res) => {
+//     const allAccounts = await accountModel.getAccounts();
+//     return res.json(allAccounts);
+// };
 
 // // add an employee account 
 // const addAccount = async (req, res) => {
@@ -25,4 +25,4 @@ const getAccounts = async (req, res) => {
 //     const deleteAccount = await accountModel.deleteAccount(accountId)
 // };
 
-export default { getAccounts, addAccount, editAccount, deleteAccount };
+// export default { getAccounts, addAccount, editAccount, deleteAccount };
