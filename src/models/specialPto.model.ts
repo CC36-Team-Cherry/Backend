@@ -1,9 +1,9 @@
-const prisma = require("../prisma");
+// const prisma = require("../prisma");
 
-class SpecialPto {
-    constructor() {}
+// class SpecialPto {
+//     constructor() {}
 
 
-};
+// };
 
-module.exports = SpecialPto;
+// module.exports = SpecialPto;

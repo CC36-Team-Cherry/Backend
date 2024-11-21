@@ -1,9 +1,9 @@
-const prisma = require("../prisma");
+// const prisma = require("../prisma");
 
-class Team {
-    constructor() {}
+// class Team {
+//     constructor() {}
 
 
-};
+// };
 
-module.exports = Team;
+// module.exports = Team;
