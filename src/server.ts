@@ -14,7 +14,7 @@ app.post("/login", loginHandler);
 app.post("/logout", logoutHandler);
 
 // registration and organization management
-app.post("/registration", organizationController.register); // add admin account and organization 
+app.post("/registration", organizationController.initialRegistration); // add admin account and organization 
 app.patch("/organizations/:organizationId", organizationController.editOrganization); // edit organization name
 
 // organization account management

@@ -1,4 +1,4 @@
-const attendanceModel = require("../models/attendance.model");
+const attendanceModel = import("../models/attendance.model");
 
 // get all attendance records to populate calendar for one user
 const getAttendance = async (req, res) => {

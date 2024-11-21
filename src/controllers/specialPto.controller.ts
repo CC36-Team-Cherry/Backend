@@ -1,4 +1,4 @@
-const specialPtoModel = require("../models/specialPto.model");
+const specialPtoModel = import("../models/specialPto.model");
 
 // view special PTO for that account
 const getSpecialPto = async (req, res) => {

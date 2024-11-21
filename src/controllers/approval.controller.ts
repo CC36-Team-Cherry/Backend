@@ -1,4 +1,4 @@
-const approvalModel = require("../models/approval.model");
+const approvalModel = import("../models/approval.model");
 
 // get all approvals related to that id 
 const getAccountApprovals = async (req, res) => {

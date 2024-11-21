@@ -1,4 +1,4 @@
-const teamModel = require("../models/team.model");
+const teamModel = import("../models/team.model");
 
 // get list of all teams
 const getTeams = async (req, res) => {
