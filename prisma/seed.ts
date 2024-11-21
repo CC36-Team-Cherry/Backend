@@ -11,21 +11,45 @@ async function main() {
     }
   });
 
-  const seedGuy = await prisma.account.upsert({
+  const seedTeam = await prisma.team.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      id: 1,
+      team_name: "Tim's Team",
+    }
+  });
+
+  const seedTim = await prisma.account.upsert({
     where: { email: "coolguy420@hotmail.com" },
     update: {},
     create: {
+      auth_key: "jcTaAN6Sl1OjPZPtjbMakDIraj52",
       email: "coolguy420@hotmail.com",
       first_name: "Tim",
       last_name: "Peters",
       birthdate: new Date('1954-02-19'),
-      is_admin: true,
-      is_approver: true,
       company_id: seedCompany.id,
-      days_off_remain: 1000,
       join_date: new Date('2024-11-19'),
       role: "emperor",
-    }
+      team_id: 1,
+    },
+  });
+
+  const seedDavide = await prisma.account.upsert({
+    where: { email: "timfan69@hotmail.com" },
+    update: {},
+    create: {
+      auth_key: "HwLPU0WTT6V239Jg2bpJt1D3xFv1",
+      email: "timfan69@hotmail.com",
+      first_name: "Davide",
+      last_name: "Peters",
+      birthdate: new Date('1999-12-31'),
+      company_id: seedCompany.id,
+      join_date: new Date('2024-11-20'),
+      role: "assisstant",
+      team_id: 1,
+    },
   });
 
   const seedAttendance = await prisma.attendanceRecord.upsert({
@@ -33,16 +57,135 @@ async function main() {
     update: {},
     create: {
       id: 1,
-      account_id: 1,
+      account_id: seedTim.id,
       day: new Date('2024-11-20'),
       punch_in: new Date(2024, 10, 20, 9, 0, 0),
       punch_out: new Date(2024, 10, 20, 17, 0, 0),
       break_amount: 1.0,
       totalHours: 7.0,
-    }
-  })
+    },
+  });
 
-  console.log("Seed data inserted successfully:", { seedCompany, seedGuy, seedAttendance })
+  const seedAttendance2 = await prisma.attendanceRecord.upsert({
+    where: { id: 2 },
+    update: {},
+    create: {
+      id: 2,
+      account_id: seedTim.id,
+      day: new Date('2024-11-21'),
+      punch_in: new Date(2024, 10, 21, 9, 0, 0),
+      punch_out: new Date(2024, 10, 21, 17, 0, 0),
+      break_amount: 1.0,
+      totalHours: 7.0,
+    },
+  });
+
+  const seedAttendance3 = await prisma.attendanceRecord.upsert({
+    where: { id: 3 },
+    update: {},
+    create: {
+      id: 3,
+      account_id: seedDavide.id,
+      day: new Date('2024-11-21'),
+      punch_in: new Date(2024, 10, 21, 9, 0, 0),
+      punch_out: new Date(2024, 10, 21, 20, 0, 0),
+      break_amount: 1.0,
+      totalHours: 7.0,
+    },
+  });
+
+  const seedPTORequest = await prisma.pTORequest.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      id: 1,
+      account_id: seedDavide.id,
+      supervisor_id: seedTim.id,
+      content: "I will go to ToToTo.",
+      status: "pending",
+      day: new Date('2024-12-14'),
+      all_day: true,
+    }
+  });
+
+  const seedSpecialPTORequest = await prisma.specialPTORequest.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      id: 1,
+      account_id: seedDavide.id,
+      supervisor_id: seedTim.id,
+      content: "I will fly back to Italy.",
+      status: "pending",
+      type: "fun",
+      day: new Date('2024-12-14'),
+    }
+  });
+
+  const seedMonthlyRequest = await prisma.monthlyRequest.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      id: 1,
+      account_id: seedDavide.id,
+      supervisor_id: seedTim.id,
+      month: 10,
+      year: 2024,
+      content: "My attendance for November 2024.",
+      status: "pending",
+    },
+  });
+
+  const seedTimPrivleges = await prisma.privileges.upsert({
+    where: { account_id: seedTim.id },
+    update: {},
+    create: {
+      account_id: seedTim.id,
+      is_admin: true,
+      is_supervisor: true,
+    }
+  });
+
+  const seedDavidePrivleges = await prisma.privileges.upsert({
+    where: { account_id: seedDavide.id },
+    update: {},
+    create: {
+      account_id: seedDavide.id,
+      is_admin: false,
+      is_supervisor: false,
+    }
+  });
+
+  const seedTimPTO = await prisma.pTO.upsert({
+    where: { account_id: seedTim.id},
+    update: {},
+    create: {
+      account_id: seedTim.id,
+      remaining_pto: 1000,      
+    }
+  });
+
+  const seedDavidePTO = await prisma.pTO.upsert({
+    where: { account_id: seedDavide.id},
+    update: {},
+    create: {
+      account_id: seedDavide.id,
+      remaining_pto: 0,      
+    }
+  });
+
+  const seedSpecialPTO = await prisma.specialPTO.upsert({
+    where: { id: 1 },
+    update: {},
+    create: {
+      id: 1,
+      account_id: seedTim.id,
+      type: "fun",
+    }
+  });
+
+
+  console.log("Seed data inserted successfully:", { seedCompany, seedTim, seedDavide, seedTeam, seedAttendance, seedAttendance2, seedAttendance3, seedPTORequest, seedSpecialPTORequest, seedMonthlyRequest, seedTimPrivleges, seedDavidePrivleges, seedTimPTO, seedDavidePTO })
 }
 main()
   .then(async () => {
