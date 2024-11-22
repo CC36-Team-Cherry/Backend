@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-type newAccount = {
+type userAccount = {
   email: string;
   first_name: string;
   last_name: string;
@@ -30,15 +30,15 @@ class Account {
     }
   }
 
-  static addAccount(newAccount: newAccount) {
+  static addAccount(newAccount: userAccount) {
     return prisma.account.create({
       data: {
         email: newAccount.email,
         first_name: newAccount.first_name,
         last_name: newAccount.last_name,
         birthdate: newAccount.birthdate,
-        supervisor_id: newAccount.supervisor_id,
-        company_id: newAccount.company_id,
+        supervisor_id: Number(newAccount.supervisor_id),
+        company_id: Number(newAccount.company_id),
         join_date: newAccount.join_date,
         role: newAccount.role,
       },

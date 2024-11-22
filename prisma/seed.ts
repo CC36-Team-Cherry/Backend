@@ -25,6 +25,7 @@ async function main() {
     where: { email: "coolguy420@hotmail.com" },
     update: {},
     create: {
+      id: 1,
       email: "coolguy420@hotmail.com",
       first_name: "Tim",
       last_name: "Peters",
@@ -40,6 +41,7 @@ async function main() {
     where: { email: "timfan69@hotmail.com" },
     update: {},
     create: {
+      id: 2,
       email: "timfan69@hotmail.com",
       first_name: "Davide",
       last_name: "Peters",
