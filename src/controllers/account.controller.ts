@@ -2,14 +2,14 @@ import accountModel from "../models/account.model";
 import { Response, Request, RequestHandler } from "express";
 
 // get all accounts
-const getAccounts = async (req: Request<{ company_id: number }>, res: Response) => {
+const getAccounts = async (req: Request, res: Response) => {
   try {
-    const { company_id } = req.body;
-    const allAccounts = await accountModel.getAccounts(company_id);
-    return res.json(allAccounts);
+    const companyId = req.params.companyId;
+    const allAccounts = await accountModel.getAccounts(Number(companyId));
+    res.json(allAccounts);
   } catch (err) {
     console.error(err);
-    return res.status(500).json({error: 'An error occured while fetching accounts.'});
+    res.status(500).json({error: 'An error occured while fetching accounts.'});
   }
 };
 
@@ -24,11 +24,11 @@ const addAccount = async (req: Request, res: Response) => {
 };
 
 // edit account data
-const editAccount = async (req: Request, res: Response) => {
-    const cardId = req.params.accountId;
-    const editAccountData = req.body.editAccountData;
-    const editAccount = await accountModel.editAccount(editAccountData, accountId);
-};
+// const editAccount = async (req: Request, res: Response) => {
+//     const cardId = req.params.accountId;
+//     const editAccountData = req.body.editAccountData;
+//     const editAccount = await accountModel.editAccount(editAccountData, accountId);
+// };
 
 // // delete an account
 const deleteAccount = async (req: Request<{ account_id: number }>, res: Response) => {
@@ -40,4 +40,5 @@ const deleteAccount = async (req: Request<{ account_id: number }>, res: Response
   }
 };
 
-export default { getAccounts, addAccount, editAccount, deleteAccount };
+export default { getAccounts, addAccount, deleteAccount };
+// editAccount
