@@ -1,5 +1,5 @@
 import accountModel from "../models/account.model";
-import { Response, Request } from "express";
+import { Response, Request, RequestHandler } from "express";
 
 // get all accounts
 const getAccounts = async (req: Request<{ company_id: number }>, res: Response) => {

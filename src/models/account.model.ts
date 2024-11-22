@@ -2,7 +2,6 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 type newAccount = {
-    auth_key: string,
     email: string,
     first_name: string,
     last_name: string,
@@ -21,13 +20,12 @@ class Account {
             where: {
                 company_id: company_id,
             }
-        })
+        });
     }
 
     static addAccount(newAccount: newAccount) {
         return prisma.account.create({
             data: {
-                auth_key: newAccount.auth_key,
                 email: newAccount.email,
                 first_name: newAccount.first_name,
                 last_name: newAccount.last_name,
@@ -40,13 +38,13 @@ class Account {
         })
     }
 
-    // static editAccount() {
-    //     return prisma.account.update({
-    //         data: {
+    static editAccount() {
+        return prisma.account.update({
+            data: {
 
-    //         }
-    //     })
-    // }
+            }
+        })
+    }
 
     static deleteAccount(accountId: number) {
         return prisma.account.delete({

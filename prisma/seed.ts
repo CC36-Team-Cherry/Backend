@@ -25,7 +25,6 @@ async function main() {
     where: { email: "coolguy420@hotmail.com" },
     update: {},
     create: {
-      auth_key: "jcTaAN6Sl1OjPZPtjbMakDIraj52",
       email: "coolguy420@hotmail.com",
       first_name: "Tim",
       last_name: "Peters",
@@ -41,7 +40,6 @@ async function main() {
     where: { email: "timfan69@hotmail.com" },
     update: {},
     create: {
-      auth_key: "HwLPU0WTT6V239Jg2bpJt1D3xFv1",
       email: "timfan69@hotmail.com",
       first_name: "Davide",
       last_name: "Peters",
