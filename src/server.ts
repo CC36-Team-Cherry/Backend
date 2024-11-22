@@ -25,9 +25,9 @@ app.patch("/organizations/:organizationId", organizationController.editOrganizat
 
 // organization account management
 app.get("/accounts", accountController.getAccounts); // get all accounts to show in employee list
-// app.post("/accounts", accountController.addAccount); // add an employee account
-// app.patch("/accounts/:accountId", accountController.editAccount); // edit account data
-// app.delete("/accounts/:accountId", accountController.deleteAccount); // delete an account
+app.post("/accounts", accountController.addAccount); // add an employee account
+app.patch("/accounts/:accountId", accountController.editAccount); // edit account data
+app.delete("/accounts/:accountId", accountController.deleteAccount); // delete an account
 
 // // attendance logging
 // app.get("/accounts/:accountId/attendance/", attendanceController.getAttendance); // get all attendance records to populate calendar for one user
