@@ -23,7 +23,7 @@ const addAccount = async (req: Request, res: Response) => {
     res.status(201);
   } catch (err) {
     console.error(err);
-    res.status
+    res.status(500).json({error: 'An error occured while adding an account.'});
   }
 };
 
