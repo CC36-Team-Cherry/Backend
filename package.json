@@ -1,8 +1,9 @@
 {
-  "prisma" : {
+  "prisma": {
     "seed": "ts-node prisma/seed.ts"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/node": "^22.9.1",
     "prisma": "^5.22.0",

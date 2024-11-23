@@ -1,11 +1,12 @@
 import express from "express";
-// import cors from "cors";
+import cors from "cors";
 const app = express();
 
 const PORT = 3000;
 
 // Middleware
 app.use(express.json());
+app.use(cors());
 
 // import { loginHandler, logoutHandler } from "./auth/handlers";
 import organizationController from "./controllers/organization.controller";
