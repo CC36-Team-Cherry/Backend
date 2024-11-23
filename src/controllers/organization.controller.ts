@@ -3,22 +3,11 @@ import organizationModel from "../models/organization.model";
 // add admin account and organization
 const initialRegistration = async (req : any, res : any) => {
     try {
-        const adminData = req.body.adminData;
 
-        // temporary testing, requiring unique auth key 
-        // DELETE AFTER UPDATING SCHEMA
-        function makeid(length : any) {
-            let result = '';
-            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            const charactersLength = characters.length;
-            let counter = 0;
-            while (counter < length) {
-              result += characters.charAt(Math.floor(Math.random() * charactersLength));
-              counter += 1;
-            }
-            return result;
-        }
-        adminData.auth_key = makeid(5);
+        // TODO: Add validation if email exists (check if firebase handles this)
+
+        const adminData = req.body.adminData;
+        console.log(adminData);
 
         // add company and return company id
         const registerOrgId = await organizationModel.addOrg(adminData.organizationName);
@@ -30,31 +19,47 @@ const initialRegistration = async (req : any, res : any) => {
         adminData.adminDateOfBirth = new Date(adminData.adminDateOfBirth);
         adminData.adminJoinDate = new Date(adminData.adminJoinDate);
 
-        // add company Id to admin that was just created
-        const registerAdmin = await organizationModel.addAdmin(adminData);
-        console.log("Registration and Org Created", registerAdmin); 
+        // add admin account data and return admin id
+        const registerAdminId = await organizationModel.addAdmin(adminData);
+        console.log(registerAdminId.id)
+
+        // add admin account to privileges page and set admin as true
+        const setAdminPrivileges = await organizationModel.addAdminPrivileges(registerAdminId.id);
+        console.log("added privileges")
+
+        // return admin id
+        res.json(registerAdminId);
+        res.status(200);
+        console.log("Registration and Org Created", adminData); 
 
     } catch(err) {
         console.error(err);
+        res.status(500).json({error: 'An error occured when registering.'})
     };
 };
 
 // edit organization name
 const editOrganization = async (req: any, res: any) => {
     try {
-        // const orgEditData = req.body;
-        // const editOrg = await organizationModel.editOrg(orgEditData);
+        const orgId = parseInt(req.params.organizationId);
+        const orgEditData = req.body.orgName;
+        const editOrg = await organizationModel.editOrg(orgId, orgEditData);
+        res.status(200);
     } catch(err) {
         console.error(err);
+        res.status(500).json({error: 'An error occured when editing organization.'})
     }
 };
 
 // delete organization
 const deleteOrganization = async (req: any, res: any) => {
     try {
-
+        const orgId = parseInt(req.params.organizationId);
+        const deleteOrg = await organizationModel.deleteOrg(orgId);
+        res.status(200);
     } catch(err) {
         console.error(err);
+        res.status(500).json({error: 'An error occured when deleting organization.'})
     }
 };
 
