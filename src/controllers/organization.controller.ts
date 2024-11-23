@@ -20,15 +20,15 @@ const initialRegistration = async (req : any, res : any) => {
         adminData.adminJoinDate = new Date(adminData.adminJoinDate);
 
         // add admin account data and return admin id
-        const registerAdminId = await organizationModel.addAdmin(adminData);
-        console.log(registerAdminId.id)
+        const registeredAdmin = await organizationModel.addAdmin(adminData);
+        console.log(registeredAdmin)
 
         // add admin account to privileges page and set admin as true
-        const setAdminPrivileges = await organizationModel.addAdminPrivileges(registerAdminId.id);
+        const setAdminPrivileges = await organizationModel.addAdminPrivileges(registeredAdmin.id);
         console.log("added privileges")
 
-        // return admin id
-        res.json(registerAdminId);
+        // return admin data
+        res.json(registeredAdmin);
         res.status(200);
         console.log("Registration and Org Created", adminData); 
 
