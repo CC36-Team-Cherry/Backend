@@ -21,7 +21,7 @@ class Account {
     try {
       return await prisma.account.findMany({
         where: {
-          company_id: company_id,
+          company_id: Number(company_id),
         },
       });
     } catch (err) {
@@ -31,18 +31,23 @@ class Account {
   }
 
   static addAccount(newAccount: userAccount) {
-    return prisma.account.create({
-      data: {
-        email: newAccount.email,
-        first_name: newAccount.first_name,
-        last_name: newAccount.last_name,
-        birthdate: newAccount.birthdate,
-        supervisor_id: Number(newAccount.supervisor_id),
-        company_id: Number(newAccount.company_id),
-        join_date: newAccount.join_date,
-        role: newAccount.role,
-      },
-    });
+    try {
+      return prisma.account.create({
+        data: {
+          email: newAccount.email,
+          first_name: newAccount.first_name,
+          last_name: newAccount.last_name,
+          birthdate: newAccount.birthdate,
+          supervisor_id: Number(newAccount.supervisor_id),
+          company_id: Number(newAccount.company_id),
+          join_date: newAccount.join_date,
+          role: newAccount.role,
+        },
+      });
+    } catch (err) {
+      console.error("Error adding account:", err);
+      throw new Error("Failed to add account to the database");
+    }
   }
 
   // static editAccount() {
@@ -54,9 +59,14 @@ class Account {
   // }
 
   static deleteAccount(accountId: number) {
-    return prisma.account.delete({
-      where: { id: accountId },
-    });
+    try {
+      return prisma.account.delete({
+        where: { id: accountId },
+      });
+    } catch (err) {
+      console.error("Error deleting account:", err);
+      throw new Error("Failed to delete account from the database");
+    }
   }
 }
 

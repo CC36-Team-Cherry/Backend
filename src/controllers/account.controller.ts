@@ -35,12 +35,15 @@ const addAccount = async (req: Request, res: Response) => {
 // };
 
 // // delete an account
-const deleteAccount = async (req: Request<{ account_id: number }>, res: Response) => {
+const deleteAccount = async (req: Request, res: Response) => {
   try {
-    const accountId = req.params.account_id;
-    const deleteAccount = await accountModel.deleteAccount(accountId);
+    const accountId = req.params.accountId;
+    const deleteAccount = await accountModel.deleteAccount(Number(accountId));
+    res.json(deleteAccount);
+    res.status(200);
   } catch (err) {
     console.error(err);
+    res.status(500).json({error: 'An error occured while deleting an account.'});
   }
 };
 
