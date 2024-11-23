@@ -4,6 +4,13 @@
 npm install 
 npm run nodemon
 
-## To run seed
-npx prisma db seed
+## Database
+
+Schema Generation
+- npx prisma generate
+- npx prisma db push
+
+Prisma Run Seed:
+- npx prisma db seed
+
 
