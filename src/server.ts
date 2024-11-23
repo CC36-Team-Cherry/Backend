@@ -22,6 +22,7 @@ import accountController from "./controllers/account.controller";
 // registration and organization management
 app.post("/registration", organizationController.initialRegistration); // add admin account and organization 
 app.patch("/organizations/:organizationId", organizationController.editOrganization); // edit organization name
+app.delete("/organizations/:organizationId", organizationController.deleteOrganization); // edit organization name
 
 // organization account management
 app.get("/accounts/:companyId", accountController.getAccounts); // get all accounts to show in employee list
