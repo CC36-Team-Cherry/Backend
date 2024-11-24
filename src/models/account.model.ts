@@ -14,6 +14,7 @@ type userAccount = {
   team_id?: number;
   is_admin: string;
   is_supervisor: string;
+  remaining_pto: number;
 };
 
 class Account {
@@ -59,6 +60,13 @@ class Account {
             is_supervisor: (newAccount.is_supervisor === "true"),
           },
         });
+
+        await prisma.pTO.create({
+          data: {
+            account_id: createdAccount.id,
+            remaining_pto: Number(newAccount.remaining_pto),
+          }
+        })
 
         return createdAccount;
       });
