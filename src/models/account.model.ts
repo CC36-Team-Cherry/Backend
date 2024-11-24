@@ -1,5 +1,13 @@
 import { PrismaClient } from "@prisma/client";
+import { applicationDefault } from "firebase-admin/app";
+import { getAuth } from "firebase-admin/auth";
 const prisma = new PrismaClient();
+
+// Set up Firebase Admin SDK
+var firebaseAdmin = require("firebase-admin");
+firebaseAdmin.initializeApp({
+  credential: applicationDefault()
+});
 
 type userAccount = {
   email: string;
@@ -47,6 +55,21 @@ class Account {
     } catch (err) {
       console.error("Error adding account:", err);
       throw new Error("Failed to add account to the database");
+    }
+  }
+
+  static addFirebaseAccount(newAccount: userAccount) {
+    try {
+      getAuth()
+        .createUser({
+          email: newAccount.email,
+          emailVerified: false,
+          password: 'secretPassword',
+          disabled: false,
+      });
+    } catch (err) {
+      console.error("Error adding account:", err);
+      throw new Error("Failed to add account to Firebase");
     }
   }
 

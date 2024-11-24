@@ -19,6 +19,7 @@ const addAccount = async (req: Request, res: Response) => {
   try {
     const newAccount = req.body;
     const addAccount = await accountModel.addAccount(newAccount);
+    accountModel.addFirebaseAccount(newAccount);
     res.json(addAccount);
     res.status(201);
   } catch (err) {

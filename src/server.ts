@@ -8,6 +8,13 @@ const PORT = 3000;
 app.use(express.json());
 app.use(cors());
 
+// Set up Firebase Admin SDK
+// var firebaseAdmin = require("firebase-admin");
+// firebaseAdmin.initializeApp({
+//   credential: applicationDefault()
+// });
+// export { firebaseAdmin }
+
 // import { loginHandler, logoutHandler } from "./auth/handlers";
 import organizationController from "./controllers/organization.controller";
 import accountController from "./controllers/account.controller";
