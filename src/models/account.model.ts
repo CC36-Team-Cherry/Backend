@@ -27,8 +27,9 @@ class Account {
           company_id: Number(company_id),
         },
         include: {
-            Privileges: true
-        }
+            Privileges: true,
+            PTO: true
+        },
       });
     } catch (err) {
       console.error("Error fetching accounts:", err);
