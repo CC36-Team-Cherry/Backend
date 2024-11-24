@@ -1,4 +1,5 @@
-// const prisma = require("../prisma");
+// import { PrismaClient } from "@prisma/client";
+// const prisma = new PrismaClient();
 
 // class Team {
 //     constructor() {}
@@ -6,4 +7,4 @@
 
 // };
 
-// module.exports = Team;
+// export default Team;

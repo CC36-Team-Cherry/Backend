@@ -1,4 +1,4 @@
-// const specialPtoModel = import("../models/specialPto.model");
+// import specialPtoModel from "../models/specialPto.model";
 
 // // view special PTO for that account
 // const getSpecialPto = async (req, res) => {
@@ -19,3 +19,5 @@
 // const deleteSpecialPto = async (req, res) => {
 
 // };
+
+// export default { getSpecialPto, addSpecialPto, editSpecialPto, deleteSpecialPto };

@@ -28,8 +28,7 @@ const initialRegistration = async (req : any, res : any) => {
         console.log("added privileges")
 
         // return admin data
-        res.json(registeredAdmin);
-        res.status(200);
+        res.status(200).json(registeredAdmin);
         console.log("Registration and Org Created", adminData); 
 
     } catch(err) {
@@ -42,9 +41,9 @@ const initialRegistration = async (req : any, res : any) => {
 const editOrganization = async (req: any, res: any) => {
     try {
         const orgId = parseInt(req.params.organizationId);
-        const orgEditData = req.body.orgName;
+        const orgEditData = req.body.adminConsoleData.organizationName;
         const editOrg = await organizationModel.editOrg(orgId, orgEditData);
-        res.status(200);
+        res.status(200).json(editOrg);;
     } catch(err) {
         console.error(err);
         res.status(500).json({error: 'An error occured when editing organization.'})
@@ -56,6 +55,7 @@ const deleteOrganization = async (req: any, res: any) => {
     try {
         const orgId = parseInt(req.params.organizationId);
         const deleteOrg = await organizationModel.deleteOrg(orgId);
+        res.json(deleteOrg);
         res.status(200);
     } catch(err) {
         console.error(err);

@@ -1,4 +1,4 @@
-// const attendanceModel = import("../models/attendance.model");
+// import attendanceModel from "../models/attendance.model";
 
 // // get all attendance records to populate calendar for one user
 // const getAttendance = async (req, res) => {
@@ -14,3 +14,5 @@
 // const editAttendance = async (req, res) => {
 
 // };
+
+// export default { getAttendance, addAttendance, editAttendance};

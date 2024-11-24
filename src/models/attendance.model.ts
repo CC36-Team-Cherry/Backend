@@ -1,4 +1,5 @@
-// const prisma = require("../prisma");
+// import { PrismaClient } from "@prisma/client";
+// const prisma = new PrismaClient();
 
 // class Attendance {
 //     constructor() {}
@@ -6,4 +7,4 @@
 
 // };
 
-// module.exports = Attendance;
+// export default Attendance;

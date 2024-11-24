@@ -1,4 +1,5 @@
-// const prisma = require("../prisma");
+// import { PrismaClient } from "@prisma/client";
+// const prisma = new PrismaClient();
 
 // class SpecialPto {
 //     constructor() {}
@@ -6,4 +7,4 @@
 
 // };
 
-// module.exports = SpecialPto;
+// export default SpecialPto;
