@@ -2,17 +2,27 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-class Attendance {
-    prisma;
+type userAttendance = {
+    account_id: number;
+    day: Date;
+    punch_in: Date;
+    punch_out: Date;
+    break_amount: number;
+    totalHours: number;
+    absence: boolean;
+    full_pto: boolean;
+    half_pto: boolean;
+    special_pto: boolean;
+  };
 
-    constructor() {
-        this.prisma = new PrismaClient(); // Instanza del client Prisma
-    }
+class Attendance {
+
+    constructor() {}
 
     // Metodo per ottenere tutti i record di presenze
-    async getAllForAccount(accountId: any) {
+    static async getAllForAccount(accountId: any) {
         try {
-            return await this.prisma.attendanceRecord.findMany({
+            return await prisma.attendanceRecord.findMany({
                 where: { account_id: Number(accountId) },
             });
         } catch (error) {
@@ -22,20 +32,20 @@ class Attendance {
     }
 
     // Metodo per creare un nuovo record di presenze
-    async createAttendanceRecord(data: any) {
+    static async createAttendanceRecord(newAttendance: userAttendance) {
         try {
-          return await this.prisma.attendanceRecord.create({
+          return await prisma.attendanceRecord.create({
             data: {
-              account_id: Number(data.account_id),
-              day: new Date(data.day),
-              punch_in: data.punch_in ? new Date(data.punch_in) : null,
-              punch_out: data.punch_out ? new Date(data.punch_out) : null,
-              break_amount: data.break_amount || 0,
-              totalHours: data.totalHours || 0,
-              absence: data.absence || false,
-              full_pto: data.full_pto || false,
-              half_pto: data.half_pto || false,
-              special_pto: data.special_pto || false,
+              account_id: newAttendance.account_id,
+              day: newAttendance.day,
+              punch_in: newAttendance.punch_in,
+              punch_out: newAttendance.punch_out,
+              break_amount: newAttendance.break_amount,
+              totalHours: newAttendance.totalHours,
+              absence: newAttendance.absence,
+              full_pto: newAttendance.full_pto,
+              half_pto: newAttendance.half_pto,
+              special_pto: newAttendance.special_pto,
             },
           });
           
@@ -46,9 +56,9 @@ class Attendance {
       }
       
     // Metodo per aggiornare un record esistente
-    async updateAttendanceRecord(attendanceId: any, data: any) {
+    static async updateAttendanceRecord(attendanceId: any, data: any) {
         try {
-            return await this.prisma.attendanceRecord.update({
+            return await prisma.attendanceRecord.update({
                 where: { id: Number(attendanceId) },
                 data: {
                     day: data.day ? new Date(data.day) : undefined,
@@ -69,4 +79,4 @@ class Attendance {
     }
 }
 
-module.exports = new Attendance();
+export default Attendance;
