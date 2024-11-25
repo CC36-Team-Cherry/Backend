@@ -1,4 +1,4 @@
-// const teamModel = import("../models/team.model");
+// import teamModel from "../models/team.model";
 
 // // get list of all teams
 // const getTeams = async (req, res) => {
@@ -19,3 +19,5 @@
 // const deleteTeam = async (req, res) => {
 
 // };
+
+// export default { getTeams, addTeam, editTeam, deleteTeam };
