@@ -18,7 +18,7 @@ const getAccounts = async (req: Request, res: Response) => {
 const addAccount = async (req: Request, res: Response) => {
   try {
     const newAccount = req.body;
-    const newPassword = generatePassword(10)
+    const newPassword = generatePassword(10);
     const addAccount = accountModel.addFirebaseAccount(newAccount, newPassword);
     //const addAccount = await accountModel.addAccount(newAccount, newPassword);
     res.json(addAccount);
@@ -50,6 +50,13 @@ const generatePassword = (length: number) => {
 const deleteAccount = async (req: Request, res: Response) => {
   try {
     const accountId = req.params.accountId;
+    await accountModel.getSingleAccount(Number(accountId)).then((user) => {
+      if (user && user.auth_key) {
+        const uid = user.auth_key;
+        console.log(uid);
+        accountModel.deleteFirebaseAccount(uid);
+      }
+    });
     const deleteAccount = await accountModel.deleteAccount(Number(accountId));
     res.json(deleteAccount);
     res.status(200);
