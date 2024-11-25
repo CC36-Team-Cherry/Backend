@@ -1,4 +1,4 @@
-const attendanceModel = require("../models/attendance.model");
+import attendanceModel from "../models/attendance.model";
 
 // Get all attendance records for a user
 const getAttendance = async (req: any, res: any) => {
@@ -37,8 +37,9 @@ const editAttendance = async (req: any, res: any) => {
     }
 };
 
-module.exports = {
-    getAttendance,
-    addAttendance,
-    editAttendance,
-};
+// // edit attendance record
+// const editAttendance = async (req, res) => {
+
+// };
+
+// export default { getAttendance, addAttendance, editAttendance};

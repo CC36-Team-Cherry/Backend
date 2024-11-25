@@ -15,6 +15,7 @@ datasource db {
 
 model Account {
   id                           Int                 @id @default(autoincrement())
+  auth_key                     String              @unique
   email                        String              @unique
   first_name                   String
   last_name                    String
@@ -22,8 +23,8 @@ model Account {
   supervisor                   Account?            @relation("SupervisorRelation", fields: [supervisor_id], references: [id])
   supervisor_id                Int?
   supervisorAccount            Account[]           @relation("SupervisorRelation")
-  company                      Company             @relation(fields: [company_id], references: [id])
-  company_id                   Int
+  company                      Company             @relation(fields: [company_id], references: [id], onDelete: Cascade)
+  company_id                   Int                  
   created_at                   DateTime            @default(now())
   last_login                   DateTime            @default(now())
   join_date                    DateTime
@@ -48,7 +49,8 @@ model Account {
 model Company {
   id      Int       @id @default(autoincrement())
   name    String
-  Account Account[]
+  Account Account[] 
+  Team Team[] 
 
   @@map("company")
 }
@@ -58,6 +60,8 @@ model Team {
   team_name  String
   updated_at DateTime  @updatedAt
   Account    Account[]
+  company_id Int
+  company    Company   @relation(fields: [company_id], references: [id], onDelete: Cascade)
 
   @@map("team")
 }

@@ -28,6 +28,7 @@ class Organization {
             },
             select: {
                 id: true,
+                company_id: true,
             }
         })
     }
