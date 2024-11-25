@@ -50,6 +50,13 @@ const generatePassword = (length: number) => {
 const deleteAccount = async (req: Request, res: Response) => {
   try {
     const accountId = req.params.accountId;
+    await accountModel.getSingleAccount(Number(accountId)).then((user) => {
+      if (user && user.auth_key) {
+        const uid = user.auth_key;
+        console.log(uid);
+        accountModel.deleteFirebaseAccount(uid);
+      }
+    });
     const deleteAccount = await accountModel.deleteAccount(Number(accountId));
     res.json(deleteAccount);
     res.status(200);

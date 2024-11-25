@@ -29,6 +29,19 @@ type userAccount = {
 class Account {
   constructor() {}
 
+  static async getSingleAccount(input: number) {
+    try {
+      return await prisma.account.findUnique({
+        where: {
+          id: input,
+        },
+      })
+    } catch (err) {
+      console.error("Error fetching account: ", err)
+      throw new Error("Failed to fetch account from the database")
+    }
+  }
+
   static async getAccounts(company_id: number) {
     try {
       return await prisma.account.findMany({
@@ -41,7 +54,7 @@ class Account {
         },
       });
     } catch (err) {
-      console.error("Error fetching accounts:", err);
+      console.error("Error fetching accounts: ", err);
       throw new Error("Failed to fetch accounts from the database");
     }
   }
@@ -125,6 +138,17 @@ class Account {
       console.error("Error deleting account:", err);
       throw new Error("Failed to delete account from the database");
     }
+  }
+
+  static deleteFirebaseAccount(uid: string) {
+    getAuth()
+      .deleteUser(uid)
+      .then(() => {
+        console.log("Successfully deleted user");
+      })
+      .catch((error) => {
+        console.log("Error deleting user: ", error)
+      })
   }
 }
 

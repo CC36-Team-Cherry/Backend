@@ -137,7 +137,7 @@ model MonthlyRequest {
 }
 
 model Privileges {
-  account       Account @relation(fields: [account_id], references: [id])
+  account       Account @relation(fields: [account_id], references: [id], onDelete: Cascade)
   account_id    Int     @unique
   is_admin      Boolean @default(false)
   is_supervisor Boolean @default(false)
@@ -146,7 +146,7 @@ model Privileges {
 }
 
 model PTO {
-  account       Account  @relation(fields: [account_id], references: [id])
+  account       Account  @relation(fields: [account_id], references: [id], onDelete: Cascade)
   account_id    Int
   remaining_pto Int
   updated_at    DateTime @updatedAt
@@ -157,7 +157,7 @@ model PTO {
 
 model SpecialPTO {
   id         Int      @id @default(autoincrement())
-  account    Account  @relation(fields: [account_id], references: [id])
+  account    Account  @relation(fields: [account_id], references: [id], onDelete: Cascade)
   account_id Int
   type       String
   updated_at DateTime @updatedAt
