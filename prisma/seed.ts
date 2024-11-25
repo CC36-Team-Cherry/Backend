@@ -17,6 +17,7 @@ async function main() {
     update: {},
     create: {
       id: 1,
+      company_id: 1,
       team_name: "Tim's Team",
     }
   });
@@ -25,7 +26,8 @@ async function main() {
     where: { email: "coolguy420@hotmail.com" },
     update: {},
     create: {
-      // id: 1,
+      //id: 1,
+      auth_key: "M9weQnKiGxUr45y7Xcn27VzKTJB3",
       email: "coolguy420@hotmail.com",
       first_name: "Tim",
       last_name: "Peters",
@@ -42,6 +44,7 @@ async function main() {
     update: {},
     create: {
       //id: 2,
+      auth_key: "0o5o0vscCuY4UWGyei4ohehzWWG3",
       email: "timfan69@hotmail.com",
       first_name: "Davide",
       last_name: "Peters",
