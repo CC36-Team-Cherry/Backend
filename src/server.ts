@@ -1,11 +1,13 @@
 import express from "express";
-// import cors from "cors";
+import cors from "cors";
 const app = express();
 
 const PORT = 3000;
 
 // Middleware
 app.use(express.json());
+app.use(express.json());
+app.use(cors());
 
 // import { loginHandler, logoutHandler } from "./auth/handlers";
 import organizationController from "./controllers/organization.controller";
@@ -31,9 +33,10 @@ app.post("/accounts", accountController.addAccount); // add an employee account
 app.delete("/accounts/:accountId", accountController.deleteAccount); // delete an account
 
 // // attendance logging
-// app.get("/accounts/:accountId/attendance/", attendanceController.getAttendance); // get all attendance records to populate calendar for one user
-// app.post("/accounts/:accountId/attendance/:attendanceId", attendanceController.addAttendance); // add attendance record
-// app.put("/accounts/:accountId/attendance/:attendanceId", attendanceController.editAttendance); // edit attendance record
+const attendanceController = require("./controllers/attendance.controller");
+app.get("/accounts/:accountId/attendance/", attendanceController.getAttendance); // get all attendance records to populate calendar for one user
+app.post("/accounts/:accountId/attendance/", attendanceController.addAttendance); // add attendance record
+app.put("/accounts/:accountId/attendance/:attendanceId", attendanceController.editAttendance); // edit attendance record
 
 // // approvals and supervisors 
 // app.get("/accounts/:accountId/approvals", approvalController.getAccountApprovals); // get all approvals related to that id 
