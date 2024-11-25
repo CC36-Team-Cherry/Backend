@@ -66,7 +66,10 @@ class Account {
           emailVerified: false,
           password: newPassword,
           disabled: false,
-      });
+      })
+        .then((userRecord) => {
+          return userRecord.uid;
+      })
     } catch (err) {
       console.error("Error adding account:", err);
       throw new Error("Failed to add account to Firebase");
