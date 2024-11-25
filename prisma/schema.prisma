@@ -26,7 +26,7 @@ model Account {
   company                      Company             @relation(fields: [company_id], references: [id], onDelete: Cascade)
   company_id                   Int                  
   created_at                   DateTime            @default(now())
-  last_login                   DateTime            @default(now())
+  last_login                   DateTime?
   join_date                    DateTime
   leave_date                   DateTime?
   role                         String
