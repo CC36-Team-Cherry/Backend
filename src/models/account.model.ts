@@ -47,7 +47,7 @@ class Account {
   }
 
   //add an account and its privileges
-  static async addAccount(newAccount: userAccount, uid: string) {
+  static async addAccountDatabase(newAccount: userAccount, uid: string) {
     try {
       const result = await prisma.$transaction(async (prisma) => {
         const createdAccount = await prisma.account.create({
@@ -89,7 +89,7 @@ class Account {
     }
   }
 
-  static addFirebaseAccount(newAccount: userAccount, newPassword: string) {
+  static addAccount(newAccount: userAccount, newPassword: string) {
     try {
       getAuth()
         .createUser({
@@ -100,7 +100,7 @@ class Account {
       })
         .then((userRecord) => {
           const uid = userRecord.uid;
-          return this.addAccount(newAccount, uid);
+          return this.addAccountDatabase(newAccount, uid);
       })
     } catch (err) {
       console.error("Error adding account:", err);
