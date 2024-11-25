@@ -6,7 +6,6 @@ const PORT = 3000;
 
 // Middleware
 app.use(express.json());
-app.use(express.json());
 app.use(cors());
 
 // import { loginHandler, logoutHandler } from "./auth/handlers";
