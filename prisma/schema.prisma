@@ -29,6 +29,7 @@ model Account {
   last_login                   DateTime?
   join_date                    DateTime
   leave_date                   DateTime?
+  language_preference          String              @default("en")
   role                         String
   team                         Team?               @relation(fields: [team_id], references: [id])
   team_id                      Int?
