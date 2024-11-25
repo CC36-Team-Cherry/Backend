@@ -31,7 +31,7 @@ app.set("trust proxy", 1);
 import organizationController from "./controllers/organization.controller";
 import accountController from "./controllers/account.controller";
 import approvalController from "./controllers/approval.controller";
-// import attendanceController from "./controllers/attendance.controller";
+import attendanceController from "./controllers/attendance.controller";
 // import specialPtoController from "./controllers/specialPto.controller";
 // import teamController from "./controllers/team.controller";
 
@@ -51,7 +51,6 @@ app.post("/accounts", accountController.addAccount); // add an employee account
 app.delete("/accounts/:accountId", accountController.deleteAccount); // delete an account
 
 // // attendance logging
-const attendanceController = require("./controllers/attendance.controller");
 app.get("/accounts/:accountId/attendance/", attendanceController.getAttendance); // get all attendance records to populate calendar for one user
 app.post("/accounts/:accountId/attendance/", attendanceController.addAttendance); // add attendance record
 app.put("/accounts/:accountId/attendance/:attendanceId", attendanceController.editAttendance); // edit attendance record

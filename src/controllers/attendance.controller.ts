@@ -42,4 +42,4 @@ const editAttendance = async (req: any, res: any) => {
 
 // };
 
-// export default { getAttendance, addAttendance, editAttendance};
+export default { getAttendance, addAttendance, editAttendance};
