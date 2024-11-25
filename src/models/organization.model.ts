@@ -15,24 +15,25 @@ class Organization {
         })
     }    
 
-    static addAdmin(adminData : any) {
-        return prisma.account.create({
-            data: {
-                email: adminData.adminEmail,
-                auth_key: "1",
-                first_name: adminData.adminFirstName,
-                last_name: adminData.adminLastName,
-                birthdate: adminData.adminDateOfBirth,
-                role: adminData.adminRole,
-                join_date: adminData.adminJoinDate,
-                company_id: adminData.organizationId,
-            },
-            select: {
-                id: true,
-                company_id: true,
-            }
-        })
-    }
+    // TODO: Planning to delete due to using account model to add account
+    // static addAdmin(adminData : any) {
+    //     return prisma.account.create({
+    //         data: {
+    //             email: adminData.adminEmail,
+    //             auth_key: "1",
+    //             first_name: adminData.adminFirstName,
+    //             last_name: adminData.adminLastName,
+    //             birthdate: adminData.adminDateOfBirth,
+    //             role: adminData.adminRole,
+    //             join_date: adminData.adminJoinDate,
+    //             company_id: adminData.organizationId,
+    //         },
+    //         select: {
+    //             id: true,
+    //             company_id: true,
+    //         }
+    //     })
+    // }
 
     static addAdminPrivileges(registerAdminId : any) {
         return prisma.privileges.create({
