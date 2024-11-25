@@ -19,8 +19,8 @@ const addAccount = async (req: Request, res: Response) => {
   try {
     const newAccount = req.body;
     const newPassword = generatePassword(10)
-    const addAccount = await accountModel.addAccount(newAccount);
-    accountModel.addFirebaseAccount(newAccount, newPassword);
+    const addAccount = accountModel.addFirebaseAccount(newAccount, newPassword);
+    //const addAccount = await accountModel.addAccount(newAccount, newPassword);
     res.json(addAccount);
     res.status(201);
   } catch (err) {

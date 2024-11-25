@@ -11,6 +11,7 @@ firebaseAdmin.initializeApp({
 
 type userAccount = {
   email: string;
+  auth_key: string;
   first_name: string;
   last_name: string;
   birthdate: Date;
@@ -46,12 +47,13 @@ class Account {
   }
 
   //add an account and its privileges
-  static async addAccount(newAccount: userAccount) {
+  static async addAccount(newAccount: userAccount, uid: string) {
     try {
       const result = await prisma.$transaction(async (prisma) => {
         const createdAccount = await prisma.account.create({
           data: {
             email: newAccount.email,
+            auth_key: uid,
             first_name: newAccount.first_name,
             last_name: newAccount.last_name,
             birthdate: newAccount.birthdate,
@@ -97,7 +99,8 @@ class Account {
           disabled: false,
       })
         .then((userRecord) => {
-          return userRecord.uid;
+          const uid = userRecord.uid;
+          return this.addAccount(newAccount, uid);
       })
     } catch (err) {
       console.error("Error adding account:", err);

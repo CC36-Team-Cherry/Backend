@@ -19,6 +19,7 @@ class Organization {
         return prisma.account.create({
             data: {
                 email: adminData.adminEmail,
+                auth_key: "1",
                 first_name: adminData.adminFirstName,
                 last_name: adminData.adminLastName,
                 birthdate: adminData.adminDateOfBirth,

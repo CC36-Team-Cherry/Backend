@@ -15,7 +15,7 @@ datasource db {
 
 model Account {
   id                           Int                 @id @default(autoincrement())
-  auth_key                     String              @unique
+  auth_key                     String?             @unique
   email                        String              @unique
   first_name                   String
   last_name                    String
