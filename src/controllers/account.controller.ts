@@ -18,8 +18,9 @@ const getAccounts = async (req: Request, res: Response) => {
 const addAccount = async (req: Request, res: Response) => {
   try {
     const newAccount = req.body;
+    const newPassword = generatePassword(10)
     const addAccount = await accountModel.addAccount(newAccount);
-    accountModel.addFirebaseAccount(newAccount);
+    accountModel.addFirebaseAccount(newAccount, newPassword);
     res.json(addAccount);
     res.status(201);
   } catch (err) {
@@ -27,6 +28,16 @@ const addAccount = async (req: Request, res: Response) => {
     res.status(500).json({error: 'An error occured while adding an account.'});
   }
 };
+
+// generate a random password for the new account
+const generatePassword = (length: number) => {
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  for (let i = 0; i < characters.length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length))
+  }
+  return result;
+}
 
 // edit account data
 // const editAccount = async (req: Request, res: Response) => {

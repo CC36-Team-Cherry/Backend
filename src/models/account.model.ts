@@ -58,13 +58,13 @@ class Account {
     }
   }
 
-  static addFirebaseAccount(newAccount: userAccount) {
+  static addFirebaseAccount(newAccount: userAccount, newPassword: string) {
     try {
       getAuth()
         .createUser({
           email: newAccount.email,
           emailVerified: false,
-          password: 'secretPassword',
+          password: newPassword,
           disabled: false,
       });
     } catch (err) {
