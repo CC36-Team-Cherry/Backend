@@ -6,6 +6,9 @@ npm run nodemon
 
 ## Database
 
+Reset Database
+- npx prisma migrate reset
+
 Schema Generation
 - npx prisma generate
 - npx prisma db push
