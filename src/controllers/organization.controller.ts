@@ -1,4 +1,5 @@
 import organizationModel from "../models/organization.model";
+import accountModel from "../models/account.model";
 
 // add admin account and organization
 const initialRegistration = async (req : any, res : any) => {
@@ -6,30 +7,25 @@ const initialRegistration = async (req : any, res : any) => {
 
         // TODO: Add validation if email exists (check if firebase handles this)
 
-        const adminData = req.body.adminData;
-        console.log(adminData);
+        const newAccount = req.body.newAccount;
+        console.log(newAccount);
 
         // add company and return company id
-        const registerOrgId = await organizationModel.addOrg(adminData.organizationName);
+        const registerOrgId = await organizationModel.addOrg(newAccount.company_name);
 
-        // add company id into adminData 
-        adminData.organizationId = registerOrgId.id;
+        // add company id into new account data 
+        newAccount.company_id = registerOrgId.id;
 
         // convert birthdate and join date to iso string
-        adminData.adminDateOfBirth = new Date(adminData.adminDateOfBirth);
-        adminData.adminJoinDate = new Date(adminData.adminJoinDate);
-
-        // add admin account data and return admin id
-        const registeredAdmin = await organizationModel.addAdmin(adminData);
-        console.log(registeredAdmin)
-
-        // add admin account to privileges page and set admin as true
-        const setAdminPrivileges = await organizationModel.addAdminPrivileges(registeredAdmin.id);
-        console.log("added privileges")
+        newAccount.birthdate = new Date(newAccount.birthdate);
+        newAccount.join_date = new Date(newAccount.join_date);
+        
+        // add account
+        const registeredAdminAccount = await accountModel.addAccount(newAccount, newAccount.auth_key);
+        console.log("Registered Admin", registeredAdminAccount)
 
         // return admin data
-        res.status(200).json(registeredAdmin);
-        console.log("Registration and Org Created", adminData); 
+        res.status(200).json(registeredAdminAccount);
 
     } catch(err) {
         console.error(err);
