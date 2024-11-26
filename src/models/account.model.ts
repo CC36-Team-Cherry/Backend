@@ -115,8 +115,11 @@ class Account {
           const uid = userRecord.uid;
           return this.addAccount(newAccount, uid);
       })
+        .catch((err) => {
+          console.error("Error: ", err)
+      })
     } catch (err) {
-      console.error("Error adding account:", err);
+      console.error("Error adding account: ", err);
       throw new Error("Failed to add account to Firebase");
     }
   }
