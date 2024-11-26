@@ -95,7 +95,7 @@ class Account {
         return createdAccount;
       });
 
-      return result;
+      return "Account added successfully";
     } catch (err) {
       console.error("Error adding account:", err);
       throw new Error("Failed to add account to the database");
@@ -121,13 +121,61 @@ class Account {
     }
   }
 
-  // static editAccount() {
-  //     return prisma.account.update({
-  //         data: {
+  //prepare update object
+  static patchObject(obj: Record<string, any>) {
+    return Object.fromEntries(Object.entries(obj).filter(([_, v]) => v !== undefined && v !== null));
+  }
+  //update an account
+  static async updateAccount(accountId: number, updates: Partial<userAccount>) {
+    try {
+      const result = await prisma.$transaction(async (prisma) => {
+        //updates account if needed
+        if (updates.email || updates.first_name || updates.last_name || updates.birthdate || updates.supervisor_id || updates.join_date || updates.role) {
+          const accountUpdates = {
+            email: updates.email,
+            first_name: updates.first_name,
+            last_name: updates.last_name,
+            birthdate: updates.birthdate,
+            supervisor_id: Number(updates.supervisor_id),
+            join_date: updates.join_date,
+            role: updates.role,
+          };
+          const cleanedAccUpdates = Account.patchObject(accountUpdates);
 
-  //         }
-  //     })
-  // }
+          await prisma.account.update({
+            where: { id: accountId },
+            data: cleanedAccUpdates,
+          });
+        }
+        //updates privileges if needed
+        if (updates.is_admin || updates.is_supervisor) {
+          const privilegesUpdates = {
+            is_admin: updates.is_admin === "true",
+            is_supervisor: updates.is_supervisor === "true",
+          };
+          const cleanedPrivUpdates = Account.patchObject(privilegesUpdates);
+
+          await prisma.privileges.update({
+            where: {account_id: accountId},
+            data: cleanedPrivUpdates,
+          });
+        }
+        //updates pto if needed
+        if (updates.remaining_pto) {
+          await prisma.pTO.update({
+            where: { account_id: accountId },
+            data: {
+              remaining_pto: Number(updates.remaining_pto),
+            },
+          });
+        }
+      });
+    return "Account updated successfullly";
+    } catch (err) {
+      console.error("Error updating account:", err);
+      throw new Error("Failed to update account");
+    }
+  }
 
   static deleteAccount(accountId: number) {
     try {

@@ -33,24 +33,30 @@ const addAccount = async (req: Request, res: Response) => {
 const generatePassword = (length: number) => {
   let result = '';
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  for (let i = 0; i < characters.length; i++) {
+  for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * characters.length))
   }
   return result;
 }
 
 // edit account data
-// const editAccount = async (req: Request, res: Response) => {
-//     const cardId = req.params.accountId;
-//     const editAccountData = req.body.editAccountData;
-//     const editAccount = await accountModel.editAccount(editAccountData, accountId);
-// };
+const updateAccount = async (req: Request, res: Response) => {
+  try {
+    const accountId = Number(req.params.accountId);
+    const editAccountData = req.body;
+    const editAccount = await accountModel.updateAccount(accountId, editAccountData);
+    res.status(200).json(editAccount);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({error: 'An error occured while updating account'})
+  } 
+};
 
 // // delete an account
 const deleteAccount = async (req: Request, res: Response) => {
   try {
-    const accountId = req.params.accountId;
-    await accountModel.getSingleAccount(Number(accountId)).then((user) => {
+    const accountId = Number(req.params.accountId);
+    await accountModel.getSingleAccount(accountId).then((user) => {
       if (user && user.auth_key) {
         const uid = user.auth_key;
         console.log(uid);
@@ -66,5 +72,5 @@ const deleteAccount = async (req: Request, res: Response) => {
   }
 };
 
-export default { getAccounts, addAccount, deleteAccount };
-// editAccount
+export default { getAccounts, addAccount, deleteAccount, updateAccount };
+// updateAccount
