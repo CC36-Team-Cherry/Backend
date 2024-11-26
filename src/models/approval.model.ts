@@ -10,6 +10,14 @@ class Approval {
                 where: {
                     account_id: accountId,
                 },
+                include: {
+                    supervisor: {
+                        select: {
+                            first_name: true,
+                            last_name:true,
+                        }
+                    }
+                }
             });
         } catch(err) {
             console.error("Error fetching approvals sent:", err)
@@ -21,6 +29,14 @@ class Approval {
             return prisma.monthlyRequest.findMany({
                 where: {
                     supervisor_id: accountId,
+                },
+                include: {
+                    account: {
+                        select: {
+                            first_name: true, 
+                            last_name: true,
+                        }
+                    }
                 }
             })
         } catch(err) {
@@ -36,6 +52,22 @@ class Approval {
                 }, 
                 data: {
                     status: updatedStatus,
+                }
+            })
+        } catch(err) {
+            console.error("Error fetching approvals requested:", err)
+        }
+    }   
+
+    static updateApprovalRemind(approvalId : any, updatedReminder : any) {
+        try {
+            return prisma.monthlyRequest.update({
+                where: {
+                    id: approvalId,
+                }, 
+                data: {
+                    content: updatedReminder,
+                    updated_at: new Date().toISOString(),
                 }
             })
         } catch(err) {

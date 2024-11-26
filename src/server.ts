@@ -62,13 +62,14 @@ app.get("/accounts/:accountId/approvals", approvalController.getAccountApprovals
 // app.post("/approvals/monthAttendance/:supervisorId", approvalController.submitMonthlyAttendance); // add new approval for monthly attendance
 // app.post("/approvals/pto/:supervisorId", approvalController.submitPto); // add new approval for PTO
 // app.post("/approvals/specialPto/:supervisorId", approvalController.submitSpecialPto); // add new approval for special PTO
-app.patch("/approvals/:approvalId", approvalController.editApproval); // changes to an approval item status
-// app.delete("/approvals/:approvalId", approvalController.deleteApproval); // delete approval
+app.patch("/approvals/:approvalId", approvalController.editApprovalStatus); // changes to an approval item status
+app.patch("/approvals/:approvalId/remind", approvalController.updateApprovalRemind); // changes to reminder of approval
+app.delete("/approvals/:approvalId", approvalController.deleteApproval); // delete approval
 
 // // team management and calendar view
 app.get("/organizations/:organizationId/teams", teamController.getTeams); // get list of all teams
 app.post("/organizations/:organizationId/teams", teamController.addTeam); // add new team 
-// app.patch("/teams/:teamId", teamController.editTeam); // edit a team name
+app.patch("/teams/:teamId", teamController.editTeam); // edit a team name
 app.delete("/teams/:teamId", teamController.deleteTeam); // delete a team
 
 // // special PTO data management
