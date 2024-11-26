@@ -10,6 +10,14 @@ class Approval {
                 where: {
                     account_id: accountId,
                 },
+                include: {
+                    supervisor: {
+                        select: {
+                            first_name: true,
+                            last_name:true,
+                        }
+                    }
+                }
             });
         } catch(err) {
             console.error("Error fetching approvals sent:", err)
@@ -21,6 +29,14 @@ class Approval {
             return prisma.monthlyRequest.findMany({
                 where: {
                     supervisor_id: accountId,
+                },
+                include: {
+                    account: {
+                        select: {
+                            first_name: true, 
+                            last_name: true,
+                        }
+                    }
                 }
             })
         } catch(err) {
