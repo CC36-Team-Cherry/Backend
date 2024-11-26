@@ -48,7 +48,7 @@ app.delete("/organizations/:organizationId", organizationController.deleteOrgani
 // organization account management
 app.get("/accounts/:companyId", accountController.getAccounts); // get all accounts to show in employee list
 app.post("/accounts", accountController.addAccount); // add an employee account
-// app.patch("/accounts/:accountId", accountController.editAccount); // edit account data
+app.patch("/accounts/:accountId", accountController.updateAccount); // edit account data
 app.delete("/accounts/:accountId", accountController.deleteAccount); // delete an account
 
 // // attendance logging
