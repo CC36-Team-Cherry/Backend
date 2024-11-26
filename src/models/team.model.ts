@@ -33,6 +33,21 @@ class Team {
         }
     }
 
+    static async editTeam(teamId : any, updatedTeamName: any) {
+        try {
+            return await prisma.team.update({
+                where: {
+                    id: teamId,
+                }, 
+                data: {
+                    team_name: updatedTeamName,
+                }
+            })
+        } catch (err) {
+            console.error("Error when editing team:", err);
+        }
+    } 
+
     static async deleteTeam(teamId : any) {
         try {
             return await prisma.team.delete({

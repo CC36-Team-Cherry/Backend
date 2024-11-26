@@ -4,7 +4,6 @@ import approvalModel from "../models/approval.model";
 const getAccountApprovals = async (req : any, res : any) => {
     try {
         const accountId = parseInt(req.params.accountId);
-        console.log(accountId)
 
         // TODO: Join tables for one query
         // TODO: Return data with supervisor name included
@@ -48,7 +47,7 @@ const getAccountApprovals = async (req : any, res : any) => {
 
 // changes to an approval item status
 // TODO: Change approval status of any id (PTO, special PTO, monthly attendance);
-const editApproval = async (req : any, res : any) => {
+const editApprovalStatus = async (req : any, res : any) => {
     try {
         const approvalId = parseInt(req.params.approvalId);
         const updatedStatus = req.body.statusChange
@@ -59,6 +58,19 @@ const editApproval = async (req : any, res : any) => {
         res.status(500).json({error: 'An error occured when editing approval status.'})
     }
 };
+
+const updateApprovalRemind = async (req : any, res: any) => {
+    try {
+        const approvalId = parseInt(req.params.approvalId);
+        console.log(req.body)
+        const updatedReminder = req.body.newMessage;
+        const updateApprovalReminder = await approvalModel.updateApprovalRemind(approvalId, updatedReminder);
+        res.status(200).json(updateApprovalReminder)
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({error: 'An error occured when updating approval reminder'})
+    }
+}
 
 // // delete approval
 const deleteApproval = async (req : any, res : any) => {
@@ -73,4 +85,4 @@ const deleteApproval = async (req : any, res : any) => {
 
 };
 
-export default {getAccountApprovals, editApproval, deleteApproval};
+export default {getAccountApprovals, editApprovalStatus, updateApprovalRemind, deleteApproval};

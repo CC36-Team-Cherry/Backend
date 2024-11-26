@@ -15,7 +15,7 @@ const getAttendance = async (req: any, res: any) => {
 // Add a new attendance record
 const addAttendance = async (req: any, res: any) => {
     const { accountId } = req.params;
-    const data = { ...req.body, account_id: accountId };
+    const data = { ...req.body, account_id: parseInt(accountId) };
     try {
         const newAttendance = await attendanceModel.createAttendanceRecord(data);
         res.status(201).json(newAttendance);

@@ -42,6 +42,22 @@ class Approval {
             console.error("Error fetching approvals requested:", err)
         }
     }   
+
+    static updateApprovalRemind(approvalId : any, updatedReminder : any) {
+        try {
+            return prisma.monthlyRequest.update({
+                where: {
+                    id: approvalId,
+                }, 
+                data: {
+                    content: updatedReminder,
+                    updated_at: new Date().toISOString(),
+                }
+            })
+        } catch(err) {
+            console.error("Error fetching approvals requested:", err)
+        }
+    }   
     
     static deleteApproval(approvalId : any) {
         try {

@@ -21,16 +21,10 @@ const getTeams = async (req : any, res : any) => {
 // // add new team
 const addTeam = async (req : any, res : any) => {
     try {
-        console.log(req.params.organizationId);
-        console.log(req.body.newTeamName);
         const organizationId = parseInt(req.params.organizationId);
         const teamName = req.body.newTeamName;
-
         const newTeam = await teamModel.addTeam(organizationId, teamName);
-
-        console.log(newTeam);
         res.status(200).json(newTeam)
-
     } catch(err) {
         console.error(err);
         res.status(500).json({error: 'An error occured when fetching teams.'});
@@ -38,9 +32,17 @@ const addTeam = async (req : any, res : any) => {
 };
 
 // // edit a team name
-// const editTeam = async (req, res) => {
-
-// };
+const editTeam = async (req: any, res: any) => {
+    try {
+        const teamId = parseInt(req.params.teamId);
+        const updatedTeamName = req.body.updatedTeamName;
+        const editedTeam = await teamModel.editTeam(teamId, updatedTeamName);
+        res.status(200).json(editedTeam);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({error: 'An error occured when editing team name.'})
+    }
+};
 
 // delete a team
 const deleteTeam = async (req : any, res: any) => {
@@ -54,4 +56,4 @@ const deleteTeam = async (req : any, res: any) => {
     }
 };
 
-export default { getTeams, addTeam, deleteTeam };
+export default { getTeams, addTeam, deleteTeam, editTeam };
