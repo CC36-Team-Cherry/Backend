@@ -59,7 +59,7 @@ class Account {
     }
   }
 
-  //add an account and its privileges
+  //add an account and its privileges. This is called by the below function, addAccountFirebase.
   static async addAccount(newAccount: userAccount, uid: string) {
     try {
       const result = await prisma.$transaction(async (prisma) => {
