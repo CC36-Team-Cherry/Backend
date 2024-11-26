@@ -7,7 +7,7 @@ async function main() {
     where: { id: 1 },
     update: {},
     create: {
-      id: 1,
+      //id: 1,
       name: "Tim's Sorting Company",
     }
   });
