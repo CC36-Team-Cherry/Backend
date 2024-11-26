@@ -1,6 +1,20 @@
 import organizationModel from "../models/organization.model";
 import accountModel from "../models/account.model";
 
+// get organization name
+const getOrganization = async (req: any, res: any) => {
+    try {
+
+        const organizationId = parseInt(req.params.organizationId);
+        const organizationName = await organizationModel.getOrg(organizationId);
+        res.status(200).json(organizationName);
+
+    } catch(err) {
+        console.error(err);
+        res.status(500).json({error: 'An error occured when registering.'})
+    }
+}
+
 // add admin account and organization
 const initialRegistration = async (req : any, res : any) => {
     try {
@@ -59,4 +73,4 @@ const deleteOrganization = async (req: any, res: any) => {
     }
 };
 
-export default { initialRegistration, editOrganization, deleteOrganization };
+export default { initialRegistration, getOrganization, editOrganization, deleteOrganization };

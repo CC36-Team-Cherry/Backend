@@ -4,6 +4,17 @@ const prisma = new PrismaClient();
 class Organization {
     constructor() {}
 
+    static getOrg(organizationId : any) {
+        return prisma.company.findFirst({
+            where: {
+                id: organizationId,
+            }, 
+            select: {
+                name: true,
+            }
+        })
+    } 
+
     static addOrg(orgName : any) {
         return prisma.company.create({
             data: {

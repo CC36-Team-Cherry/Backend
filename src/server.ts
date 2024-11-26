@@ -33,13 +33,14 @@ import accountController from "./controllers/account.controller";
 import approvalController from "./controllers/approval.controller";
 import attendanceController from "./controllers/attendance.controller";
 // import specialPtoController from "./controllers/specialPto.controller";
-// import teamController from "./controllers/team.controller";
+import teamController from "./controllers/team.controller";
 
 // authentication 
 // app.post("/login", loginHandler);
 // app.post("/logout", logoutHandler);
 
 // registration and organization management
+app.get("/organizations/:organizationId", organizationController.getOrganization); // get name of organization
 app.post("/registration", organizationController.initialRegistration); // add admin account and organization 
 app.patch("/organizations/:organizationId", organizationController.editOrganization); // edit organization name
 app.delete("/organizations/:organizationId", organizationController.deleteOrganization); // edit organization name
@@ -65,10 +66,10 @@ app.patch("/approvals/:approvalId", approvalController.editApproval); // changes
 // app.delete("/approvals/:approvalId", approvalController.deleteApproval); // delete approval
 
 // // team management and calendar view
-// app.get("/organizations/:organizationId/teams", teamController.getTeams); // get list of all teams
-// app.post("/organizations/:organizationId/teams", teamController.addTeam); // add new team 
+app.get("/organizations/:organizationId/teams", teamController.getTeams); // get list of all teams
+app.post("/organizations/:organizationId/teams", teamController.addTeam); // add new team 
 // app.patch("/teams/:teamId", teamController.editTeam); // edit a team name
-// app.delete("/teams/:teamId", teamController.deleteTeam); // delete a team
+app.delete("/teams/:teamId", teamController.deleteTeam); // delete a team
 
 // // special PTO data management
 // app.get("/accounts/:accountId/specialPto", specialPtoController.getSpecialPto); // view special PTO for that account

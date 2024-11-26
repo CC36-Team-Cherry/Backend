@@ -4,17 +4,20 @@ import approvalModel from "../models/approval.model";
 const getAccountApprovals = async (req : any, res : any) => {
     try {
         const accountId = parseInt(req.params.accountId);
+        console.log(accountId)
 
         // TODO: Join tables for one query
-        // TODO: Return data with supervisor name
+        // TODO: Return data with supervisor name included
         const approvalsSentMonthly = await approvalModel.getApprovalsSentMonthly(accountId);
 
         // const approvalsSentPto = await approvalModel.getApprovalsSentPto(accountId);
         // const approvalsSentSpecialPto = await approvalModel.getApprovalsSentSpecialPto(accountId);
 
         // TODO: Join tables for one query
+        // TODO: Return data with requester name included
         const approvalsRequestedMonthly = await approvalModel.getApprovalsRequestedMonthly(accountId);
 
+        console.log(approvalsSentMonthly, approvalsRequestedMonthly);
         res.status(200).json({approvalsSentMonthly, approvalsRequestedMonthly});
 
     } catch (err) {
