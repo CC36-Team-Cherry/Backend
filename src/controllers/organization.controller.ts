@@ -65,8 +65,7 @@ const deleteOrganization = async (req: any, res: any) => {
     try {
         const orgId = parseInt(req.params.organizationId);
         const deleteOrg = await organizationModel.deleteOrg(orgId);
-        res.json(deleteOrg);
-        res.status(200);
+        res.status(200).json(deleteOrg);
     } catch(err) {
         console.error(err);
         res.status(500).json({error: 'An error occured when deleting organization.'})

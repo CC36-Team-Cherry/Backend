@@ -6,8 +6,7 @@ const getAccounts = async (req: Request, res: Response) => {
   try {
     const companyId = req.params.companyId;
     const allAccounts = await accountModel.getAccounts(Number(companyId));
-    res.json(allAccounts);
-    res.status(200);
+    res.status(200).json(allAccounts);
   } catch (err) {
     console.error(err);
     res.status(500).json({error: 'An error occured while fetching accounts.'});
@@ -20,9 +19,7 @@ const addAccount = async (req: Request, res: Response) => {
     const newAccount = req.body;
     const newPassword = generatePassword(10);
     const addAccount = accountModel.addFirebaseAccount(newAccount, newPassword);
-    //const addAccount = await accountModel.addAccount(newAccount, newPassword);
-    res.json(addAccount);
-    res.status(201);
+    res.status(201).json(addAccount);
   } catch (err) {
     console.error(err);
     res.status(500).json({error: 'An error occured while adding an account.'});
@@ -64,8 +61,7 @@ const deleteAccount = async (req: Request, res: Response) => {
       }
     });
     const deleteAccount = await accountModel.deleteAccount(Number(accountId));
-    res.json(deleteAccount);
-    res.status(200);
+    res.status(200).json(deleteAccount);
   } catch (err) {
     console.error(err);
     res.status(500).json({error: 'An error occured while deleting an account.'});
