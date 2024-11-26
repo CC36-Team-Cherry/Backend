@@ -5,7 +5,10 @@ async function loginHandler(req: Request, res: Response) {
     try {
         const email = req.body.email;
         const userAccount = await accountModel.getAccountByEmail(email);
-        res.status(200).send(userAccount);
+
+        //TODO: set auth?
+
+        res.status(201).send(userAccount);
     } catch (err) {
         console.error(err);
         res.status(500).json({error: 'An error occured while logging in.'})

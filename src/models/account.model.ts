@@ -109,8 +109,7 @@ class Account {
 
         return createdAccount;
       });
-
-      return "Account added successfully";
+      return result;
     } catch (err) {
       console.error("Error adding account:", err);
       throw new Error("Failed to add account to the database");
