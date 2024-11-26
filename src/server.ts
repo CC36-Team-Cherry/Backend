@@ -27,7 +27,7 @@ app.set("trust proxy", 1);
 // });
 // export { firebaseAdmin }
 
-// import { loginHandler, logoutHandler } from "./auth/handlers";
+import { loginHandler, logoutHandler } from "./auth/handlers";
 import organizationController from "./controllers/organization.controller";
 import accountController from "./controllers/account.controller";
 import approvalController from "./controllers/approval.controller";
@@ -36,8 +36,8 @@ import attendanceController from "./controllers/attendance.controller";
 import teamController from "./controllers/team.controller";
 
 // authentication 
-// app.post("/login", loginHandler);
-// app.post("/logout", logoutHandler);
+app.post("/login", loginHandler);
+//app.post("/logout", logoutHandler);
 
 // registration and organization management
 app.get("/organizations/:organizationId", organizationController.getOrganization); // get name of organization

@@ -1,8 +1,19 @@
+import accountModel from "../models/account.model";
+import { Response, Request } from "express";
 
-async function loginHandler(req, res) {
+async function loginHandler(req: Request, res: Response) {
+    try {
+        const email = req.body.email;
+        const userAccount = await accountModel.getAccountByEmail(email);
+        res.status(200).send(userAccount);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({error: 'An error occured while logging in.'})
+    }
 }
 
-async function logoutHandler(req, res) {
+async function logoutHandler(req: Request, res: Response) {
+
 }
 
-export default { loginHandler, logoutHandler };
+export { loginHandler, logoutHandler };

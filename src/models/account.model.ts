@@ -29,11 +29,26 @@ type userAccount = {
 class Account {
   constructor() {}
 
+  // gets an account by ID number
   static async getSingleAccount(input: number) {
     try {
       return await prisma.account.findUnique({
         where: {
           id: input,
+        },
+      })
+    } catch (err) {
+      console.error("Error fetching account: ", err)
+      throw new Error("Failed to fetch account from the database")
+    }
+  }
+
+  // gets an account by email address
+  static async getAccountByEmail (inputEmail: string) {
+    try {
+      return await prisma.account.findUnique({
+        where: {
+          email: inputEmail,
         },
       })
     } catch (err) {
@@ -59,7 +74,7 @@ class Account {
     }
   }
 
-  //add an account and its privileges. This is called by the below function, addAccountFirebase.
+  //add an account and its privileges. This is called by the below function, addFirebaseAccount.
   static async addAccount(newAccount: userAccount, uid: string) {
     try {
       const result = await prisma.$transaction(async (prisma) => {
