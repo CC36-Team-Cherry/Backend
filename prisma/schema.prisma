@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -15,34 +9,34 @@ datasource db {
 
 model Account {
   id                           Int                 @id @default(autoincrement())
-  auth_key                     String?             @unique
   email                        String              @unique
   first_name                   String
   last_name                    String
   birthdate                    DateTime
-  supervisor                   Account?            @relation("SupervisorRelation", fields: [supervisor_id], references: [id])
-  supervisor_id                Int?
-  supervisorAccount            Account[]           @relation("SupervisorRelation")
-  company                      Company             @relation(fields: [company_id], references: [id], onDelete: Cascade)
-  company_id                   Int                  
-  created_at                   DateTime            @default(now())
+  company_id                   Int
   last_login                   DateTime?
   join_date                    DateTime
   leave_date                   DateTime?
-  language_preference          String              @default("en")
   role                         String
-  team                         Team?               @relation(fields: [team_id], references: [id])
   team_id                      Int?
+  created_at                   DateTime            @default(now())
+  supervisor_id                Int?
+  auth_key                     String?             @unique
+  language_preference          String              @default("en")
+  company                      Company?             @relation(fields: [company_id], references: [id], onDelete: Cascade)
+  supervisor                   Account?            @relation("SupervisorRelation", fields: [supervisor_id], references: [id])
+  supervisorAccount            Account[]           @relation("SupervisorRelation")
+  team                         Team?               @relation(fields: [team_id], references: [id])
   AttendanceRecord             AttendanceRecord[]
-  ptoRequests                  PTORequest[]        @relation("PTORequester")
-  approvedPTORequests          PTORequest[]        @relation("PTORequestSupervisor")
   monthlyRequests              MonthlyRequest[]    @relation("MonthlyRequester")
   supervisorMonthlyRequests    MonthlyRequest[]    @relation("MonthlyRequestSupervisor")
-  specialPTORequests           SpecialPTORequest[] @relation("SpecialPTORequester")
-  supervisedSpecialPTORequests SpecialPTORequest[] @relation("SpecialPTORequestSupervisor")
   Privileges                   Privileges?
   PTO                          PTO?
+  ptoRequests                  PTORequest[]        @relation("PTORequester")
+  approvedPTORequests          PTORequest[]        @relation("PTORequestSupervisor")
   SpecialPTO                   SpecialPTO[]
+  specialPTORequests           SpecialPTORequest[] @relation("SpecialPTORequester")
+  supervisedSpecialPTORequests SpecialPTORequest[] @relation("SpecialPTORequestSupervisor")
 
   @@map("account")
 }
@@ -50,8 +44,8 @@ model Account {
 model Company {
   id      Int       @id @default(autoincrement())
   name    String
-  Account Account[] 
-  Team Team[] 
+  Account Account[]
+  Team    Team[]
 
   @@map("company")
 }
@@ -60,8 +54,8 @@ model Team {
   id         Int       @id @default(autoincrement())
   team_name  String
   updated_at DateTime  @updatedAt
-  Account    Account[]
   company_id Int
+  Account    Account[]
   company    Company   @relation(fields: [company_id], references: [id], onDelete: Cascade)
 
   @@map("team")
@@ -69,7 +63,6 @@ model Team {
 
 model AttendanceRecord {
   id           Int      @id @default(autoincrement())
-  account      Account  @relation(fields: [account_id], references: [id])
   account_id   Int
   day          DateTime
   punch_in     DateTime
@@ -80,16 +73,14 @@ model AttendanceRecord {
   full_pto     Boolean  @default(false)
   half_pto     Boolean  @default(false)
   special_pto  Boolean  @default(false)
+  account      Account  @relation(fields: [account_id], references: [id])
 
   @@map("attendance_record")
 }
 
 model PTORequest {
   id            Int       @id @default(autoincrement())
-  account       Account   @relation("PTORequester", fields: [account_id], references: [id])
   account_id    Int
-  supervisor    Account   @relation("PTORequestSupervisor", fields: [supervisor_id], references: [id])
-  supervisor_id Int
   content       String
   status        String
   day_start     DateTime?
@@ -100,15 +91,16 @@ model PTORequest {
   hour_end      DateTime?
   created_at    DateTime  @default(now())
   updated_at    DateTime  @updatedAt
+  supervisor_id Int
+  account       Account   @relation("PTORequester", fields: [account_id], references: [id])
+  supervisor    Account   @relation("PTORequestSupervisor", fields: [supervisor_id], references: [id])
 
   @@map("pto_request")
 }
 
 model SpecialPTORequest {
   id            Int      @id @default(autoincrement())
-  account       Account  @relation("SpecialPTORequester", fields: [account_id], references: [id])
   account_id    Int
-  supervisor    Account  @relation("SpecialPTORequestSupervisor", fields: [supervisor_id], references: [id])
   supervisor_id Int
   content       String
   type          String
@@ -116,51 +108,52 @@ model SpecialPTORequest {
   day           DateTime
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
+  account       Account  @relation("SpecialPTORequester", fields: [account_id], references: [id])
+  supervisor    Account  @relation("SpecialPTORequestSupervisor", fields: [supervisor_id], references: [id])
 
   @@map("special_pto_request")
 }
 
 model MonthlyRequest {
   id            Int      @id @default(autoincrement())
-  account       Account  @relation("MonthlyRequester", fields: [account_id], references: [id])
   account_id    Int
-  supervisor    Account  @relation("MonthlyRequestSupervisor", fields: [supervisor_id], references: [id])
-  supervisor_id Int
   month         Int
   year          Int
   content       String
-  status        String
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
+  status        String
+  supervisor_id Int
+  account       Account  @relation("MonthlyRequester", fields: [account_id], references: [id])
+  supervisor    Account  @relation("MonthlyRequestSupervisor", fields: [supervisor_id], references: [id])
 
   @@map("monthly_request")
 }
 
 model Privileges {
-  account       Account @relation(fields: [account_id], references: [id], onDelete: Cascade)
   account_id    Int     @unique
   is_admin      Boolean @default(false)
   is_supervisor Boolean @default(false)
+  account       Account @relation(fields: [account_id], references: [id], onDelete: Cascade)
 
   @@map("privileges")
 }
 
 model PTO {
-  account       Account  @relation(fields: [account_id], references: [id], onDelete: Cascade)
-  account_id    Int
+  account_id    Int      @unique
   remaining_pto Int
   updated_at    DateTime @updatedAt
+  account       Account  @relation(fields: [account_id], references: [id], onDelete: Cascade)
 
-  @@unique([account_id])
   @@map("pto")
 }
 
 model SpecialPTO {
   id         Int      @id @default(autoincrement())
-  account    Account  @relation(fields: [account_id], references: [id], onDelete: Cascade)
   account_id Int
   type       String
   updated_at DateTime @updatedAt
+  account    Account  @relation(fields: [account_id], references: [id], onDelete: Cascade)
 
   @@map("special_pto")
 }
