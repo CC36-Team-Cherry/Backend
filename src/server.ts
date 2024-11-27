@@ -32,7 +32,7 @@ import organizationController from "./controllers/organization.controller";
 import accountController from "./controllers/account.controller";
 import approvalController from "./controllers/approval.controller";
 import attendanceController from "./controllers/attendance.controller";
-// import specialPtoController from "./controllers/specialPto.controller";
+import specialPtoController from "./controllers/specialPto.controller";
 import teamController from "./controllers/team.controller";
 
 // authentication 
@@ -74,8 +74,8 @@ app.patch("/teams/:teamId", teamController.editTeam); // edit a team name
 app.delete("/teams/:teamId", teamController.deleteTeam); // delete a team
 
 // // special PTO data management
-// app.get("/accounts/:accountId/specialPto", specialPtoController.getSpecialPto); // view special PTO for that account
-// app.post("/accounts/:accountId/specialPto", specialPtoController.addSpecialPto); // add special PTO
+app.get("/accounts/:accountId/specialPto", specialPtoController.getSpecialPto); // view special PTO for that account
+app.post("/accounts/:accountId/specialPto", specialPtoController.addSpecialPto); // add special PTO
 // app.patch("/accounts/:accountId/specialPto", specialPtoController.editSpecialPto); // edit special PTO type
 // app.delete("/accounts/:accountId/specialPto", specialPtoController.deleteSpecialPto); // delete special PTO
 
