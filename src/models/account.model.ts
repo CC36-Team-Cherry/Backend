@@ -50,6 +50,10 @@ class Account {
         where: {
           email: inputEmail,
         },
+        include: {
+          Privileges: true,
+          company: true,
+        }
       })
     } catch (err) {
       console.error("Error fetching account: ", err)
@@ -95,8 +99,8 @@ class Account {
         await prisma.privileges.create({
           data: {
             account_id: createdAccount.id,
-            is_admin: (newAccount.is_admin === "true"),
-            is_supervisor: (newAccount.is_supervisor === "true"),
+            is_admin: Boolean(newAccount.is_admin),
+            is_supervisor: Boolean(newAccount.is_supervisor),
           },
         });
 
@@ -152,7 +156,7 @@ class Account {
             email: updates.email,
             first_name: updates.first_name,
             last_name: updates.last_name,
-            birthdate: updates.birthdate,
+            birthdate: updates.birthdate ? new Date(updates.birthdate) : null,
             supervisor_id: Number(updates.supervisor_id),
             join_date: updates.join_date,
             role: updates.role,
@@ -167,8 +171,8 @@ class Account {
         //updates privileges if needed
         if (updates.is_admin || updates.is_supervisor) {
           const privilegesUpdates = {
-            is_admin: updates.is_admin === "true",
-            is_supervisor: updates.is_supervisor === "true",
+            is_admin: Boolean(updates.is_admin),
+            is_supervisor: Boolean(updates.is_supervisor),
           };
           const cleanedPrivUpdates = Account.patchObject(privilegesUpdates);
 
@@ -192,6 +196,19 @@ class Account {
       console.error("Error updating account:", err);
       throw new Error("Failed to update account");
     }
+  }
+
+  static updateEmailFirebase(uid: string, newEmail: string) {
+    getAuth()
+      .updateUser(uid, {
+        email: newEmail
+      })
+      .then(() => {
+        console.log("Successfully updated email in Firebase");
+      })
+      .catch((error) => {
+        console.log("Error updating email: ", error)
+      })
   }
 
   static deleteAccount(accountId: number) {

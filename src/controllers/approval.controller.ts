@@ -8,14 +8,12 @@ const getAccountApprovals = async (req : any, res : any) => {
         const accountId = parseInt(req.params.accountId);
 
         // TODO: Join tables for one query
-        // TODO: Return data with supervisor name included
         const approvalsSentMonthly = await approvalModel.getApprovalsSentMonthly(accountId);
 
         // const approvalsSentPto = await approvalModel.getApprovalsSentPto(accountId);
         // const approvalsSentSpecialPto = await approvalModel.getApprovalsSentSpecialPto(accountId);
 
         // TODO: Join tables for one query
-        // TODO: Return data with requester name included
         const approvalsRequestedMonthly = await approvalModel.getApprovalsRequestedMonthly(accountId);
 
         console.log(approvalsSentMonthly, approvalsRequestedMonthly);
@@ -27,15 +25,35 @@ const getAccountApprovals = async (req : any, res : any) => {
     }
 };
 
+// get all users that have supervisor status set to true
+const getSupervisors = async (req : any, res : any) => {
+    try {
+        const supervisors = await approvalModel.getSupervisors();
+        res.status(200).json(supervisors)
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({error: 'An error occured when fetching supervisors.'})   
+    }
+}
+
 // // get all approvals and calendars of users that have set approver as this account
 // const getApproveeCalendars = async (req, res) => {
 
 // };
 
-// // add new approval for monthly attendance
-// const submitMonthlyAttendance = async (req, res) => {
+// add new approval for monthly attendance
+const submitMonthlyAttendance = async (req : any, res : any) => {
+    try {
+        console.log(req.body)
+        const newApproval = req.body;
+        const approvalAdded = await approvalModel.addMonthlyApproval(newApproval);
+        res.status(200).json(approvalAdded);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({error: 'An error occured when editing approval status.'})
+    }
 
-// };
+};
 
 // // add new approval for PTO
 // const submitPto = async (req, res) => {
@@ -122,4 +140,7 @@ const deleteApproval = async (req : any, res : any) => {
     }
   
 
-export default {getAccountApprovals, editApprovalStatus, updateApprovalRemind, deleteApproval, getApproveeCalendars};
+
+};
+
+export default {getAccountApprovals, editApprovalStatus, updateApprovalRemind, deleteApproval, getSupervisors, submitMonthlyAttendance, getApproveeCalendars };

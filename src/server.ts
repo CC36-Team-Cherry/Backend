@@ -61,9 +61,10 @@ app.put("/accounts/:accountId/attendance/:attendanceId", attendanceController.ed
 // // approvals and supervisors 
 app.get("/accounts/:accountId/approvals", approvalController.getAccountApprovals); // get all approvals related to that id 
 app.get("/approvals/:supervisorId", approvalController.getApproveeCalendars); // get all approvals and calendars of users that have set approver as this account
-// app.post("/approvals/monthAttendance/:supervisorId", approvalController.submitMonthlyAttendance); // add new approval for monthly attendance
-// app.post("/approvals/pto/:supervisorId", approvalController.submitPto); // add new approval for PTO
-// app.post("/approvals/specialPto/:supervisorId", approvalController.submitSpecialPto); // add new approval for special PTO
+app.get("/supervisors/", approvalController.getSupervisors); // get all approvals related to that id 
+app.post("/approvals/monthAttendance/", approvalController.submitMonthlyAttendance); // add new approval for monthly attendance
+// app.post("/approvals/pto/", approvalController.submitPto); // add new approval for PTO
+// app.post("/approvals/specialPto/", approvalController.submitSpecialPto); // add new approval for special PTO
 app.patch("/approvals/:approvalId", approvalController.editApprovalStatus); // changes to an approval item status
 app.patch("/approvals/:approvalId/remind", approvalController.updateApprovalRemind); // changes to reminder of approval
 app.delete("/approvals/:approvalId", approvalController.deleteApproval); // delete approval
