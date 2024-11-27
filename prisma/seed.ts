@@ -53,6 +53,7 @@ async function main() {
       join_date: new Date('2024-11-20'),
       role: "assisstant",
       team_id: 1,
+      supervisor_id:1,
     },
   });
 

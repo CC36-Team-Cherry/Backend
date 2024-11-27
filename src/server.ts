@@ -39,6 +39,8 @@ import teamController from "./controllers/team.controller";
 app.post("/login", loginHandler);
 //app.post("/logout", logoutHandler);
 
+app.get("/accounts/:accountId/details", accountController.getUserDetails);
+
 // registration and organization management
 app.get("/organizations/:organizationId", organizationController.getOrganization); // get name of organization
 app.post("/registration", organizationController.initialRegistration); // add admin account and organization 
@@ -58,7 +60,7 @@ app.put("/accounts/:accountId/attendance/:attendanceId", attendanceController.ed
 
 // // approvals and supervisors 
 app.get("/accounts/:accountId/approvals", approvalController.getAccountApprovals); // get all approvals related to that id 
-// app.get("/approvals/:supervisorId", approvalController.getApproveeCalendars); // get all approvals and calendars of users that have set approver as this account
+app.get("/approvals/:supervisorId", approvalController.getApproveeCalendars); // get all approvals and calendars of users that have set approver as this account
 // app.post("/approvals/monthAttendance/:supervisorId", approvalController.submitMonthlyAttendance); // add new approval for monthly attendance
 // app.post("/approvals/pto/:supervisorId", approvalController.submitPto); // add new approval for PTO
 // app.post("/approvals/specialPto/:supervisorId", approvalController.submitSpecialPto); // add new approval for special PTO

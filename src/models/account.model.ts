@@ -215,6 +215,28 @@ class Account {
         console.log("Error deleting user: ", error)
       })
   }
+
+  static async getSingleAccountDetails(accountId: number) {
+    try {
+      return await prisma.account.findUnique({
+        where: { id: accountId },
+        include: {
+          supervisor: { 
+            select: {
+              id: true,
+              first_name: true,
+              last_name: true,
+            },
+          },
+          Privileges: true, 
+        },
+      });
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+      throw new Error("Failed to fetch user details");
+    }
+  }
+  
 }
 
 export default Account;

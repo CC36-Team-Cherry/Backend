@@ -1,4 +1,6 @@
 import approvalModel from "../models/approval.model";
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 
 // get all approvals related to that id 
 const getAccountApprovals = async (req : any, res : any) => {
@@ -70,7 +72,7 @@ const updateApprovalRemind = async (req : any, res: any) => {
         console.error(err);
         res.status(500).json({error: 'An error occured when updating approval reminder'})
     }
-}
+  }
 
 // // delete approval
 const deleteApproval = async (req : any, res : any) => {
@@ -82,7 +84,42 @@ const deleteApproval = async (req : any, res : any) => {
         console.error(err);
         res.status(500).json({error: 'An error occured when deleting approval.'})
     }
+  };
 
-};
+    const getApproveeCalendars = async (req: any, res: any) => {
+      try {
+        const supervisorId = parseInt(req.params.supervisorId, 10);
+        const supervisor = await prisma.account.findUnique({
+          where: { id: supervisorId },
+          include: {
+            Privileges: true,
+          },
+        });
+    
+        if (!supervisor || !supervisor.Privileges?.is_supervisor) {
+          return res.status(403).json({ error: "User is not a supervisor" });
+        }
+        const approvees = await approvalModel.getApproveeCalendars(supervisorId);
+    
+        if (!approvees || approvees.length === 0) {
+          return res.status(404).json({ message: "No approvees found for this supervisor." });
+        }
+        res.status(200).json({
+          supervisor: {
+            id: supervisor.id,
+            first_name: supervisor.first_name,
+            last_name: supervisor.last_name,
+            email: supervisor.email,
+          },
+          approvees,
+        });
+      } catch (error) {
+        console.error("Error fetching approvee calendars:", {
+          supervisorId: req.params.supervisorId,
+        });
+        res.status(500).json({ error: "Unable to fetch approvee calendars" });
+      }
+    }
+  
 
-export default {getAccountApprovals, editApprovalStatus, updateApprovalRemind, deleteApproval};
+export default {getAccountApprovals, editApprovalStatus, updateApprovalRemind, deleteApproval, getApproveeCalendars};
