@@ -99,8 +99,8 @@ class Account {
         await prisma.privileges.create({
           data: {
             account_id: createdAccount.id,
-            is_admin: (newAccount.is_admin === "true"),
-            is_supervisor: (newAccount.is_supervisor === "true"),
+            is_admin: Boolean(newAccount.is_admin),
+            is_supervisor: Boolean(newAccount.is_supervisor),
           },
         });
 
@@ -171,8 +171,8 @@ class Account {
         //updates privileges if needed
         if (updates.is_admin || updates.is_supervisor) {
           const privilegesUpdates = {
-            is_admin: updates.is_admin === "true",
-            is_supervisor: updates.is_supervisor === "true",
+            is_admin: Boolean(updates.is_admin),
+            is_supervisor: Boolean(updates.is_supervisor),
           };
           const cleanedPrivUpdates = Account.patchObject(privilegesUpdates);
 
