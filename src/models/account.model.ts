@@ -50,6 +50,9 @@ class Account {
         where: {
           email: inputEmail,
         },
+        include: {
+          Privileges: true,
+        }
       })
     } catch (err) {
       console.error("Error fetching account: ", err)
