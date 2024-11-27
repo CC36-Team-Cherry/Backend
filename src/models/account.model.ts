@@ -52,6 +52,7 @@ class Account {
         },
         include: {
           Privileges: true,
+          company: true,
         }
       })
     } catch (err) {
