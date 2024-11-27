@@ -43,6 +43,15 @@ const updateAccount = async (req: Request, res: Response) => {
     const accountId = Number(req.params.accountId);
     const editAccountData = req.body;
     const editAccount = await accountModel.updateAccount(accountId, editAccountData);
+    //If the email address is being updated, the below will update the address in Firebase
+    if (req.body.email) {
+      await accountModel.getSingleAccount(accountId).then((user) => {
+        if (user && user.auth_key) {
+          const uid = user.auth_key;
+          accountModel.updateEmailFirebase(uid, req.body.email);
+        }
+      });
+    }
     res.status(200).json(editAccount);
   } catch (err) {
     console.error(err);
@@ -54,13 +63,14 @@ const updateAccount = async (req: Request, res: Response) => {
 const deleteAccount = async (req: Request, res: Response) => {
   try {
     const accountId = Number(req.params.accountId);
+    //delete account in Firebase
     await accountModel.getSingleAccount(accountId).then((user) => {
       if (user && user.auth_key) {
         const uid = user.auth_key;
-        console.log(uid);
         accountModel.deleteFirebaseAccount(uid);
       }
     });
+    //delete account in database
     const deleteAccount = await accountModel.deleteAccount(Number(accountId));
     res.status(200).json(deleteAccount);
   } catch (err) {
