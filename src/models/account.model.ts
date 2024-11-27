@@ -197,6 +197,19 @@ class Account {
     }
   }
 
+  static updateEmailFirebase(uid: string, newEmail: string) {
+    getAuth()
+      .updateUser(uid, {
+        email: newEmail
+      })
+      .then(() => {
+        console.log("Successfully updated email in Firebase");
+      })
+      .catch((error) => {
+        console.log("Error updating email: ", error)
+      })
+  }
+
   static deleteAccount(accountId: number) {
     try {
       return prisma.account.delete({
