@@ -152,7 +152,7 @@ class Account {
             email: updates.email,
             first_name: updates.first_name,
             last_name: updates.last_name,
-            birthdate: updates.birthdate,
+            birthdate: updates.birthdate ? new Date(updates.birthdate) : null,
             supervisor_id: Number(updates.supervisor_id),
             join_date: updates.join_date,
             role: updates.role,
