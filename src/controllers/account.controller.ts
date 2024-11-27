@@ -4,6 +4,7 @@ import { Response, Request } from "express";
 // get all accounts
 const getAccounts = async (req: Request, res: Response) => {
   try {
+    console.log(req.params)
     const companyId = req.params.companyId;
     const allAccounts = await accountModel.getAccounts(Number(companyId));
     res.status(200).json(allAccounts);

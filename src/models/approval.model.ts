@@ -43,6 +43,16 @@ class Approval {
             console.error("Error fetching approvals requested:", err)
         }
     }  
+
+    static addMonthlyApproval(newApproval : any) {
+        try {
+            return prisma.monthlyRequest.create({
+                data: newApproval,
+            })
+        } catch (err) {
+            console.error("Error adding approval:", err)
+        }
+    }
     
     static updateApprovalStatus(approvalId : any, updatedStatus : any) {
         try {
@@ -86,6 +96,24 @@ class Approval {
             console.error("Error deleting approval:", err)
         }
     }    
+
+    static getSupervisors() {
+        try {
+            return prisma.account.findMany({
+                where: {
+                    Privileges: {
+                        is_supervisor: true
+                    }
+                },
+                include: {
+                    Privileges: true,
+                }
+            })
+            
+        } catch(err) {
+            console.error("Error when fetching supervisors");
+        }
+    }
 
 };
 
