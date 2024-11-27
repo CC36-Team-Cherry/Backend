@@ -95,7 +95,38 @@ class Approval {
         } catch(err) {
             console.error("Error deleting approval:", err)
         }
-    }    
+    } 
+    
+    static async getApproveeCalendars(supervisorId: any) {
+        try {
+          return await prisma.account.findMany({
+            where: { supervisor_id: supervisorId },
+            select: {
+              id: true,
+              first_name: true,
+              last_name: true,
+              email: true,
+              AttendanceRecord: {
+                select: {
+                  id: true,
+                  day: true,
+                  punch_in: true,
+                  punch_out: true,
+                  break_amount: true,
+                  totalHours: true,
+                  absence: true,
+                  full_pto: true,
+                  half_pto: true,
+                  special_pto: true,
+                },
+              },
+            },
+          });
+        } catch (error) {
+          console.error("Error fetching approvee calendars:", error);
+          throw new Error("Unable to fetch approvee calendars");
+        }
+      }
 
     static getSupervisors() {
         try {
