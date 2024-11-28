@@ -98,6 +98,7 @@ class Account {
             company_id: Number(newAccount.company_id),
             join_date: newAccount.join_date,
             role: newAccount.role,
+            team_id: Number(newAccount.team_id),
           },
         });
 
@@ -165,6 +166,7 @@ class Account {
             supervisor_id: Number(updates.supervisor_id),
             join_date: updates.join_date,
             role: updates.role,
+            team_id: updates.team_id
           };
           const cleanedAccUpdates = Account.patchObject(accountUpdates);
 
