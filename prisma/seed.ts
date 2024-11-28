@@ -28,7 +28,7 @@ async function main() {
     create: {
       //id: 1,
       auth_key: "xcHzg440Rsb8EHlULmjXuxxSUMD2",
-      email: "coolguy420@hotmail.com",
+      email: "admin@breezehr.com",
       first_name: "Tim",
       last_name: "Peters",
       birthdate: new Date('1954-02-19'),
