@@ -22,19 +22,36 @@ const addSpecialPto = async (req : any, res : any) => {
         const newSpecialPto = await specialPtoModel.addSpecialPto(accountId, newSpecialPtoData);
         res.status(200).json(newSpecialPto);
     } catch (err) {
-        res.status(500).json({error: 'An error occured when adding special pto'})
+        res.status(500).json({error: 'An error occured when adding special pto'});
     }
 };
 
 // // edit special PTO type
-// const editSpecialPto = async (req, res) => {
+const editSpecialPto = async (req : any, res : any) => {
+    try {
+        const specialPtoId = parseInt(req.params.specialPtoId);
+        const newSpecialPtoType = req.body.updatedSpecialPtoType;
+        console.log("specialPtoId", specialPtoId, "newSpecialPtoType", newSpecialPtoType)
 
-// };
+        const editSpecialPto = await specialPtoModel.editSpecialPto(specialPtoId, newSpecialPtoType);
+        res.status(200).json(editSpecialPto);
+    } catch (err) {
+        res.status(500).json({error: 'An error occured when editing special pto'});
+    }
+};
 
 // // delete specal PTO
-// const deleteSpecialPto = async (req, res) => {
+const deleteSpecialPto = async (req : any, res : any) => {
+    try {
+        
+        const specialPtoId = parseInt(req.params.specialPtoId);
 
-// };
+        const deleteSpecialPto = await specialPtoModel.deleteSpecialPto(specialPtoId);
+        
+        res.status(200).json(deleteSpecialPto)
+    } catch (err) {
+        res.status(500).json({error: 'An error occured when deleing special pto'})
+    }
+};
 
-export default { getSpecialPto, addSpecialPto };
-// export default { getSpecialPto, addSpecialPto, editSpecialPto, deleteSpecialPto };
+export default { getSpecialPto, addSpecialPto, editSpecialPto, deleteSpecialPto };

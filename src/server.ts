@@ -78,8 +78,8 @@ app.delete("/teams/:teamId", teamController.deleteTeam); // delete a team
 // // special PTO data management
 app.get("/accounts/:accountId/specialPto", specialPtoController.getSpecialPto); // view special PTO for that account
 app.post("/accounts/:accountId/specialPto", specialPtoController.addSpecialPto); // add special PTO
-// app.patch("/accounts/:accountId/specialPto", specialPtoController.editSpecialPto); // edit special PTO type
-// app.delete("/accounts/:accountId/specialPto", specialPtoController.deleteSpecialPto); // delete special PTO
+app.patch("/specialPto/:specialPtoId", specialPtoController.editSpecialPto); // edit special PTO type
+app.delete("/specialPto/:specialPtoId", specialPtoController.deleteSpecialPto); // delete special PTO
 
 // Server validation
 app.get("/", (req, res) => {res.send("Hello from homepage")});

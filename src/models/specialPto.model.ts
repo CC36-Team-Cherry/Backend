@@ -21,6 +21,25 @@ class SpecialPto {
         })
     }
 
+    static editSpecialPto(specialPtoId : any, newSpecialPtoType : any) {
+        return prisma.specialPTO.update({
+            where: {
+                id: specialPtoId,
+            },
+            data: {
+                type: newSpecialPtoType,
+            }
+        })
+    }
+
+    static deleteSpecialPto(specialPtoId : any) {
+        return prisma.specialPTO.delete({
+            where: {
+                id: specialPtoId,
+            }
+        })
+    }
+
 };
 
 export default SpecialPto;
