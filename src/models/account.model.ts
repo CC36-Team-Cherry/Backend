@@ -69,7 +69,12 @@ class Account {
         },
         include: {
             Privileges: true,
-            PTO: true
+            PTO: true,
+            team: {
+              select: {
+                team_name: true,
+              },
+            },
         },
       });
     } catch (err) {
