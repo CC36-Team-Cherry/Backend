@@ -4,11 +4,9 @@ import teamModel from "../models/team.model";
 const getTeams = async (req : any, res : any) => {
     try {
         const organizationId = req.params.activeCompanyId;
-        console.log(organizationId);
 
         const allTeams = await teamModel.getTeams(organizationId);
 
-        console.log(allTeams);
         res.status(200).json(allTeams)
 
     } catch(err) {
