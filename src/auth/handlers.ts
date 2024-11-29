@@ -33,11 +33,13 @@ async function loginHandler(req: Request, res: Response) {
             throw new Error("Unauthorized request");
             })
             .then((sessionCookie) => {
+                console.log("we got to this step");
                 const options = {maxAge: expiresIn, httpOnly: true, secure: true};
                 res.cookie('session', sessionCookie, options);
                 res.status(201).send(userAccount);
             })
-            .catch((err) => {res.status(401).send("Unauthorized request");})
+            .catch((err) => {
+                res.status(401).send("Unauthorized request");})
     } catch (err) {
         console.error(err);
         res.status(500).json({error: 'An error occured while logging in.'});
