@@ -2,6 +2,8 @@ import accountModel from "../models/account.model";
 import { Response, Request, NextFunction } from "express";
 import { getAuth } from "firebase-admin/auth";
 
+const FRONTEND_URL = process.env.FRONTEND_URL;
+
 function attachCsrfToken (url: string, cookie: string, value: string) {
     return function(req: Request, res: Response, next: NextFunction) {
         if (req.url === url) {
@@ -9,19 +11,6 @@ function attachCsrfToken (url: string, cookie: string, value: string) {
             console.log("Cookie created successfully");
         }
         next();
-    }
-}
-
-function checkLogin (url: string) {
-    return function (req: Request, res: Response, next: NextFunction) {
-        if (req.url === url) {
-            const sessionCookie = req.cookies.session || '';
-            getAuth().verifySessionCookie(sessionCookie).then((res) => {
-                res.redirect('/calendar');
-            }).catch((err) => {next()})
-        } else {
-            next();
-        }
     }
 }
 
@@ -55,7 +44,19 @@ async function loginHandler(req: Request, res: Response) {
 }
 
 async function logoutHandler(req: Request, res: Response) {
-
+    const sessionCookie = req.cookies.session || '';
+    console.log(sessionCookie);
+    res.clearCookie('session');
+    if (sessionCookie) {
+        getAuth().verifySessionCookie(sessionCookie, true).then((res) => {
+            getAuth().revokeRefreshTokens(res.sub);
+            return res.status(200).send("Logout successful")
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).json({error: 'An error occurred while logging out'})
+        })
+    }
 }
 
-export { attachCsrfToken, checkLogin, loginHandler, logoutHandler };
+export { attachCsrfToken, loginHandler, logoutHandler };
