@@ -29,7 +29,7 @@ firebaseAdmin.initializeApp({
   credential: applicationDefault()
 });
 
-import { attachCsrfToken, loginHandler, logoutHandler,  } from "./auth/handlers";
+import { loginHandler, logoutHandler,  } from "./auth/handlers";
 import organizationController from "./controllers/organization.controller";
 import accountController from "./controllers/account.controller";
 import approvalController from "./controllers/approval.controller";
@@ -38,7 +38,7 @@ import specialPtoController from "./controllers/specialPto.controller";
 import teamController from "./controllers/team.controller";
 
 // authentication 
-app.use(attachCsrfToken('/', 'csrfToken', (Math.floor(Math.random() * 1000000000000000)).toString()))
+//app.use(attachCsrfToken('/login', 'csrfToken', (Math.floor(Math.random() * 1000000000000000)).toString()))
 app.post("/login", loginHandler);
 app.post("/logout", logoutHandler);
 
