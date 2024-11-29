@@ -101,6 +101,7 @@ const getUserDetails = async (req: Request, res: Response): Promise<void> => {
       role: user.role,
       join_date: user.join_date,
       leave_date: user.leave_date || null,
+      language_preference: user.language_preference
     };
 
     res.status(200).json(responseData);
