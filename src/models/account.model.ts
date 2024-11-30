@@ -24,6 +24,7 @@ type userAccount = {
   is_admin: string;
   is_supervisor: string;
   remaining_pto: number;
+  language_preference: string;
 };
 
 class Account {
@@ -166,7 +167,8 @@ class Account {
             supervisor_id: Number(updates.supervisor_id),
             join_date: updates.join_date,
             role: updates.role,
-            team_id: updates.team_id
+            team_id: updates.team_id,
+            language_preference: updates.language_preference,
           };
           const cleanedAccUpdates = Account.patchObject(accountUpdates);
 
