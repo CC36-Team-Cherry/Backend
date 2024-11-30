@@ -61,8 +61,8 @@ async function main() {
     where: { email: "surferbro840@hotmail.com" },
     update: {},
     create: {
-      //id: 2,
-      auth_key: "0o5o0vscCuY4UWGyei4ohehzWWG3",
+      //id: 3,
+      auth_key: "MQXNz6U8lvR8Ys2r2VkqEybb3dX2",
       email: "surferbro840@hotmail.com",
       first_name: "Phil",
       last_name: "Cinna",
