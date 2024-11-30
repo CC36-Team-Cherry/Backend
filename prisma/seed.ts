@@ -180,7 +180,7 @@ async function main() {
   });
 
   const seedPhilPrivleges = await prisma.privileges.upsert({
-    where: { account_id: seedDavide.id },
+    where: { account_id: seedPhil.id },
     update: {},
     create: {
       account_id: seedPhil.id,
