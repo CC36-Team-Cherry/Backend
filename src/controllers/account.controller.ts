@@ -103,6 +103,7 @@ const getUserDetails = async (req: Request, res: Response): Promise<void> => {
       team_id: user.team_id,
       join_date: user.join_date,
       leave_date: user.leave_date || null,
+      last_login: user.last_login || null,
       language_preference: user.language_preference
     };
 
