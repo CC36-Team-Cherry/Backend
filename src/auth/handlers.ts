@@ -1,5 +1,6 @@
 import accountModel from "../models/account.model";
 import { Response, Request, NextFunction } from "express";
+import { auth } from "firebase-admin";
 import { getAuth } from "firebase-admin/auth";
 
 // function attachCsrfToken (url: string, cookie: string, value: string) {
@@ -33,7 +34,6 @@ async function loginHandler(req: Request, res: Response) {
             throw new Error("Unauthorized request");
             })
             .then((sessionCookie) => {
-                console.log("we got to this step");
                 const options = {maxAge: expiresIn, httpOnly: true, secure: true};
                 res.cookie('session', sessionCookie, options);
                 res.status(201).send(userAccount);
@@ -61,4 +61,62 @@ async function logoutHandler(req: Request, res: Response) {
     res.end();
 }
 
-export { loginHandler, logoutHandler };
+function authenticateUser(req: Request, res: Response, next: NextFunction) {
+    const sessionCookie = req.cookies.session || '';
+    getAuth().verifySessionCookie(sessionCookie, true).then((authenticatedCookie) => {
+        next();
+    })
+    .catch((err) => {
+        res.status(401).json({error: 'Unauthorized'});
+    })
+}
+
+function authenticateAdmin(req: Request, res: Response, next: NextFunction) {
+    const sessionCookie = req.cookies.session || '';
+    getAuth().verifySessionCookie(sessionCookie, true).then(async (authenticatedCookie) => {
+        const email = authenticatedCookie.email
+        if (email) {
+            const userAccount = await accountModel.getAccountByEmail(email);
+            if (userAccount?.Privileges?.is_admin) {
+                next();
+            }
+        }
+    })
+    .catch((err) => {
+        res.status(401).json({error: 'Unauthorized'});
+    })
+}
+
+function authenticateSupervisor(req: Request, res: Response, next: NextFunction) {
+    const sessionCookie = req.cookies.session || '';
+    getAuth().verifySessionCookie(sessionCookie, true).then(async (authenticatedCookie) => {
+        const email = authenticatedCookie.email
+        if (email) {
+            const userAccount = await accountModel.getAccountByEmail(email);
+            if (userAccount?.Privileges?.is_supervisor) {
+                next();
+            }
+        }
+    })
+    .catch((err) => {
+        res.status(401).json({error: 'Unauthorized'});
+    })
+}
+
+function authenticateAdminOrSupervisor(req: Request, res: Response, next: NextFunction) {
+    const sessionCookie = req.cookies.session || '';
+    getAuth().verifySessionCookie(sessionCookie, true).then(async (authenticatedCookie) => {
+        const email = authenticatedCookie.email
+        if (email) {
+            const userAccount = await accountModel.getAccountByEmail(email);
+            if (userAccount?.Privileges?.is_admin || userAccount?.Privileges?.is_supervisor) {
+                next();
+            }
+        }
+    })
+    .catch((err) => {
+        res.status(401).json({error: 'Unauthorized'});
+    })
+}
+
+export { loginHandler, logoutHandler, authenticateUser, authenticateAdmin, authenticateSupervisor };
