@@ -59,15 +59,15 @@ app.post("/accounts/:accountId/attendance/", attendanceController.addAttendance)
 app.put("/accounts/:accountId/attendance/:attendanceId", attendanceController.editAttendance); // edit attendance record
 
 // // approvals and supervisors 
-app.get("/accounts/:accountId/approvals", approvalController.getAccountApprovals); // get all approvals related to that id 
+app.get("/accounts/:accountId/approvals/", approvalController.getAccountApprovals); // get all approvals related to that id 
 app.get("/approvals/:supervisorId", approvalController.getApproveeCalendars); // get all approvals and calendars of users that have set approver as this account
 app.get("/supervisors/", approvalController.getSupervisors); // get all approvals related to that id 
 app.post("/approvals/monthAttendance/", approvalController.submitMonthlyAttendance); // add new approval for monthly attendance
-// app.post("/approvals/pto/", approvalController.submitPto); // add new approval for PTO
+app.post("/approvals/pto/", approvalController.submitPto); // add new approval for PTO
 // app.post("/approvals/specialPto/", approvalController.submitSpecialPto); // add new approval for special PTO
-app.patch("/approvals/:approvalId", approvalController.editApprovalStatus); // changes to an approval item status
-app.patch("/approvals/:approvalId/remind", approvalController.updateApprovalRemind); // changes to reminder of approval
-app.delete("/approvals/:approvalId", approvalController.deleteApproval); // delete approval
+app.patch("/approvals/:requestType/:approvalId", approvalController.editApprovalStatus); // changes to an approval item status
+app.patch("/approvals/:requestType/:approvalId/remind", approvalController.updateApprovalRemind); // changes to reminder of approval
+app.delete("/approvals/:requestType/:approvalId", approvalController.deleteApproval); // delete approval
 
 // // team management and calendar view
 app.get("/organizations/:organizationId/teams", teamController.getTeams); // get list of all teams
