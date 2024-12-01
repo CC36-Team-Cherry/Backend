@@ -51,7 +51,7 @@ app.patch("/organizations/:organizationId", organizationController.editOrganizat
 app.delete("/organizations/:organizationId", organizationController.deleteOrganization); // edit organization name
 
 // organization account management
-app.get("/accounts/:companyId", authenticateSupervisor, accountController.getAccounts); // get all accounts to show in employee list
+app.get("/accounts/:companyId", authenticateUser, accountController.getAccounts); // get all accounts to show in employee list
 app.post("/accounts", accountController.addAccount); // add an employee account
 app.patch("/accounts/:accountId", accountController.updateAccount); // edit account data
 app.delete("/accounts/:accountId", accountController.deleteAccount); // delete an account
