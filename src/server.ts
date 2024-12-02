@@ -26,7 +26,11 @@ app.set("trust proxy", 1);
 
 // Set up Firebase Admin SDK
 firebaseAdmin.initializeApp({
-  credential: applicationDefault()
+  credential: firebaseAdmin.credential.cert({
+    "projectId": process.env.FIREBASE_PROJECT_ID,
+    "privateKey": process.env.FIREBASE_PRIVATE_KEY,
+    "clientEmail": process.env.FIREBASE_CLIENT_EMAIL,
+  })
 });
 
 import { loginHandler, logoutHandler, authenticateUser, authenticateAdmin, authenticateSupervisor } from "./auth/handlers";
