@@ -77,9 +77,9 @@ app.delete("/approvals/:requestType/:approvalId", authenticateUser, approvalCont
 
 // // team management and calendar view
 app.get("/organizations/:organizationId/teams", authenticateUser, teamController.getTeams); // get list of all teams (ALL USERS)
-app.post("/organizations/:organizationId/teams", authenticateAdmin, teamController.addTeam); // add new team (ONLY ADMIN) 
-app.patch("/teams/:teamId", authenticateAdmin, teamController.editTeam); // edit a team name (ONLY ADMIN)
-app.delete("/teams/:teamId", authenticateAdmin, teamController.deleteTeam); // delete a team (ONLY ADMIN)
+app.post("/organizations/:organizationId/teams", authenticateAdmin, teamController.addTeam); // add new team (ADMIN ONLY) 
+app.patch("/teams/:teamId", authenticateAdmin, teamController.editTeam); // edit a team name (ADMIN ONLY)
+app.delete("/teams/:teamId", authenticateAdmin, teamController.deleteTeam); // delete a team (ADMIN ONLY)
 
 // // special PTO data management
 app.get("/accounts/:accountId/specialPto", authenticateUser, specialPtoController.getSpecialPto); // view special PTO for that account (ALL USERS)
