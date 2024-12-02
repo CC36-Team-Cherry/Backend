@@ -7,17 +7,71 @@ const getAccountApprovals = async (req : any, res : any) => {
   try {
     const accountId = parseInt(req.params.accountId);
 
-    // TODO: Join tables for one query
-    const approvalsSentMonthly = await approvalModel.getApprovalsSentMonthly(accountId);
+    // Return all general, pto, special pto sent
+    const approvalsSent : any = await approvalModel.getApprovalsSent(accountId) || [];
+    const approvalsReceived : any = await approvalModel.getApprovalsReceived(accountId) || [];
 
-    // const approvalsSentPto = await approvalModel.getApprovalsSentPto(accountId);
-    // const approvalsSentSpecialPto = await approvalModel.getApprovalsSentSpecialPto(accountId);
+    const approvalsSentData = [
+      ...approvalsSent.monthlyRequests.map((sentApproval: any) => ({
+        id: sentApproval.id,
+        supervisorName: `${sentApproval.supervisor.first_name} ${sentApproval.supervisor.last_name}`,
+        type: `Month Attendance Request`,
+        memo: sentApproval.content,
+        status: sentApproval.status,
+        date:  `${sentApproval.month} / ${sentApproval.year}`,
+        updated_at: sentApproval.updated_at,
+      })) || [],
+      ...approvalsSent.ptoRequests.map((sentApproval: any) => ({
+        id: sentApproval.id, 
+        supervisorName: `${sentApproval.supervisor.first_name} ${sentApproval.supervisor.last_name}`,
+        type: sentApproval.full_day ? `PTO Request` : `Half PTO Request`,  // Conditionally set type
+        memo: sentApproval.content,
+        status: sentApproval.status,
+        date: sentApproval.day,
+        updated_at: sentApproval.updated_at,
+      })) || [],
+      ...approvalsSent.specialPTORequests.map((sentApproval: any) => ({
+        id: sentApproval.id, 
+        supervisorName: `${sentApproval.supervisor.first_name} ${sentApproval.supervisor.last_name}`,
+        type: `Special PTO Request`,
+        memo: sentApproval.content,
+        status: sentApproval.status,
+        date: sentApproval.day,
+        updated_at: sentApproval.updated_at,
+      })) || []
+    ]
+    
+    const approvalsReceivedData = [
+      ...approvalsReceived.monthlyRequests.map((receivedApproval: any) => ({
+        id: receivedApproval.id,
+        employeeName: `${receivedApproval.account.first_name} ${receivedApproval.account.last_name}`,
+        type: `Month Attendance Request`,
+        memo: receivedApproval.content,
+        status: receivedApproval.status,
+        date: `${receivedApproval.month} / ${receivedApproval.year}`,  // Format date as MM / YYYY
+        updated_at: receivedApproval.updated_at,
+      })) || [],
+      ...approvalsReceived.ptoRequests.map((receivedApproval: any) => ({
+        id: receivedApproval.id,
+        employeeName: `${receivedApproval.account.first_name} ${receivedApproval.account.last_name}`,
+        type: receivedApproval.full_day ? `PTO Request` : `Half PTO Request`,  // Conditionally set type
+        memo: receivedApproval.content,
+        status: receivedApproval.status,
+        date: receivedApproval.day,
+        updated_at: receivedApproval.updated_at,
+      })) || [],
+      ...approvalsReceived.specialPTORequests.map((receivedApproval: any) => ({
+        id: receivedApproval.id,
+        employeeName: `${receivedApproval.account.first_name} ${receivedApproval.account.last_name}`,
+        type: `Special PTO Request`,
+        memo: receivedApproval.content,
+        status: receivedApproval.status,
+        date: receivedApproval.day,
+        updated_at: receivedApproval.updated_at,
+      })) || []
+    ];
 
-    // TODO: Join tables for one query
-    const approvalsRequestedMonthly = await approvalModel.getApprovalsRequestedMonthly(accountId);
-
-    console.log(approvalsSentMonthly, approvalsRequestedMonthly);
-    res.status(200).json({approvalsSentMonthly, approvalsRequestedMonthly});
+    res.status(200).json({approvalsSentData, approvalsReceivedData});
 
   } catch (err) {
     console.error(err);
@@ -55,9 +109,17 @@ const submitMonthlyAttendance = async (req : any, res : any) => {
 };
 
 // // add new approval for PTO
-// const submitPto = async (req, res) => {
-
-// };
+const submitPto = async (req : any, res : any) => {
+  try {
+    console.log("submit pto controller: ", req.body)
+    const ptoApproval = req.body;
+    const ptoApprovalAdded = await approvalModel.addPtoApproval(ptoApproval);
+    res.status(200).json(ptoApprovalAdded);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({error: 'An error occured when editing approval status.'})
+  }
+};
 
 // // add new approval for special PTO
 // const submitSpecialPto = async (req, res) => {
@@ -70,7 +132,9 @@ const editApprovalStatus = async (req : any, res : any) => {
   try {
     const approvalId = parseInt(req.params.approvalId);
     const updatedStatus = req.body.statusChange
-    const approvalStatusUpdated = await approvalModel.updateApprovalStatus(approvalId, updatedStatus);
+    const requestType = parseInt(req.params.requestType);
+
+    const approvalStatusUpdated = await approvalModel.updateApprovalStatus(approvalId, updatedStatus, requestType);
     res.status(200).json(approvalStatusUpdated);
   } catch (err) {
     console.error(err);
@@ -81,9 +145,10 @@ const editApprovalStatus = async (req : any, res : any) => {
 const updateApprovalRemind = async (req : any, res: any) => {
   try {
     const approvalId = parseInt(req.params.approvalId);
-    console.log(req.body)
+    const requestType = parseInt(req.params.requestType);
+
     const updatedReminder = req.body.newMessage;
-    const updateApprovalReminder = await approvalModel.updateApprovalRemind(approvalId, updatedReminder);
+    const updateApprovalReminder = await approvalModel.updateApprovalRemind(approvalId, updatedReminder, requestType);
     res.status(200).json(updateApprovalReminder)
   } catch (err) {
     console.error(err);
@@ -95,7 +160,9 @@ const updateApprovalRemind = async (req : any, res: any) => {
 const deleteApproval = async (req : any, res : any) => {
   try {
     const approvalId = parseInt(req.params.approvalId);
-    const deletedApproval = await approvalModel.deleteApproval(approvalId);
+    const requestType = parseInt(req.params.requestType);
+
+    const deletedApproval = await approvalModel.deleteApproval(approvalId, requestType);
     res.status(200).json(deletedApproval);
   } catch (err) {
     console.error(err);
@@ -138,4 +205,4 @@ const getApproveeCalendars = async (req: any, res: any) => {
   }
 }
 
-export default { getAccountApprovals, editApprovalStatus, updateApprovalRemind, deleteApproval, getSupervisors, submitMonthlyAttendance, getApproveeCalendars };
+export default { getAccountApprovals, editApprovalStatus, updateApprovalRemind, deleteApproval, getSupervisors, submitMonthlyAttendance, getApproveeCalendars, submitPto };

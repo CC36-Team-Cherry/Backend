@@ -4,41 +4,130 @@ const prisma = new PrismaClient();
 class Approval {
     constructor() {}
 
-    static getApprovalsSentMonthly(accountId : any) {
+    static getApprovalsSent(accountId : any) {
         try {
-            return prisma.monthlyRequest.findMany({
+            return prisma.account.findUnique({
                 where: {
-                    account_id: accountId,
-                },
+                    id: accountId, 
+                }, 
                 include: {
-                    supervisor: {
-                        select: {
-                            first_name: true,
-                            last_name:true,
-                        }
-                    }
+                    ptoRequests: {
+                    where: { account_id: accountId },
+                    select: {
+                        id: true, 
+                        supervisor: { select: { first_name: true, last_name: true}},
+                        content: true, 
+                        status: true, 
+                        day: true,
+                        updated_at: true,
+                        all_day: true,
+                        hour_start: true,
+                        hour_end: true,
+                    },
+                },
+                specialPTORequests: {
+                    where: { account_id: accountId }, 
+                    select: {
+                        id: true, 
+                        supervisor: { select: { first_name: true, last_name: true}},
+                        content: true, 
+                        status: true, 
+                        day: true, 
+                        updated_at: true,
+                        type: true,
+                    },
+                }, 
+                monthlyRequests: {
+                    where: { account_id: accountId },  
+                    select: {
+                        id: true,
+                        supervisor: { select: { first_name: true, last_name: true}},
+                        content: true,
+                        status: true, 
+                        month: true,
+                        year: true,
+                        updated_at: true,
+                    },
                 }
-            });
+            }
+        })  
+
         } catch(err) {
             console.error("Error fetching approvals sent:", err)
         }
     }  
     
-    static getApprovalsRequestedMonthly(accountId : any) {
+    static async getApprovalsReceived(accountId : any) {
         try {
-            return prisma.monthlyRequest.findMany({
-                where: {
-                    supervisor_id: accountId,
-                },
+
+            const monthlyRequests = await prisma.monthlyRequest.findMany({
+                where: { supervisor_id: accountId }, 
                 include: {
-                    account: {
-                        select: {
-                            first_name: true, 
-                            last_name: true,
-                        }
-                    }
+                    account: {select: {first_name: true, last_name: true}}
                 }
             })
+
+            const ptoRequests = await prisma.pTORequest.findMany({
+                where: { supervisor_id: accountId }, 
+                include: {
+                    account: {select: {first_name: true, last_name: true}}
+                }
+            })
+
+            const specialPTORequests = await prisma.specialPTORequest.findMany({
+                where: { supervisor_id: accountId }, 
+                include: {
+                    account: {select: {first_name: true, last_name: true}}
+                }
+            })
+
+            // return prisma.account.findUnique({
+            //     where: {
+            //         id: accountId, 
+            //     }, 
+            //     include: {
+            //         ptoRequests: {
+            //         where: { supervisor_id: accountId },
+                    // select: {
+                    //     id: true, 
+                    //     account: { select: { first_name: true, last_name: true}},
+                    //     content: true, 
+                    //     status: true, 
+                    //     day: true,
+                    //     updated_at: true,
+                    //     all_day: true,
+                    //     hour_start: true,
+                    //     hour_end: true,
+                //     },
+                // },
+                // specialPTORequests: {
+                //     where: { supervisor_id: accountId }, 
+                //     select: {
+                //         id: true, 
+                //         account: { select: { first_name: true, last_name: true}},
+                //         content: true, 
+                //         status: true, 
+                //         day: true, 
+                //         updated_at: true,
+                //         type: true,
+                //     },
+                // }, 
+                // monthlyRequests: {
+                //     where: { supervisor_id: accountId },  
+                //     select: {
+                //         id: true,
+                //         account: { select: { first_name: true, last_name: true}},
+                //         content: true,
+                //         status: true, 
+                //         month: true,
+                //         year: true,
+                //         updated_at: true,
+                //     },
+                // }
+            // }
+
+            return { ptoRequests, specialPTORequests, monthlyRequests }
+
         } catch(err) {
             console.error("Error fetching approvals requested:", err)
         }
@@ -54,45 +143,89 @@ class Approval {
         }
     }
     
-    static updateApprovalStatus(approvalId : any, updatedStatus : any) {
+    static async updateApprovalStatus(approvalId : any, updatedStatus : any, requestType : any) {
         try {
-            return prisma.monthlyRequest.update({
-                where: {
-                    id: approvalId,
-                }, 
-                data: {
-                    status: updatedStatus,
-                }
-            })
+
+            if (requestType === 'PTO Request' || 'Half PTO Request') {
+                // Update a PTO Request by ID
+                return await prisma.pTORequest.update({
+                    where: { id: approvalId },
+                    data: { status: updatedStatus },
+                });
+              } else if (requestType === 'Special PTO Request') {
+                // Update a Special PTO Request by ID
+                return await prisma.specialPTORequest.update({
+                    where: { id: approvalId },
+                    data: { status: updatedStatus },
+                });
+              } else if (requestType === 'Month Attendance Request') {
+                // DelUpdateete a Monthly Attendance Request by ID
+                return await prisma.monthlyRequest.update({
+                    where: { id: approvalId },
+                    data: { status: updatedStatus },
+                });
+            }   
+
         } catch(err) {
             console.error("Error fetching approvals requested:", err)
         }
     }   
 
-    static updateApprovalRemind(approvalId : any, updatedReminder : any) {
+    static async updateApprovalRemind(approvalId : any, updatedReminder : any, requestType : any) {
         try {
-            return prisma.monthlyRequest.update({
-                where: {
-                    id: approvalId,
-                }, 
-                data: {
-                    content: updatedReminder,
-                    updated_at: new Date().toISOString(),
-                }
-            })
+
+            if (requestType === 'PTO Request' || 'Half PTO Request') {
+                // Update a PTO Request by ID
+                return await prisma.pTORequest.update({
+                    where: { id: approvalId },
+                    data: {
+                        content: updatedReminder,
+                        updated_at: new Date().toISOString(),
+                    }
+                });
+              } else if (requestType === 'Special PTO Request') {
+                // Update a Special PTO Request by ID
+                return await prisma.specialPTORequest.update({
+                    where: { id: approvalId },
+                    data: {
+                        content: updatedReminder,
+                        updated_at: new Date().toISOString(),
+                    }
+                });
+              } else if (requestType === 'Month Attendance Request') {
+                // DelUpdateete a Monthly Attendance Request by ID
+                return await prisma.monthlyRequest.update({
+                    where: { id: approvalId },
+                    data: {
+                        content: updatedReminder,
+                        updated_at: new Date().toISOString(),
+                    }
+                });
+            }   
         } catch(err) {
             console.error("Error fetching approvals requested:", err)
         }
     }   
     
-    static deleteApproval(approvalId : any) {
+    static async deleteApproval(approvalId : any, requestType : any) {
         try {
-            return prisma.monthlyRequest.delete({
-                where: {
-                    id: approvalId,
+            if (requestType === 'PTO Request' || 'Half PTO Request') {
+                // Delete a PTO Request by ID
+                return await prisma.pTORequest.delete({
+                  where: { id: approvalId },
+                });
+              } else if (requestType === 'Special PTO Request') {
+                // Delete a Special PTO Request by ID
+                return await prisma.specialPTORequest.delete({
+                  where: { id: approvalId },
+                });
+              } else if (requestType === 'Month Attendance Request') {
+                // Delete a Monthly Attendance Request by ID
+                return await prisma.monthlyRequest.delete({
+                  where: { id: approvalId },
+                });
                 }
-            })
-        } catch(err) {
+        } catch (err) {
             console.error("Error deleting approval:", err)
         }
     } 
@@ -128,6 +261,16 @@ class Approval {
         }
       }
 
+    static addPtoApproval(ptoApproval : any) {
+        try {
+            return prisma.pTORequest.create({
+                data: ptoApproval
+            })
+        } catch (err) {
+            console.error("Error adding pto approval: ", err);
+        }
+    }
+
     static getSupervisors() {
         try {
             return prisma.account.findMany({
@@ -142,7 +285,7 @@ class Approval {
             })
             
         } catch(err) {
-            console.error("Error when fetching supervisors");
+            console.error("Error when fetching supervisors: ", err);
         }
     }
 
