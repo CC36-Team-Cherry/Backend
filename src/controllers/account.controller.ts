@@ -101,6 +101,7 @@ const getUserDetails = async (req: Request, res: Response): Promise<void> => {
       is_admin: user.Privileges?.is_admin || false,
       is_supervisor: user.Privileges?.is_supervisor || false,
       supervisor: user.supervisor || null,
+      supervisor_id: user.supervisor_id || null,
       company_id: user.company_id,
       role: user.role,
       team_id: user.team_id,
