@@ -71,7 +71,7 @@ app.get("/approvals/:supervisorId", authenticateUser, approvalController.getAppr
 app.get("/supervisors/", authenticateUser, approvalController.getSupervisors); // get all approvals related to that id  (ALL USERS)
 app.post("/approvals/monthAttendance/", authenticateUser, approvalController.submitMonthlyAttendance); // add new approval for monthly attendance (ALL USERS)
 app.post("/approvals/pto/", authenticateUser, approvalController.submitPto); // add new approval for PTO (ALL USERS)
-// app.post("/approvals/specialPto/", approvalController.submitSpecialPto); // add new approval for special PTO
+app.post("/approvals/specialPto/", authenticateUser, approvalController.submitSpecialPto); // add new approval for special PTO
 app.patch("/approvals/:requestType/:approvalId", authenticateSupervisor, approvalController.editApprovalStatus); // changes to an approval item status (ALL USERS)
 app.patch("/approvals/:requestType/:approvalId/remind", authenticateUser, approvalController.updateApprovalRemind); // changes to reminder of approval (ALL USERS)
 app.delete("/approvals/:requestType/:approvalId", authenticateUser, approvalController.deleteApproval); // delete approval (ALL USERS)
