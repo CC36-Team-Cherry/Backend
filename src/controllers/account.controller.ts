@@ -41,6 +41,9 @@ const updateAccount = async (req: Request, res: Response) => {
   try {
     const accountId = Number(req.params.accountId);
     const editAccountData = req.body;
+
+    //TODO: add validation, only admins are able to edit the user info of other accounts
+
     const editAccount = await accountModel.updateAccount(accountId, editAccountData);
     //If the email address is being updated, the below will update the address in Firebase
     if (req.body.email) {

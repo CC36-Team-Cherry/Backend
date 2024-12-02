@@ -46,24 +46,24 @@ import teamController from "./controllers/team.controller";
 app.post("/login", loginHandler);
 app.post("/logout", logoutHandler);
 
-app.get("/accounts/:accountId/details", accountController.getUserDetails);
+app.get("/accounts/:accountId/details", authenticateUser, accountController.getUserDetails);
 
 // registration and organization management
-app.get("/organizations/:organizationId", organizationController.getOrganization); // get name of organization
-app.post("/registration", organizationController.initialRegistration); // add admin account and organization 
-app.patch("/organizations/:organizationId", organizationController.editOrganization); // edit organization name
-app.delete("/organizations/:organizationId", organizationController.deleteOrganization); // edit organization name
+app.get("/organizations/:organizationId", authenticateUser, organizationController.getOrganization); // get name of organization (ALL USERS)
+app.post("/registration", authenticateAdmin, organizationController.initialRegistration); // add admin account and organization (ADMIN ONLY)
+app.patch("/organizations/:organizationId", authenticateAdmin, organizationController.editOrganization); // edit organization name (ADMIN ONLY)
+app.delete("/organizations/:organizationId", authenticateAdmin, organizationController.deleteOrganization); // delete organization (ADMIN ONLY)
 
 // organization account management
-app.get("/accounts/:companyId", authenticateUser, accountController.getAccounts); // get all accounts to show in employee list
-app.post("/accounts", accountController.addAccount); // add an employee account
-app.patch("/accounts/:accountId", accountController.updateAccount); // edit account data
-app.delete("/accounts/:accountId", accountController.deleteAccount); // delete an account
+app.get("/accounts/:companyId", authenticateUser, accountController.getAccounts); // get all accounts to show in employee list (ALL USERS)
+app.post("/accounts", authenticateAdmin, accountController.addAccount); // add an employee account (ADMIN ONLY)
+app.patch("/accounts/:accountId", authenticateUser, accountController.updateAccount); // edit account data (ALL USERS)
+app.delete("/accounts/:accountId", authenticateAdmin, accountController.deleteAccount); // delete an account (ADMIN ONLY)
 
 // // attendance logging
-app.get("/accounts/:accountId/attendance/", attendanceController.getAttendance); // get all attendance records to populate calendar for one user
-app.post("/accounts/:accountId/attendance/", attendanceController.addAttendance); // add attendance record
-app.put("/accounts/:accountId/attendance/:attendanceId", attendanceController.editAttendance); // edit attendance record
+app.get("/accounts/:accountId/attendance/", authenticateUser, attendanceController.getAttendance); // get all attendance records to populate calendar for one user (ALL USERS)
+app.post("/accounts/:accountId/attendance/", authenticateUser, attendanceController.addAttendance); // add attendance record (ALL USERS)
+app.put("/accounts/:accountId/attendance/:attendanceId", authenticateUser, attendanceController.editAttendance); // edit attendance record (ALL USERS)
 
 // // approvals and supervisors 
 app.get("/accounts/:accountId/approvals/", approvalController.getAccountApprovals); // get all approvals related to that id 
