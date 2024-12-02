@@ -42,7 +42,6 @@ import specialPtoController from "./controllers/specialPto.controller";
 import teamController from "./controllers/team.controller";
 
 // authentication 
-//app.use(attachCsrfToken('/login', 'csrfToken', (Math.floor(Math.random() * 1000000000000000)).toString()))
 app.post("/login", loginHandler);
 app.post("/logout", logoutHandler);
 
@@ -50,7 +49,7 @@ app.get("/accounts/:accountId/details", authenticateUser, accountController.getU
 
 // registration and organization management
 app.get("/organizations/:organizationId", authenticateUser, organizationController.getOrganization); // get name of organization (ALL USERS)
-app.post("/registration", authenticateAdmin, organizationController.initialRegistration); // add admin account and organization (ADMIN ONLY)
+app.post("/registration", organizationController.initialRegistration); // add admin account and organization (NO AUTH)
 app.patch("/organizations/:organizationId", authenticateAdmin, organizationController.editOrganization); // edit organization name (ADMIN ONLY)
 app.delete("/organizations/:organizationId", authenticateAdmin, organizationController.deleteOrganization); // delete organization (ADMIN ONLY)
 
