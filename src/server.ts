@@ -66,27 +66,27 @@ app.post("/accounts/:accountId/attendance/", authenticateUser, attendanceControl
 app.put("/accounts/:accountId/attendance/:attendanceId", authenticateUser, attendanceController.editAttendance); // edit attendance record (ALL USERS)
 
 // // approvals and supervisors 
-app.get("/accounts/:accountId/approvals/", approvalController.getAccountApprovals); // get all approvals related to that id 
-app.get("/approvals/:supervisorId", approvalController.getApproveeCalendars); // get all approvals and calendars of users that have set approver as this account
-app.get("/supervisors/", approvalController.getSupervisors); // get all approvals related to that id 
-app.post("/approvals/monthAttendance/", approvalController.submitMonthlyAttendance); // add new approval for monthly attendance
-app.post("/approvals/pto/", approvalController.submitPto); // add new approval for PTO
+app.get("/accounts/:accountId/approvals/", authenticateUser, approvalController.getAccountApprovals); // get all approvals related to that id (ALL USERS)
+app.get("/approvals/:supervisorId", authenticateUser, approvalController.getApproveeCalendars); // get all approvals and calendars of users that have set approver as this account (ALL USERS)
+app.get("/supervisors/", authenticateUser, approvalController.getSupervisors); // get all approvals related to that id  (ALL USERS)
+app.post("/approvals/monthAttendance/", authenticateUser, approvalController.submitMonthlyAttendance); // add new approval for monthly attendance (ALL USERS)
+app.post("/approvals/pto/", authenticateUser, approvalController.submitPto); // add new approval for PTO (ALL USERS)
 // app.post("/approvals/specialPto/", approvalController.submitSpecialPto); // add new approval for special PTO
-app.patch("/approvals/:requestType/:approvalId", approvalController.editApprovalStatus); // changes to an approval item status
-app.patch("/approvals/:requestType/:approvalId/remind", approvalController.updateApprovalRemind); // changes to reminder of approval
-app.delete("/approvals/:requestType/:approvalId", approvalController.deleteApproval); // delete approval
+app.patch("/approvals/:requestType/:approvalId", authenticateSupervisor, approvalController.editApprovalStatus); // changes to an approval item status (ALL USERS)
+app.patch("/approvals/:requestType/:approvalId/remind", authenticateUser, approvalController.updateApprovalRemind); // changes to reminder of approval (ALL USERS)
+app.delete("/approvals/:requestType/:approvalId", authenticateUser, approvalController.deleteApproval); // delete approval (ALL USERS)
 
 // // team management and calendar view
-app.get("/organizations/:organizationId/teams", teamController.getTeams); // get list of all teams
-app.post("/organizations/:organizationId/teams", teamController.addTeam); // add new team 
-app.patch("/teams/:teamId", teamController.editTeam); // edit a team name
-app.delete("/teams/:teamId", teamController.deleteTeam); // delete a team
+app.get("/organizations/:organizationId/teams", authenticateUser, teamController.getTeams); // get list of all teams (ALL USERS)
+app.post("/organizations/:organizationId/teams", authenticateAdmin, teamController.addTeam); // add new team (ONLY ADMIN) 
+app.patch("/teams/:teamId", authenticateAdmin, teamController.editTeam); // edit a team name (ONLY ADMIN)
+app.delete("/teams/:teamId", authenticateAdmin, teamController.deleteTeam); // delete a team (ONLY ADMIN)
 
 // // special PTO data management
-app.get("/accounts/:accountId/specialPto", specialPtoController.getSpecialPto); // view special PTO for that account
-app.post("/accounts/:accountId/specialPto", specialPtoController.addSpecialPto); // add special PTO
-app.patch("/specialPto/:specialPtoId", specialPtoController.editSpecialPto); // edit special PTO type
-app.delete("/specialPto/:specialPtoId", specialPtoController.deleteSpecialPto); // delete special PTO
+app.get("/accounts/:accountId/specialPto", authenticateUser, specialPtoController.getSpecialPto); // view special PTO for that account (ALL USERS)
+app.post("/accounts/:accountId/specialPto", authenticateUser, specialPtoController.addSpecialPto); // add special PTO (ALL USERS)
+app.patch("/specialPto/:specialPtoId", authenticateUser, specialPtoController.editSpecialPto); // edit special PTO type (ALL USERS)
+app.delete("/specialPto/:specialPtoId", authenticateUser, specialPtoController.deleteSpecialPto); // delete special PTO (ALL USERS)
 
 // Server validation
 app.get("/", (req, res) => {res.send("Hello from homepage")});
