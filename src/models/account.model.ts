@@ -1,13 +1,13 @@
 import { PrismaClient } from "@prisma/client";
-import { applicationDefault } from "firebase-admin/app";
+//import { applicationDefault } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 const prisma = new PrismaClient();
 
 // Set up Firebase Admin SDK
-var firebaseAdmin = require("firebase-admin");
-firebaseAdmin.initializeApp({
-  credential: applicationDefault()
-});
+// var firebaseAdmin = require("firebase-admin");
+// firebaseAdmin.initializeApp({
+//   credential: applicationDefault()
+// });
 
 type userAccount = {
   email: string;
