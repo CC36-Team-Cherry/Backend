@@ -1,6 +1,9 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import firebaseAdmin from "firebase-admin";
+import cookieParser from "cookie-parser";
+import { applicationDefault } from "firebase-admin/app";
 const app = express();
 
 // Load environment variables 
@@ -10,6 +13,7 @@ const PORT = process.env.PORT || 3000;
 const FRONTEND_URL = process.env.FRONTEND_URL;
 
 // Middleware
+app.use(cookieParser());
 app.use(express.json());
 app.use(cors(
     {
@@ -21,13 +25,11 @@ app.use(cors(
 app.set("trust proxy", 1);
 
 // Set up Firebase Admin SDK
-// var firebaseAdmin = require("firebase-admin");
-// firebaseAdmin.initializeApp({
-//   credential: applicationDefault()
-// });
-// export { firebaseAdmin }
+firebaseAdmin.initializeApp({
+  credential: applicationDefault()
+});
 
-import { loginHandler, logoutHandler } from "./auth/handlers";
+import { loginHandler, logoutHandler, authenticateUser, authenticateAdmin, authenticateSupervisor } from "./auth/handlers";
 import organizationController from "./controllers/organization.controller";
 import accountController from "./controllers/account.controller";
 import approvalController from "./controllers/approval.controller";
@@ -36,8 +38,9 @@ import specialPtoController from "./controllers/specialPto.controller";
 import teamController from "./controllers/team.controller";
 
 // authentication 
+//app.use(attachCsrfToken('/login', 'csrfToken', (Math.floor(Math.random() * 1000000000000000)).toString()))
 app.post("/login", loginHandler);
-//app.post("/logout", logoutHandler);
+app.post("/logout", logoutHandler);
 
 app.get("/accounts/:accountId/details", accountController.getUserDetails);
 
@@ -48,7 +51,7 @@ app.patch("/organizations/:organizationId", organizationController.editOrganizat
 app.delete("/organizations/:organizationId", organizationController.deleteOrganization); // edit organization name
 
 // organization account management
-app.get("/accounts/:companyId", accountController.getAccounts); // get all accounts to show in employee list
+app.get("/accounts/:companyId", authenticateUser, accountController.getAccounts); // get all accounts to show in employee list
 app.post("/accounts", accountController.addAccount); // add an employee account
 app.patch("/accounts/:accountId", accountController.updateAccount); // edit account data
 app.delete("/accounts/:accountId", accountController.deleteAccount); // delete an account

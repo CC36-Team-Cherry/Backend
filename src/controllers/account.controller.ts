@@ -94,13 +94,16 @@ const getUserDetails = async (req: Request, res: Response): Promise<void> => {
       first_name: user.first_name,
       last_name: user.last_name,
       email: user.email,
+      birthdate: user.birthdate,
       is_admin: user.Privileges?.is_admin || false,
       is_supervisor: user.Privileges?.is_supervisor || false,
       supervisor: user.supervisor || null,
       company_id: user.company_id,
       role: user.role,
+      team_id: user.team_id,
       join_date: user.join_date,
       leave_date: user.leave_date || null,
+      last_login: user.last_login || null,
       language_preference: user.language_preference
     };
 

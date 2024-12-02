@@ -1,13 +1,13 @@
 import { PrismaClient } from "@prisma/client";
-import { applicationDefault } from "firebase-admin/app";
+//import { applicationDefault } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 const prisma = new PrismaClient();
 
 // Set up Firebase Admin SDK
-var firebaseAdmin = require("firebase-admin");
-firebaseAdmin.initializeApp({
-  credential: applicationDefault()
-});
+// var firebaseAdmin = require("firebase-admin");
+// firebaseAdmin.initializeApp({
+//   credential: applicationDefault()
+// });
 
 type userAccount = {
   email: string;
@@ -19,11 +19,13 @@ type userAccount = {
   company_id: number;
   join_date: Date;
   leave_date?: Date;
+  last_login?: Date;
   role: string;
   team_id?: number;
   is_admin: string;
   is_supervisor: string;
   remaining_pto: number;
+  language_preference: string;
 };
 
 class Account {
@@ -157,7 +159,7 @@ class Account {
     try {
       const result = await prisma.$transaction(async (prisma) => {
         //updates account if needed
-        if (updates.email || updates.first_name || updates.last_name || updates.birthdate || updates.supervisor_id || updates.join_date || updates.role) {
+        if (updates.email || updates.first_name || updates.last_name || updates.birthdate || updates.supervisor_id || updates.join_date || updates.leave_date || updates.role || updates.last_login) {
           const accountUpdates = {
             email: updates.email,
             first_name: updates.first_name,
@@ -165,8 +167,11 @@ class Account {
             birthdate: updates.birthdate ? new Date(updates.birthdate) : null,
             supervisor_id: Number(updates.supervisor_id),
             join_date: updates.join_date,
+            leave_date: updates.leave_date,
+            last_login: updates.last_login,
             role: updates.role,
-            team_id: updates.team_id
+            team_id: updates.team_id,
+            language_preference: updates.language_preference,
           };
           const cleanedAccUpdates = Account.patchObject(accountUpdates);
 
