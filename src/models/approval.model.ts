@@ -150,19 +150,28 @@ class Approval {
                 // Update a PTO Request by ID
                 return await prisma.pTORequest.update({
                     where: { id: approvalId },
-                    data: { status: updatedStatus },
+                    data: { 
+                        status: updatedStatus,
+                        updated_at: new Date().toISOString(),
+                    },
                 });
               } else if (requestType === 'Special PTO Request') {
                 // Update a Special PTO Request by ID
                 return await prisma.specialPTORequest.update({
                     where: { id: approvalId },
-                    data: { status: updatedStatus },
+                    data: { 
+                        status: updatedStatus,
+                        updated_at: new Date().toISOString(),
+                    },
                 });
               } else if (requestType === 'Month Attendance Request') {
                 // DelUpdateete a Monthly Attendance Request by ID
                 return await prisma.monthlyRequest.update({
                     where: { id: approvalId },
-                    data: { status: updatedStatus },
+                    data: { 
+                        status: updatedStatus,
+                        updated_at: new Date().toISOString(),
+                    },
                 });
             }   
 
