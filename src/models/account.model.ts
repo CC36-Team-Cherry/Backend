@@ -159,7 +159,7 @@ class Account {
     try {
       const result = await prisma.$transaction(async (prisma) => {
         //updates account if needed
-        if (updates.email || updates.first_name || updates.last_name || updates.birthdate || updates.supervisor_id || updates.join_date || updates.leave_date || updates.role || updates.last_login) {
+        if (updates.email || updates.first_name || updates.last_name || updates.birthdate || updates.supervisor_id || updates.join_date || updates.leave_date || updates.role || updates.last_login || updates.team_id) {
           const accountUpdates = {
             email: updates.email,
             first_name: updates.first_name,
@@ -170,7 +170,7 @@ class Account {
             leave_date: updates.leave_date,
             last_login: updates.last_login,
             role: updates.role,
-            team_id: updates.team_id,
+            team_id: Number(updates.team_id),
             language_preference: updates.language_preference,
           };
           const cleanedAccUpdates = Account.patchObject(accountUpdates);
