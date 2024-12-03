@@ -118,5 +118,17 @@ const getUserDetails = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
+const getRemainingPto = async (req: any, res: any) => {
+  try {
+    const accountId = parseInt(req.params.accountId);
+    const remainingPto = await accountModel.getRemainingPto(accountId);
+    console.log(remainingPto)
+    res.status(200).json(remainingPto);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({error: 'An error occured while fetching remaining pto.'});
+  }
+};
 
-export default { getAccounts, addAccount, deleteAccount, updateAccount, getUserDetails };
+
+export default { getAccounts, addAccount, deleteAccount, updateAccount, getUserDetails, getRemainingPto };
