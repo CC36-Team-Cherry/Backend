@@ -141,7 +141,7 @@ async function main() {
       content: "I will fly back to Italy.",
       status: "pending",
       type: "fun",
-      day: new Date('2024-12-14'),
+      day: new Date('2024-12-13'),
     }
   });
 

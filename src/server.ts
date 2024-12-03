@@ -61,7 +61,7 @@ app.patch("/accounts/:accountId", authenticateUser, accountController.updateAcco
 app.delete("/accounts/:accountId", authenticateAdmin, accountController.deleteAccount); // delete an account (ADMIN ONLY)
 
 // // attendance logging
-app.get("/accounts/:accountId/attendance/", authenticateUser, attendanceController.getAttendance); // get all attendance records to populate calendar for one user (ALL USERS)
+app.get("/accounts/:accountId/attendance/", attendanceController.getAttendance); // get all attendance records to populate calendar for one user (ALL USERS)
 app.post("/accounts/:accountId/attendance/", authenticateUser, attendanceController.addAttendance); // add attendance record (ALL USERS)
 app.put("/accounts/:accountId/attendance/:attendanceId", authenticateUser, attendanceController.editAttendance); // edit attendance record (ALL USERS)
 
@@ -88,6 +88,8 @@ app.post("/accounts/:accountId/specialPto", authenticateUser, specialPtoControll
 app.patch("/specialPto/:specialPtoId", authenticateUser, specialPtoController.editSpecialPto); // edit special PTO type (ALL USERS)
 app.delete("/specialPto/:specialPtoId", authenticateUser, specialPtoController.deleteSpecialPto); // delete special PTO (ALL USERS)
 
+//get all approval but only for PTO and specialPTO
+app.get("/accounts/:accountId/approvalsPTO/", approvalController.getAccountApprovalsPTO);
 // Server validation
 app.get("/", (req, res) => {res.send("Hello from homepage")});
 app.listen(PORT, () => {console.log(`Server listening on ${PORT}, Frontend origin set to ${FRONTEND_URL}`)});

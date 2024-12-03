@@ -79,6 +79,44 @@ const getAccountApprovals = async (req : any, res : any) => {
   }
 };
 
+// get all approvalsPTO related to that id
+const getAccountApprovalsPTO = async (req : any, res : any) => {
+  try {
+    const accountId = parseInt(req.params.accountId);
+
+    // Return all general, pto, special pto sent
+    const approvalsSent : any = await approvalModel.getApprovalsSent(accountId) || [];
+    const approvalsReceived : any = await approvalModel.getApprovalsReceived(accountId) || [];
+
+    const approvalsSentData = [
+      ...approvalsSent.ptoRequests.map((sentApproval: any) => ({
+        id: sentApproval.id, 
+        supervisorName: `${sentApproval.supervisor.first_name} ${sentApproval.supervisor.last_name}`,
+        type: sentApproval.full_day ? `PTO Request` : `Half PTO Request`,  // Conditionally set type
+        memo: sentApproval.content,
+        status: sentApproval.status,
+        date: sentApproval.day,
+        updated_at: sentApproval.updated_at,
+      })) || [],
+      ...approvalsSent.specialPTORequests.map((sentApproval: any) => ({
+        id: sentApproval.id, 
+        supervisorName: `${sentApproval.supervisor.first_name} ${sentApproval.supervisor.last_name}`,
+        type: `Special PTO Request`,
+        memo: sentApproval.content,
+        status: sentApproval.status,
+        date: sentApproval.day,
+        updated_at: sentApproval.updated_at,
+      })) || []
+    ]
+
+    res.status(200).json({approvalsSentData});
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({error: 'An error occured when fetching approvals.'})
+  }
+};
+
 // get all users that have supervisor status set to true
 const getSupervisors = async (req : any, res : any) => {
   try {
@@ -205,4 +243,4 @@ const getApproveeCalendars = async (req: any, res: any) => {
   }
 }
 
-export default { getAccountApprovals, editApprovalStatus, updateApprovalRemind, deleteApproval, getSupervisors, submitMonthlyAttendance, getApproveeCalendars, submitPto };
+export default { getAccountApprovals, editApprovalStatus, updateApprovalRemind, deleteApproval, getSupervisors, submitMonthlyAttendance, getApproveeCalendars, submitPto, getAccountApprovalsPTO };
