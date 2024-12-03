@@ -24,7 +24,7 @@ app.use(cors(
 
 app.set("trust proxy", 1);
 
-const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace("\\n", "\n");
+const privateKey = JSON.parse(process.env.FIREBASE_PRIVATE_KEY!);
 
 // Set up Firebase Admin SDK
 firebaseAdmin.initializeApp({
