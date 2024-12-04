@@ -187,7 +187,7 @@ class Approval {
     static async updateApprovalStatus(approvalId : any, updatedStatus : any, requestType : any) {
         try {
 
-            if (requestType === 'PTO Request' || 'Half PTO Request') {
+            if (requestType === 'PTO Request' || requestType === 'Half PTO Request') {
                 // Update a PTO Request by ID
                 return await prisma.pTORequest.update({
                     where: { id: approvalId },
@@ -215,7 +215,7 @@ class Approval {
     static async updateApprovalRemind(approvalId : any, updatedReminder : any, requestType : any) {
         try {
 
-            if (requestType === 'PTO Request' || 'Half PTO Request') {
+            if (requestType === 'PTO Request' || requestType === 'Half PTO Request') {
                 // Update a PTO Request by ID
                 return await prisma.pTORequest.update({
                     where: { id: approvalId },
@@ -250,7 +250,7 @@ class Approval {
     
     static async deleteApproval(approvalId : any, requestType : any) {
         try {
-            if (requestType === 'PTO Request' || 'Half PTO Request') {
+            if (requestType === 'PTO Request' || requestType === 'Half PTO Request') {
                 // Delete a PTO Request by ID
                 return await prisma.pTORequest.delete({
                   where: { id: approvalId },
@@ -309,6 +309,16 @@ class Approval {
             })
         } catch (err) {
             console.error("Error adding pto approval: ", err);
+        }
+    }
+
+    static addSpecialPtoApproval(specialPtoApproval : any) {
+        try {
+            return prisma.specialPTORequest.create({
+                data: specialPtoApproval
+            })
+        } catch (err) {
+            console.error("Error adding special pto approval: ", err);
         }
     }
 

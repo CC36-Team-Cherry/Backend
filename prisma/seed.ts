@@ -44,7 +44,7 @@ async function main() {
     update: {},
     create: {
       //id: 2,
-      auth_key: "0o5o0vscCuY4UWGyei4ohehzWWG3",
+      auth_key: "ej2vvZRRWtTVjCQH4RccKC7udkU2",
       email: "timfan69@hotmail.com",
       first_name: "Davide",
       last_name: "Peters",
@@ -62,7 +62,7 @@ async function main() {
     update: {},
     create: {
       //id: 3,
-      auth_key: "MQXNz6U8lvR8Ys2r2VkqEybb3dX2",
+      auth_key: "E9TwIu016HdpN4mZBVJ7mVOFVOO2",
       email: "surferbro840@hotmail.com",
       first_name: "Phil",
       last_name: "Cinna",

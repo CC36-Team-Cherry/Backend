@@ -24,11 +24,13 @@ app.use(cors(
 
 app.set("trust proxy", 1);
 
+const privateKey = JSON.parse(process.env.FIREBASE_PRIVATE_KEY!);
+
 // Set up Firebase Admin SDK
 firebaseAdmin.initializeApp({
   credential: firebaseAdmin.credential.cert({
     "projectId": process.env.FIREBASE_PROJECT_ID,
-    "privateKey": process.env.FIREBASE_PRIVATE_KEY,
+    "privateKey": privateKey,
     "clientEmail": process.env.FIREBASE_CLIENT_EMAIL,
   })
 });
@@ -42,7 +44,6 @@ import specialPtoController from "./controllers/specialPto.controller";
 import teamController from "./controllers/team.controller";
 
 // authentication 
-//app.use(attachCsrfToken('/login', 'csrfToken', (Math.floor(Math.random() * 1000000000000000)).toString()))
 app.post("/login", loginHandler);
 app.post("/logout", logoutHandler);
 
@@ -50,7 +51,7 @@ app.get("/accounts/:accountId/details", authenticateUser, accountController.getU
 
 // registration and organization management
 app.get("/organizations/:organizationId", authenticateUser, organizationController.getOrganization); // get name of organization (ALL USERS)
-app.post("/registration", authenticateAdmin, organizationController.initialRegistration); // add admin account and organization (ADMIN ONLY)
+app.post("/registration", organizationController.initialRegistration); // add admin account and organization (NO AUTH)
 app.patch("/organizations/:organizationId", authenticateAdmin, organizationController.editOrganization); // edit organization name (ADMIN ONLY)
 app.delete("/organizations/:organizationId", authenticateAdmin, organizationController.deleteOrganization); // delete organization (ADMIN ONLY)
 
@@ -71,16 +72,16 @@ app.get("/approvals/:supervisorId", authenticateUser, approvalController.getAppr
 app.get("/supervisors/", authenticateUser, approvalController.getSupervisors); // get all approvals related to that id  (ALL USERS)
 app.post("/approvals/monthAttendance/", authenticateUser, approvalController.submitMonthlyAttendance); // add new approval for monthly attendance (ALL USERS)
 app.post("/approvals/pto/", authenticateUser, approvalController.submitPto); // add new approval for PTO (ALL USERS)
-// app.post("/approvals/specialPto/", approvalController.submitSpecialPto); // add new approval for special PTO
+app.post("/approvals/specialPto/", authenticateUser, approvalController.submitSpecialPto); // add new approval for special PTO
 app.patch("/approvals/:requestType/:approvalId", authenticateSupervisor, approvalController.editApprovalStatus); // changes to an approval item status (ALL USERS)
 app.patch("/approvals/:requestType/:approvalId/remind", authenticateUser, approvalController.updateApprovalRemind); // changes to reminder of approval (ALL USERS)
 app.delete("/approvals/:requestType/:approvalId", authenticateUser, approvalController.deleteApproval); // delete approval (ALL USERS)
 
 // // team management and calendar view
 app.get("/organizations/:organizationId/teams", authenticateUser, teamController.getTeams); // get list of all teams (ALL USERS)
-app.post("/organizations/:organizationId/teams", authenticateAdmin, teamController.addTeam); // add new team (ONLY ADMIN) 
-app.patch("/teams/:teamId", authenticateAdmin, teamController.editTeam); // edit a team name (ONLY ADMIN)
-app.delete("/teams/:teamId", authenticateAdmin, teamController.deleteTeam); // delete a team (ONLY ADMIN)
+app.post("/organizations/:organizationId/teams", authenticateAdmin, teamController.addTeam); // add new team (ADMIN ONLY) 
+app.patch("/teams/:teamId", authenticateAdmin, teamController.editTeam); // edit a team name (ADMIN ONLY)
+app.delete("/teams/:teamId", authenticateAdmin, teamController.deleteTeam); // delete a team (ADMIN ONLY)
 
 // // special PTO data management
 app.get("/accounts/:accountId/specialPto", authenticateUser, specialPtoController.getSpecialPto); // view special PTO for that account (ALL USERS)
