@@ -268,10 +268,20 @@ class Account {
 
   static async getRemainingPto(accountId: number) {
     try {
-      return await prisma.pTO.findUnique({
+      const result = await prisma.pTO.findUnique({
         where: { account_id: accountId },
         select: { remaining_pto: true},
       });
+
+      if (!result) {
+        throw new Error("PTO record not found");
+      }
+
+      // If schema float gets updated
+      // const remainingPto = result?.remaining_pto;
+
+      // return parseFloat(remainingPto.toFixed(1));
+ 
     } catch (error) {
       console.error("Error fetching user details:", error);
       throw new Error("Failed to fetch user details");

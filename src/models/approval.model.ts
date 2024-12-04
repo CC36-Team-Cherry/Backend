@@ -281,10 +281,12 @@ class Approval {
                 if (!currentPto) {
                     throw new Error("PTO record not found for this account.");
                 }
+
+                const ptoReduction = ptoApproval.all_day ? 1 : 0.5;
                 
                 await prisma.pTO.update({
                     where: {account_id: accountId},
-                    data: { remaining_pto: currentPto.remaining_pto - 1}
+                    data: { remaining_pto: currentPto.remaining_pto - ptoReduction}
                 })
 
                 await prisma.pTORequest.create({
@@ -298,11 +300,34 @@ class Approval {
         }
     }
 
-    static addSpecialPtoApproval(specialPtoApproval : any) {
+    static async addSpecialPtoApproval(specialPtoApproval : any) {
         try {
-            return prisma.specialPTORequest.create({
-                data: specialPtoApproval
-            })
+
+            const result = await prisma.$transaction(async (prisma) => {
+
+                await prisma.specialPTORequest.create({
+                    data: specialPtoApproval
+                })
+
+                const specialPto = await prisma.specialPTO.findFirst({
+                    where: {
+                        type: specialPtoApproval.type,
+                        account_id: specialPtoApproval.account_id,
+                    }
+                })
+
+                if (specialPto) {
+                    await prisma.specialPTO.delete({
+                        where: {
+                            id: specialPto.id,
+                        }
+                    })
+                }
+
+            });
+            
+            return result;
+
         } catch (err) {
             console.error("Error adding special pto approval: ", err);
         }
