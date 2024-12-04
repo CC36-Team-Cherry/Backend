@@ -55,7 +55,48 @@ class Approval {
         } catch(err) {
             console.error("Error fetching approvals sent:", err)
         }
-    }  
+    }
+    
+    static getApprovalsSentPTO(accountId : any) {
+        try {
+            return prisma.account.findUnique({
+                where: {
+                    id: accountId, 
+                }, 
+                include: {
+                    ptoRequests: {
+                    where: { account_id: accountId },
+                    select: {
+                        id: true, 
+                        supervisor: { select: { first_name: true, last_name: true}},
+                        content: true, 
+                        status: true, 
+                        day: true,
+                        updated_at: true,
+                        all_day: true,
+                        hour_start: true,
+                        hour_end: true,
+                    },
+                },
+                specialPTORequests: {
+                    where: { account_id: accountId }, 
+                    select: {
+                        id: true, 
+                        supervisor: { select: { first_name: true, last_name: true}},
+                        content: true, 
+                        status: true, 
+                        day: true, 
+                        updated_at: true,
+                        type: true,
+                    },
+                }, 
+            }
+        })  
+
+        } catch(err) {
+            console.error("Error fetching approvals sent:", err)
+        }
+    }
     
     static async getApprovalsReceived(accountId : any) {
         try {

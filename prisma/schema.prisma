@@ -148,7 +148,7 @@ model Privileges {
 model PTO {
   account       Account  @relation(fields: [account_id], references: [id], onDelete: Cascade)
   account_id    Int
-  remaining_pto Int
+  remaining_pto Float
   updated_at    DateTime @updatedAt
 
   @@unique([account_id])

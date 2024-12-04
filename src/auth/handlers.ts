@@ -1,5 +1,5 @@
 import accountModel from "../models/account.model";
-import { Response, Request, NextFunction } from "express";
+import { Response, Request, NextFunction, CookieOptions } from "express";
 import { getAuth } from "firebase-admin/auth";
 
 async function loginHandler(req: Request, res: Response) {
@@ -16,7 +16,7 @@ async function loginHandler(req: Request, res: Response) {
             throw new Error("Unauthorized request");
             })
             .then((sessionCookie) => {
-                const options = {maxAge: expiresIn, httpOnly: true, secure: true};
+                const options:CookieOptions = {maxAge: expiresIn, httpOnly: true, secure: true, sameSite: "none"};
                 res.cookie('session', sessionCookie, options);
                 res.status(201).send(userAccount);
             })
