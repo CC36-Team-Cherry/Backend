@@ -11,7 +11,7 @@ async function loginHandler(req: Request, res: Response) {
         getAuth().verifyIdToken(idToken).then((res) => {
             // verify that user signed in within the last five minutes
             if (new Date().getTime() / 1000 - res.auth_time < 5 * 60) {
-                return getAuth().createSessionCookie(idToken, {expiresIn: expiresIn});
+                return getAuth().createSessionCookie(idToken, {expiresIn});
             }
             throw new Error("Unauthorized request");
             })
