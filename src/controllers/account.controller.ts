@@ -122,7 +122,6 @@ const getRemainingPto = async (req: any, res: any) => {
   try {
     const accountId = parseInt(req.params.accountId);
     const remainingPto = await accountModel.getRemainingPto(accountId);
-    console.log(remainingPto)
     res.status(200).json(remainingPto);
   } catch (err) {
     console.error(err);

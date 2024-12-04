@@ -174,7 +174,6 @@ const submitSpecialPto = async (req : any, res : any) => {
 };
 
 // changes to an approval item status
-// TODO: Change approval status of any id (PTO, special PTO, monthly attendance);
 const editApprovalStatus = async (req : any, res : any) => {
   try {
     const approvalId = parseInt(req.params.approvalId);
