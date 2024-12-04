@@ -1,5 +1,6 @@
 import approvalModel from "../models/approval.model";
 import { PrismaClient } from "@prisma/client";
+import { format } from 'date-fns'
 const prisma = new PrismaClient();
 
 // get all approvals related to that id 
@@ -18,8 +19,8 @@ const getAccountApprovals = async (req : any, res : any) => {
         attendanceType: `Month Attendance Request`,
         memo: sentApproval.content,
         status: sentApproval.status,
-        date:  `${sentApproval.month} / ${sentApproval.year}`,
-        updated_at: sentApproval.updated_at,
+        date:  `${sentApproval.year}-${sentApproval.month}`,
+        updated_at: format(new Date(sentApproval.updated_at), 'yyyy-MM-dd h:mm'),
       })) || [],
       ...approvalsSent.ptoRequests.map((sentApproval: any) => ({
         id: sentApproval.id, 
@@ -28,7 +29,7 @@ const getAccountApprovals = async (req : any, res : any) => {
         memo: sentApproval.content,
         status: sentApproval.status,
         date: sentApproval.day,
-        updated_at: sentApproval.updated_at,
+        updated_at: format(new Date(sentApproval.updated_at), 'yyyy-MM-dd h:mm'),
       })) || [],
       ...approvalsSent.specialPTORequests.map((sentApproval: any) => ({
         id: sentApproval.id, 
@@ -37,7 +38,7 @@ const getAccountApprovals = async (req : any, res : any) => {
         memo: sentApproval.content,
         status: sentApproval.status,
         date: sentApproval.day,
-        updated_at: sentApproval.updated_at,
+        updated_at: format(new Date(sentApproval.updated_at), 'yyyy-MM-dd h:mm'),
         type: sentApproval.type,
       })) || []
     ]
@@ -49,7 +50,7 @@ const getAccountApprovals = async (req : any, res : any) => {
         attendanceType: `Month Attendance Request`,
         memo: receivedApproval.content,
         status: receivedApproval.status,
-        date: `${receivedApproval.month} / ${receivedApproval.year}`,  // Format date as MM / YYYY
+        date: `${receivedApproval.year}-${receivedApproval.month}`,  // Format date as MM - YYYY
         updated_at: receivedApproval.updated_at,
       })) || [],
       ...approvalsReceived.ptoRequests.map((receivedApproval: any) => ({
@@ -59,7 +60,7 @@ const getAccountApprovals = async (req : any, res : any) => {
         memo: receivedApproval.content,
         status: receivedApproval.status,
         date: receivedApproval.day,
-        updated_at: receivedApproval.updated_at,
+        updated_at: format(new Date(receivedApproval.updated_at), 'yyyy-MM-dd h:mm'),
       })) || [],
       ...approvalsReceived.specialPTORequests.map((receivedApproval: any) => ({
         id: receivedApproval.id,
@@ -68,7 +69,7 @@ const getAccountApprovals = async (req : any, res : any) => {
         memo: receivedApproval.content,
         status: receivedApproval.status,
         date: receivedApproval.day,
-        updated_at: receivedApproval.updated_at,
+        updated_at: format(new Date(receivedApproval.updated_at), 'yyyy-MM-dd h:mm'),
         type: receivedApproval.type,
       })) || []
     ];
@@ -150,8 +151,9 @@ const submitMonthlyAttendance = async (req : any, res : any) => {
 // // add new approval for PTO
 const submitPto = async (req : any, res : any) => {
   try {
+    const accountId = req.body.account_id;
     const ptoApproval = req.body;
-    const ptoApprovalAdded = await approvalModel.addPtoApproval(ptoApproval);
+    const ptoApprovalAdded = await approvalModel.addPtoApproval(ptoApproval, accountId);
     res.status(200).json(ptoApprovalAdded);
   } catch (err) {
     console.error(err);
@@ -179,6 +181,8 @@ const editApprovalStatus = async (req : any, res : any) => {
     const updatedStatus = req.body.statusChange
     const requestType = req.params.requestType;
 
+    console.log("edit approval status: ", requestType)
+
     const approvalStatusUpdated = await approvalModel.updateApprovalStatus(approvalId, updatedStatus, requestType);
     res.status(200).json(approvalStatusUpdated);
   } catch (err) {
@@ -190,7 +194,7 @@ const editApprovalStatus = async (req : any, res : any) => {
 const updateApprovalRemind = async (req : any, res: any) => {
   try {
     const approvalId = parseInt(req.params.approvalId);
-    const requestType = parseInt(req.params.requestType);
+    const requestType = req.params.requestType;
 
     const updatedReminder = req.body.newMessage;
     const updateApprovalReminder = await approvalModel.updateApprovalRemind(approvalId, updatedReminder, requestType);

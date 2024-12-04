@@ -60,6 +60,7 @@ app.get("/accounts/:companyId", authenticateUser, accountController.getAccounts)
 app.post("/accounts", authenticateAdmin, accountController.addAccount); // add an employee account (ADMIN ONLY)
 app.patch("/accounts/:accountId", authenticateUser, accountController.updateAccount); // edit account data (ALL USERS)
 app.delete("/accounts/:accountId", authenticateAdmin, accountController.deleteAccount); // delete an account (ADMIN ONLY)
+app.get("/accounts/:accountId/remainingPto", authenticateUser, accountController.getRemainingPto);
 
 // // attendance logging
 app.get("/accounts/:accountId/attendance/", authenticateUser, attendanceController.getAttendance); // get all attendance records to populate calendar for one user (ALL USERS)

@@ -265,6 +265,18 @@ class Account {
       throw new Error("Failed to fetch user details");
     }
   }
+
+  static async getRemainingPto(accountId: number) {
+    try {
+      return await prisma.pTO.findUnique({
+        where: { account_id: accountId },
+        select: { remaining_pto: true},
+      });
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+      throw new Error("Failed to fetch user details");
+    }
+  }
   
 }
 

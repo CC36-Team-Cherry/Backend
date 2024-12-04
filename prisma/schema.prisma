@@ -24,7 +24,7 @@ model Account {
   supervisor_id                Int?
   supervisorAccount            Account[]           @relation("SupervisorRelation")
   company                      Company             @relation(fields: [company_id], references: [id], onDelete: Cascade)
-  company_id                   Int                  
+  company_id                   Int
   created_at                   DateTime            @default(now())
   last_login                   DateTime?
   join_date                    DateTime
@@ -50,8 +50,8 @@ model Account {
 model Company {
   id      Int       @id @default(autoincrement())
   name    String
-  Account Account[] 
-  Team Team[] 
+  Account Account[]
+  Team    Team[]
 
   @@map("company")
 }
@@ -69,7 +69,7 @@ model Team {
 
 model AttendanceRecord {
   id           Int      @id @default(autoincrement())
-  account      Account  @relation(fields: [account_id], references: [id])
+  account      Account  @relation(fields: [account_id], references: [id], onDelete: Cascade)
   account_id   Int
   day          DateTime
   punch_in     DateTime
@@ -86,7 +86,7 @@ model AttendanceRecord {
 
 model PTORequest {
   id            Int       @id @default(autoincrement())
-  account       Account   @relation("PTORequester", fields: [account_id], references: [id])
+  account       Account   @relation("PTORequester", fields: [account_id], references: [id], onDelete: Cascade)
   account_id    Int
   supervisor    Account   @relation("PTORequestSupervisor", fields: [supervisor_id], references: [id])
   supervisor_id Int
@@ -106,7 +106,7 @@ model PTORequest {
 
 model SpecialPTORequest {
   id            Int      @id @default(autoincrement())
-  account       Account  @relation("SpecialPTORequester", fields: [account_id], references: [id])
+  account       Account  @relation("SpecialPTORequester", fields: [account_id], references: [id], onDelete: Cascade)
   account_id    Int
   supervisor    Account  @relation("SpecialPTORequestSupervisor", fields: [supervisor_id], references: [id])
   supervisor_id Int
@@ -122,7 +122,7 @@ model SpecialPTORequest {
 
 model MonthlyRequest {
   id            Int      @id @default(autoincrement())
-  account       Account  @relation("MonthlyRequester", fields: [account_id], references: [id])
+  account       Account  @relation("MonthlyRequester", fields: [account_id], references: [id], onDelete: Cascade)
   account_id    Int
   supervisor    Account  @relation("MonthlyRequestSupervisor", fields: [supervisor_id], references: [id])
   supervisor_id Int

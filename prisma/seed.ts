@@ -125,7 +125,7 @@ async function main() {
       account_id: seedDavide.id,
       supervisor_id: seedTim.id,
       content: "I will go to ToToTo.",
-      status: "pending",
+      status: "Pending",
       day: new Date('2024-12-14'),
       all_day: true,
     }
@@ -139,7 +139,7 @@ async function main() {
       account_id: seedDavide.id,
       supervisor_id: seedTim.id,
       content: "I will fly back to Italy.",
-      status: "pending",
+      status: "Pending",
       type: "fun",
       day: new Date('2024-12-13'),
     }
@@ -155,7 +155,7 @@ async function main() {
       month: 10,
       year: 2024,
       content: "My attendance for November 2024.",
-      status: "pending",
+      status: "Pending",
     },
   });
 
