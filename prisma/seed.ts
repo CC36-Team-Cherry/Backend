@@ -22,6 +22,36 @@ async function main() {
     }
   });
 
+  const seedTeam2 = await prisma.team.upsert({
+    where: { id: 2 },
+    update: {},
+    create: {
+      id: 2,
+      company_id: seedCompany.id,
+      team_name: "Strategic Thinkers",
+    }
+  });
+  
+  const seedTeam3 = await prisma.team.upsert({
+    where: { id: 3 },
+    update: {},
+    create: {
+      id: 3,
+      company_id: seedCompany.id,
+      team_name: "Operations Crew",
+    }
+  });
+  
+  const seedTeam4 = await prisma.team.upsert({
+    where: { id: 4 },
+    update: {},
+    create: {
+      id: 4,
+      company_id: seedCompany.id,
+      team_name: "Creative Innovators",
+    }
+  });
+
   const seedTim = await prisma.account.upsert({
     where: { email: "admin@breezehr.com" },
     update: {},
@@ -36,6 +66,7 @@ async function main() {
       join_date: new Date('2024-11-19'),
       role: "emperor",
       team_id: 1,
+      last_login: new Date('2024-12-03'),
     },
   });
 
@@ -54,6 +85,7 @@ async function main() {
       role: "assisstant",
       team_id: 1,
       supervisor_id: 1,
+      last_login: new Date('2024-12-02'),
     },
   });
 
@@ -72,6 +104,132 @@ async function main() {
       role: "cinnalord",
       team_id: 1,
       supervisor_id: 1,
+      last_login: new Date('2024-12-01'),
+    },
+  });
+
+  const seedAnna = await prisma.account.upsert({
+    where: { email: "visionary.anna@fakemail.com" },
+    update: {},
+    create: {
+      auth_key: "YzXQ4Pr6JoV8RgT0PLmF23AsKLM3",
+      email: "visionary.anna@fakemail.com",
+      first_name: "Anna",
+      last_name: "Smith",
+      birthdate: new Date('1987-03-14'),
+      company_id: seedCompany.id,
+      join_date: new Date('2024-12-01'),
+      role: "strategist",
+      team_id: 2,
+      last_login: new Date('2024-11-30'),
+    },
+  });
+  
+  const seedCarlos = await prisma.account.upsert({
+    where: { email: "data.carlos@fakemail.com" },
+    update: {},
+    create: {
+      auth_key: "JqkR72mTp45ZN6bLoXpVdW1YUfA8",
+      email: "data.carlos@fakemail.com",
+      first_name: "Carlos",
+      last_name: "Diaz",
+      birthdate: new Date('1992-08-23'),
+      company_id: seedCompany.id,
+      join_date: new Date('2024-12-02'),
+      role: "analyst",
+      team_id: 2,
+      supervisor_id: 2,
+      last_login: new Date('2024-11-29'),
+    },
+  });
+  
+  const seedEmily = await prisma.account.upsert({
+    where: { email: "operations.emily@fakemail.com" },
+    update: {},
+    create: {
+      auth_key: "M7VWPxYqf9N2HL4KoZuR65TJLB3A",
+      email: "operations.emily@fakemail.com",
+      first_name: "Emily",
+      last_name: "Johnson",
+      birthdate: new Date('1990-11-02'),
+      company_id: seedCompany.id,
+      join_date: new Date('2024-12-03'),
+      role: "coordinator",
+      team_id: 3,
+      supervisor_id: 2,
+      last_login: new Date('2024-11-28'),
+    },
+  });
+  
+  const seedMark = await prisma.account.upsert({
+    where: { email: "manager.mark@fakemail.com" },
+    update: {},
+    create: {
+      auth_key: "T9XN7mRVQWpL6Y5ZJo4VKp3FuZ83",
+      email: "manager.mark@fakemail.com",
+      first_name: "Mark",
+      last_name: "Brown",
+      birthdate: new Date('1985-07-15'),
+      company_id: seedCompany.id,
+      join_date: new Date('2024-12-04'),
+      role: "manager",
+      team_id: 3,
+      supervisor_id: 1,
+      last_login: new Date('2024-11-27'),
+    },
+  });
+  
+  const seedSophie = await prisma.account.upsert({
+    where: { email: "designer.sophie@fakemail.com" },
+    update: {},
+    create: {
+      auth_key: "K5LWN7XRJVoP6Y39mTfQ4YZ2B8AL",
+      email: "designer.sophie@fakemail.com",
+      first_name: "Sophie",
+      last_name: "Taylor",
+      birthdate: new Date('1995-05-20'),
+      company_id: seedCompany.id,
+      join_date: new Date('2024-12-05'),
+      role: "designer",
+      team_id: 4,
+      supervisor_id: 6,
+      last_login: new Date('2024-11-27'),
+    },
+  });
+  
+  const seedNathan = await prisma.account.upsert({
+    where: { email: "dev.nathan@fakemail.com" },
+    update: {},
+    create: {
+      auth_key: "Q3NZ5X7TLMWP4KoV9R2Y8YJ6RfA1",
+      email: "dev.nathan@fakemail.com",
+      first_name: "Nathan",
+      last_name: "Harris",
+      birthdate: new Date('1993-09-12'),
+      company_id: seedCompany.id,
+      join_date: new Date('2024-12-06'),
+      role: "developer",
+      team_id: 4,
+      supervisor_id: 6,
+      last_login: new Date('2024-11-26'),
+    },
+  });
+  
+  const seedOlivia = await prisma.account.upsert({
+    where: { email: "leader.olivia@fakemail.com" },
+    update: {},
+    create: {
+      auth_key: "R8XL5Y3QMTWN9VP6J2ZKo4YAFBL7",
+      email: "leader.olivia@fakemail.com",
+      first_name: "Olivia",
+      last_name: "Wilson",
+      birthdate: new Date('1988-01-10'),
+      company_id: seedCompany.id,
+      join_date: new Date('2024-12-07'),
+      role: "team_lead",
+      team_id: 4,
+      supervisor_id: 7,
+      last_login: new Date('2024-11-24'),
     },
   });
 
@@ -189,6 +347,77 @@ async function main() {
     }
   });
 
+  const seedAnnaPrivileges = await prisma.privileges.upsert({
+    where: { account_id: seedAnna.id },
+    update: {},
+    create: {
+      account_id: seedAnna.id,
+      is_admin: false,
+      is_supervisor: false,
+    }
+  });
+  
+  const seedCarlosPrivileges = await prisma.privileges.upsert({
+    where: { account_id: seedCarlos.id },
+    update: {},
+    create: {
+      account_id: seedCarlos.id,
+      is_admin: false,
+      is_supervisor: false,
+    }
+  });
+  
+  const seedEmilyPrivileges = await prisma.privileges.upsert({
+    where: { account_id: seedEmily.id },
+    update: {},
+    create: {
+      account_id: seedEmily.id,
+      is_admin: false,
+      is_supervisor: true,
+    }
+  });
+  
+  const seedMarkPrivileges = await prisma.privileges.upsert({
+    where: { account_id: seedMark.id },
+    update: {},
+    create: {
+      account_id: seedMark.id,
+      is_admin: true,
+      is_supervisor: true,
+    }
+  });
+  
+  const seedSophiePrivileges = await prisma.privileges.upsert({
+    where: { account_id: seedSophie.id },
+    update: {},
+    create: {
+      account_id: seedSophie.id,
+      is_admin: false,
+      is_supervisor: false,
+    }
+  });
+  
+  const seedNathanPrivileges = await prisma.privileges.upsert({
+    where: { account_id: seedNathan.id },
+    update: {},
+    create: {
+      account_id: seedNathan.id,
+      is_admin: false,
+      is_supervisor: false,
+    }
+  });
+  
+  const seedOliviaPrivileges = await prisma.privileges.upsert({
+    where: { account_id: seedOlivia.id },
+    update: {},
+    create: {
+      account_id: seedOlivia.id,
+      is_admin: false,
+      is_supervisor: true,
+    }
+  });
+  
+
   const seedTimPTO = await prisma.pTO.upsert({
     where: { account_id: seedTim.id},
     update: {},
@@ -213,6 +442,69 @@ async function main() {
     create: {
       account_id: seedPhil.id,
       remaining_pto: 34,      
+    }
+  });
+
+  const seedAnnaPTO = await prisma.pTO.upsert({
+    where: { account_id: seedAnna.id },
+    update: {},
+    create: {
+      account_id: seedAnna.id,
+      remaining_pto: 120,
+    }
+  });
+  
+  const seedCarlosPTO = await prisma.pTO.upsert({
+    where: { account_id: seedCarlos.id },
+    update: {},
+    create: {
+      account_id: seedCarlos.id,
+      remaining_pto: 85,
+    }
+  });
+  
+  const seedEmilyPTO = await prisma.pTO.upsert({
+    where: { account_id: seedEmily.id },
+    update: {},
+    create: {
+      account_id: seedEmily.id,
+      remaining_pto: 50,
+    }
+  });
+  
+  const seedMarkPTO = await prisma.pTO.upsert({
+    where: { account_id: seedMark.id },
+    update: {},
+    create: {
+      account_id: seedMark.id,
+      remaining_pto: 200,
+    }
+  });
+  
+  const seedSophiePTO = await prisma.pTO.upsert({
+    where: { account_id: seedSophie.id },
+    update: {},
+    create: {
+      account_id: seedSophie.id,
+      remaining_pto: 70,
+    }
+  });
+  
+  const seedNathanPTO = await prisma.pTO.upsert({
+    where: { account_id: seedNathan.id },
+    update: {},
+    create: {
+      account_id: seedNathan.id,
+      remaining_pto: 40,
+    }
+  });
+  
+  const seedOliviaPTO = await prisma.pTO.upsert({
+    where: { account_id: seedOlivia.id },
+    update: {},
+    create: {
+      account_id: seedOlivia.id,
+      remaining_pto: 95,
     }
   });
 
