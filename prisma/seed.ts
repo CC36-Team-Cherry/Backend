@@ -40,12 +40,12 @@ async function main() {
   });
 
   const seedDavide = await prisma.account.upsert({
-    where: { email: "timfan69@hotmail.com" },
+    where: { email: "timfan138@hotmail.com" },
     update: {},
     create: {
       //id: 2,
-      auth_key: "ej2vvZRRWtTVjCQH4RccKC7udkU2",
-      email: "timfan69@hotmail.com",
+      auth_key: "O6NH9rzJujVTmIiiTOLmtZDxO9k2",
+      email: "timfan138@hotmail.com",
       first_name: "Davide",
       last_name: "Peters",
       birthdate: new Date('1999-12-31'),
