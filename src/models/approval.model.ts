@@ -187,6 +187,78 @@ class Approval {
     static async updateApprovalStatus(approvalId : any, updatedStatus : any, requestType : any) {
         try {
 
+            // Fetch the current PTO request to get account ID
+            const ptoRequest = await prisma.pTORequest.findUnique({
+                where: { id: approvalId },
+                select: { account_id: true, status: true }
+            });
+
+            if (!ptoRequest) {
+                throw new Error("PTO request not found");
+            }
+
+            const accountId = ptoRequest.account_id;
+            const currentStatus = ptoRequest.status;
+
+            // If the request status is being updated from "Denied" to "Approved"
+            if (currentStatus === "Denied" && updatedStatus === "Approved") {
+                if (requestType === 'PTO Request') {
+                    // Decrease 1 from remaining PTO if it's a PTO Request
+                    await prisma.pTO.update({
+                        where: { account_id: accountId },
+                        data: {
+                            remaining_pto: {
+                                decrement: 1,
+                            },
+                        },
+                    });
+                } else if (requestType === 'Half PTO Request') {
+                    // Decrease 0.5 from remaining PTO if it's a Half PTO Request
+                    await prisma.pTO.update({
+                        where: { account_id: accountId },
+                        data: {
+                            remaining_pto: {
+                                decrement: 0.5,
+                            },
+                        },
+                    });
+                }
+            }
+
+
+            if (updatedStatus === "Denied") {
+                const ptoRequest = await prisma.pTORequest.findUnique({
+                    where: { id: approvalId },
+                    select: { account_id: true }
+                });
+
+                if (!ptoRequest) {
+                    throw new Error("PTO request not found")
+                }
+
+                const accountId = ptoRequest.account_id;
+
+                if (requestType === 'PTO Request') {
+                    await prisma.pTO.update({
+                        where: { account_id: accountId },
+                        data: {
+                            remaining_pto: {
+                                increment: 1,
+                            }
+                        }
+                    })
+                } else if (requestType === 'Half PTO Request') {
+                    await prisma.pTO.update({
+                        where: { account_id: accountId },
+                        data: {
+                            remaining_pto: {
+                                increment: 0.5,
+                            }
+                        }
+                    })
+                }
+            }
+
             if (requestType === 'PTO Request' || requestType === 'Half PTO Request') {
                 // Update a PTO Request by ID
                 return await prisma.pTORequest.update({

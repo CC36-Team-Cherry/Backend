@@ -277,10 +277,7 @@ class Account {
         throw new Error("PTO record not found");
       }
 
-      // If schema float gets updated
-      // const remainingPto = result?.remaining_pto;
-
-      // return parseFloat(remainingPto.toFixed(1));
+      return result;
  
     } catch (error) {
       console.error("Error fetching user details:", error);
