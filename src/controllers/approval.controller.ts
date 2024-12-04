@@ -113,8 +113,9 @@ const submitMonthlyAttendance = async (req : any, res : any) => {
 // // add new approval for PTO
 const submitPto = async (req : any, res : any) => {
   try {
+    const accountId = req.body.account_id;
     const ptoApproval = req.body;
-    const ptoApprovalAdded = await approvalModel.addPtoApproval(ptoApproval);
+    const ptoApprovalAdded = await approvalModel.addPtoApproval(ptoApproval, accountId);
     res.status(200).json(ptoApprovalAdded);
   } catch (err) {
     console.error(err);

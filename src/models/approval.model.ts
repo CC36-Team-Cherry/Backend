@@ -270,11 +270,29 @@ class Approval {
         }
       }
 
-    static addPtoApproval(ptoApproval : any) {
+    static async addPtoApproval(ptoApproval : any, accountId : any) {
         try {
-            return prisma.pTORequest.create({
-                data: ptoApproval
+            const result = await prisma.$transaction(async (prisma) => {
+
+                const currentPto = await prisma.pTO.findUnique({
+                    where: { account_id: accountId }
+                })
+
+                if (!currentPto) {
+                    throw new Error("PTO record not found for this account.");
+                }
+                
+                await prisma.pTO.update({
+                    where: {account_id: accountId},
+                    data: { remaining_pto: currentPto.remaining_pto - 1}
+                })
+
+                await prisma.pTORequest.create({
+                    data: ptoApproval
+                })
             })
+
+            return result;
         } catch (err) {
             console.error("Error adding pto approval: ", err);
         }
