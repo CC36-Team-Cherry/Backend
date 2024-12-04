@@ -16,7 +16,7 @@ async function main() {
     where: { id: 1 },
     update: {},
     create: {
-      id: 1,
+      //id: 1,
       company_id: 1,
       team_name: "Tim's Team",
     }
@@ -26,7 +26,7 @@ async function main() {
     where: { id: 2 },
     update: {},
     create: {
-      id: 2,
+      //id: 2,
       company_id: seedCompany.id,
       team_name: "Strategic Thinkers",
     }
@@ -36,7 +36,7 @@ async function main() {
     where: { id: 3 },
     update: {},
     create: {
-      id: 3,
+      //id: 3,
       company_id: seedCompany.id,
       team_name: "Operations Crew",
     }
@@ -46,7 +46,7 @@ async function main() {
     where: { id: 4 },
     update: {},
     create: {
-      id: 4,
+      //id: 4,
       company_id: seedCompany.id,
       team_name: "Creative Innovators",
     }
