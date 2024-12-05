@@ -237,7 +237,7 @@ async function main() {
     where: { id: 1 },
     update: {},
     create: {
-      id: 1,
+      // id: 1,
       account_id: seedTim.id,
       day: new Date('2024-11-20'),
       punch_in: new Date(2024, 10, 20, 9, 0, 0),
@@ -251,7 +251,7 @@ async function main() {
     where: { id: 2 },
     update: {},
     create: {
-      id: 2,
+      // id: 2,
       account_id: seedTim.id,
       day: new Date('2024-11-21'),
       punch_in: new Date(2024, 10, 21, 9, 0, 0),
@@ -265,7 +265,7 @@ async function main() {
     where: { id: 3 },
     update: {},
     create: {
-      id: 3,
+      // id: 3,
       account_id: seedDavide.id,
       day: new Date('2024-11-21'),
       punch_in: new Date(2024, 10, 21, 9, 0, 0),
@@ -279,7 +279,7 @@ async function main() {
     where: { id: 1 },
     update: {},
     create: {
-      id: 1,
+      // id: 1,
       account_id: seedDavide.id,
       supervisor_id: seedTim.id,
       content: "I will go to ToToTo.",
@@ -293,7 +293,7 @@ async function main() {
     where: { id: 1 },
     update: {},
     create: {
-      id: 1,
+      // id: 1,
       account_id: seedDavide.id,
       supervisor_id: seedTim.id,
       content: "I will fly back to Italy.",
@@ -307,7 +307,7 @@ async function main() {
     where: { id: 1 },
     update: {},
     create: {
-      id: 1,
+      // id: 1,
       account_id: seedDavide.id,
       supervisor_id: seedTim.id,
       month: 10,
@@ -512,7 +512,7 @@ async function main() {
     where: { id: 1 },
     update: {},
     create: {
-      id: 1,
+      // id: 1,
       account_id: seedTim.id,
       type: "fun",
     }
