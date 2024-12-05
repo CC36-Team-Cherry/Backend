@@ -91,11 +91,13 @@ const getAccountApprovalsPTO = async (req : any, res : any) => {
     const approvalsSent : any = await approvalModel.getApprovalsSent(accountId) || [];
     const approvalsReceived : any = await approvalModel.getApprovalsReceived(accountId) || [];
 
+    console.log("backend getaccountapprovals", approvalsSent)
+
     const approvalsSentData = [
       ...approvalsSent.ptoRequests.map((sentApproval: any) => ({
         id: sentApproval.id, 
         supervisorName: `${sentApproval.supervisor.first_name} ${sentApproval.supervisor.last_name}`,
-        type: sentApproval.full_day ? `PTO Request` : `Half PTO Request`,  // Conditionally set type
+        type: sentApproval.all_day ? `PTO Request` : `Half PTO Request`,  // Conditionally set type
         memo: sentApproval.content,
         status: sentApproval.status,
         date: sentApproval.day,
