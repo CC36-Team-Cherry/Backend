@@ -1,4 +1,5 @@
 import attendanceModel from "../models/attendance.model";
+import { Response, Request } from "express";
 
 // Get all attendance records for a user
 const getAttendance = async (req: any, res: any) => {
@@ -37,9 +38,15 @@ const editAttendance = async (req: any, res: any) => {
     }
 };
 
-// // edit attendance record
-// const editAttendance = async (req, res) => {
+const deleteAttendance = async (req: Request, res: Response) => {
+    const { attendanceId } = req.params;
+    try {
+        const deletedAttendance = await attendanceModel.deleteAttendanceRecord(Number(attendanceId), req.body);
+        res.status(200).json(deletedAttendance);
+    } catch (err) {
+        console.error("Error deleting attendance record:", err);
+        res.status(500).json({ error: "Unable to delete attendance record" });
+    }
+}
 
-// };
-
-export default { getAttendance, addAttendance, editAttendance};
+export default { getAttendance, addAttendance, editAttendance, deleteAttendance};
