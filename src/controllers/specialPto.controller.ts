@@ -17,7 +17,7 @@ const addSpecialPto = async (req : any, res : any) => {
     try {
         const accountId = parseInt(req.params.accountId);
         const newSpecialPtoData = req.body.content
-        console.log(accountId, newSpecialPtoData);
+        console.log("add special pto id: ", accountId, newSpecialPtoData);
 
         const newSpecialPto = await specialPtoModel.addSpecialPto(accountId, newSpecialPtoData);
         res.status(200).json(newSpecialPto);
@@ -29,9 +29,10 @@ const addSpecialPto = async (req : any, res : any) => {
 // // edit special PTO type
 const editSpecialPto = async (req : any, res : any) => {
     try {
+        console.log("edit special pto params: ", req.params)
         const specialPtoId = parseInt(req.params.specialPtoId);
-        const newSpecialPtoType = req.body.updatedSpecialPtoType;
-        console.log("specialPtoId", specialPtoId, "newSpecialPtoType", newSpecialPtoType)
+        const newSpecialPtoType = req.body.specialPto.type;
+        console.log("editspecialPtoId", specialPtoId, "editnewSpecialPtoType", newSpecialPtoType)
 
         const editSpecialPto = await specialPtoModel.editSpecialPto(specialPtoId, newSpecialPtoType);
         res.status(200).json(editSpecialPto);
