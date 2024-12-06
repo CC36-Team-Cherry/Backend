@@ -18,11 +18,11 @@ const addAccount = async (req: Request, res: Response) => {
   try {
     const newAccount = req.body;
     const newPassword = generatePassword(10);
-    const addAccount = accountModel.addFirebaseAccount(newAccount, newPassword);
+    const addAccount = await accountModel.addFirebaseAccount(newAccount, newPassword);
     res.status(201).json(addAccount);
   } catch (err) {
     console.error(err);
-    res.status(500).json({error: 'An error occured while adding an account.'});
+    res.status(400).json({error: `${err}`});
   }
 };
 
