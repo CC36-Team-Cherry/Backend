@@ -66,6 +66,7 @@ app.get("/accounts/:accountId/remainingPto", authenticateUser, accountController
 app.get("/accounts/:accountId/attendance/", authenticateUser, attendanceController.getAttendance); // get all attendance records to populate calendar for one user (ALL USERS)
 app.post("/accounts/:accountId/attendance/", authenticateUser, attendanceController.addAttendance); // add attendance record (ALL USERS)
 app.put("/accounts/:accountId/attendance/:attendanceId", authenticateUser, attendanceController.editAttendance); // edit attendance record (ALL USERS)
+app.delete("/accounts/attendance/:attendanceId", authenticateUser, attendanceController.deleteAttendance);
 
 // // approvals and supervisors 
 app.get("/accounts/:accountId/approvals/", authenticateUser, approvalController.getAccountApprovals); // get all approvals related to that id (ALL USERS)
