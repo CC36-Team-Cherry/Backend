@@ -52,6 +52,7 @@ app.get("/accounts/:accountId/details", authenticateUser, accountController.getU
 // registration and organization management
 app.get("/organizations/:organizationId", authenticateUser, organizationController.getOrganization); // get name of organization (ALL USERS)
 app.post("/registration", organizationController.initialRegistration); // add admin account and organization (NO AUTH)
+app.get("/email", accountController.checkAccountExists); // check if account exists based on email (NO AUTH)
 app.patch("/organizations/:organizationId", authenticateAdmin, organizationController.editOrganization); // edit organization name (ADMIN ONLY)
 app.delete("/organizations/:organizationId", authenticateAdmin, organizationController.deleteOrganization); // delete organization (ADMIN ONLY)
 

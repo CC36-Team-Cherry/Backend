@@ -129,5 +129,21 @@ const getRemainingPto = async (req: any, res: any) => {
   }
 };
 
+//check if account exists
+const checkAccountExists = async (req: Request, res: Response) => {
+  const email = req.body.email;
+  try {
+    const account = await accountModel.getAccountByEmail(email);
+    if (account) {
+      res.status(200).json({exists: true});
+    } else {
+      res.status(200).json({exists: false})
+    }
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({error: 'An error occurred'})
+  }
+}
 
-export default { getAccounts, addAccount, deleteAccount, updateAccount, getUserDetails, getRemainingPto };
+
+export default { getAccounts, addAccount, deleteAccount, updateAccount, getUserDetails, getRemainingPto, checkAccountExists };
