@@ -77,6 +77,19 @@ class Attendance {
             throw new Error("Unable to update attendance record");
         }
     }
+
+    static async deleteAttendanceRecord(attendanceId: number, data: userAttendance) {
+      try {
+        return await prisma.attendanceRecord.delete({
+          where: {
+            id: attendanceId,
+          },
+        });
+      } catch (err) {
+        console.error("Error deleting attendacne record:", err);
+        throw new Error("Unable to delete attendance record");
+      }
+    }
 }
 
 export default Attendance;

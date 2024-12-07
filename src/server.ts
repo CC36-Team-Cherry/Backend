@@ -52,6 +52,7 @@ app.get("/accounts/:accountId/details", authenticateUser, accountController.getU
 // registration and organization management
 app.get("/organizations/:organizationId", authenticateUser, organizationController.getOrganization); // get name of organization (ALL USERS)
 app.post("/registration", organizationController.initialRegistration); // add admin account and organization (NO AUTH)
+app.post("/email", accountController.checkAccountExists); // check if account exists based on email (NO AUTH)
 app.patch("/organizations/:organizationId", authenticateAdmin, organizationController.editOrganization); // edit organization name (ADMIN ONLY)
 app.delete("/organizations/:organizationId", authenticateAdmin, organizationController.deleteOrganization); // delete organization (ADMIN ONLY)
 
@@ -66,6 +67,7 @@ app.get("/accounts/:accountId/remainingPto", authenticateUser, accountController
 app.get("/accounts/:accountId/attendance/", authenticateUser, attendanceController.getAttendance); // get all attendance records to populate calendar for one user (ALL USERS)
 app.post("/accounts/:accountId/attendance/", authenticateUser, attendanceController.addAttendance); // add attendance record (ALL USERS)
 app.put("/accounts/:accountId/attendance/:attendanceId", authenticateUser, attendanceController.editAttendance); // edit attendance record (ALL USERS)
+app.delete("/accounts/attendance/:attendanceId", authenticateUser, attendanceController.deleteAttendance);
 
 // // approvals and supervisors 
 app.get("/accounts/:accountId/approvals/", authenticateUser, approvalController.getAccountApprovals); // get all approvals related to that id (ALL USERS)

@@ -128,8 +128,12 @@ class Account {
     }
   }
 
-  static addFirebaseAccount(newAccount: userAccount, newPassword: string) {
+  static async addFirebaseAccount(newAccount: userAccount, newPassword: string) {
     try {
+      const existingAccount = await this.getAccountByEmail(newAccount.email);
+      if (existingAccount) {
+        throw Error("Account already exists");
+      }
       getAuth()
         .createUser({
           email: newAccount.email,
@@ -142,11 +146,11 @@ class Account {
           return this.addAccount(newAccount, uid);
       })
         .catch((err) => {
-          console.error("Error: ", err)
+          console.error(err)
       })
     } catch (err) {
-      console.error("Error adding account: ", err);
-      throw new Error("Failed to add account to Firebase");
+      console.error(err);
+      throw new Error(`${err}`);
     }
   }
 
