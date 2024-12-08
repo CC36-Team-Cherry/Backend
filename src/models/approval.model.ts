@@ -104,21 +104,21 @@ class Approval {
             const monthlyRequests = await prisma.monthlyRequest.findMany({
                 where: { supervisor_id: accountId }, 
                 include: {
-                    account: {select: {first_name: true, last_name: true}}
+                    account: {select: {id: true, first_name: true, last_name: true}}
                 }
             })
 
             const ptoRequests = await prisma.pTORequest.findMany({
                 where: { supervisor_id: accountId }, 
                 include: {
-                    account: {select: {first_name: true, last_name: true}}
+                    account: {select: {id: true, first_name: true, last_name: true}}
                 }
             })
 
             const specialPTORequests = await prisma.specialPTORequest.findMany({
                 where: { supervisor_id: accountId }, 
                 include: {
-                    account: {select: {first_name: true, last_name: true}}
+                    account: {select: {id: true, first_name: true, last_name: true}}
                 }
             })
 

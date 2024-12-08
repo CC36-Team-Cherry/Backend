@@ -47,6 +47,7 @@ const getAccountApprovals = async (req : any, res : any) => {
     const approvalsReceivedData = [
       ...approvalsReceived.monthlyRequests.map((receivedApproval: any) => ({
         id: receivedApproval.id,
+        accountId: receivedApproval.account.id,
         employeeName: `${receivedApproval.account.first_name} ${receivedApproval.account.last_name}`,
         attendanceType: `Month Attendance`,
         memo: receivedApproval.content,
@@ -56,6 +57,7 @@ const getAccountApprovals = async (req : any, res : any) => {
       })) || [],
       ...approvalsReceived.ptoRequests.map((receivedApproval: any) => ({
         id: receivedApproval.id,
+        accountId: receivedApproval.account.id,
         employeeName: `${receivedApproval.account.first_name} ${receivedApproval.account.last_name}`,
         attendanceType: receivedApproval.all_day ? `PTO` : `Half PTO`,  // Conditionally set type
         memo: receivedApproval.content,
@@ -67,6 +69,7 @@ const getAccountApprovals = async (req : any, res : any) => {
       })) || [],
       ...approvalsReceived.specialPTORequests.map((receivedApproval: any) => ({
         id: receivedApproval.id,
+        accountId: receivedApproval.account.id,
         employeeName: `${receivedApproval.account.first_name} ${receivedApproval.account.last_name}`,
         attendanceType: `Special PTO`,
         memo: receivedApproval.content,
