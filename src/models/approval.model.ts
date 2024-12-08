@@ -202,7 +202,7 @@ class Approval {
 
             // If the request status is being updated from "Denied" to "Approved"
             if (currentStatus === "Denied" && updatedStatus === "Approved") {
-                if (requestType === 'PTO Request') {
+                if (requestType === 'PTO') {
                     // Decrease 1 from remaining PTO if it's a PTO Request
                     await prisma.pTO.update({
                         where: { account_id: accountId },
@@ -212,7 +212,7 @@ class Approval {
                             },
                         },
                     });
-                } else if (requestType === 'Half PTO Request') {
+                } else if (requestType === 'Half PTO') {
                     // Decrease 0.5 from remaining PTO if it's a Half PTO Request
                     await prisma.pTO.update({
                         where: { account_id: accountId },
@@ -238,7 +238,7 @@ class Approval {
 
                 const accountId = ptoRequest.account_id;
 
-                if (requestType === 'PTO Request') {
+                if (requestType === 'PTO') {
                     await prisma.pTO.update({
                         where: { account_id: accountId },
                         data: {
@@ -247,7 +247,7 @@ class Approval {
                             }
                         }
                     })
-                } else if (requestType === 'Half PTO Request') {
+                } else if (requestType === 'Half PTO') {
                     await prisma.pTO.update({
                         where: { account_id: accountId },
                         data: {
@@ -259,7 +259,7 @@ class Approval {
                 }
             }
 
-            if (requestType === 'PTO Request' || requestType === 'Half PTO Request') {
+            if (requestType === 'PTO' || requestType === 'Half PTO') {
                 // Update a PTO Request by ID
                 return await prisma.pTORequest.update({
                     where: { id: approvalId },
@@ -268,7 +268,7 @@ class Approval {
                         updated_at: new Date().toISOString(),
                     },
                 });
-              } else if (requestType === 'Special PTO Request') {
+              } else if (requestType === 'Special PTO') {
                 // Update a Special PTO Request by ID
                 return await prisma.specialPTORequest.update({
                     where: { id: approvalId },
@@ -277,7 +277,7 @@ class Approval {
                         updated_at: new Date().toISOString(),
                     },
                 });
-              } else if (requestType === 'Month Attendance Request') {
+              } else if (requestType === 'Month Attendance') {
                 // DelUpdateete a Monthly Attendance Request by ID
                 return await prisma.monthlyRequest.update({
                     where: { id: approvalId },
@@ -296,7 +296,7 @@ class Approval {
     static async updateApprovalRemind(approvalId : any, updatedReminder : any, requestType : any) {
         try {
 
-            if (requestType === 'PTO Request' || requestType === 'Half PTO Request') {
+            if (requestType === 'PTO' || requestType === 'Half PTO') {
                 // Update a PTO Request by ID
                 return await prisma.pTORequest.update({
                     where: { id: approvalId },
@@ -305,7 +305,7 @@ class Approval {
                         updated_at: new Date().toISOString(),
                     }
                 });
-              } else if (requestType === 'Special PTO Request') {
+              } else if (requestType === 'Special PTO') {
                 // Update a Special PTO Request by ID
                 return await prisma.specialPTORequest.update({
                     where: { id: approvalId },
@@ -314,7 +314,7 @@ class Approval {
                         updated_at: new Date().toISOString(),
                     }
                 });
-              } else if (requestType === 'Month Attendance Request') {
+              } else if (requestType === 'Month Attendance') {
                 // DelUpdateete a Monthly Attendance Request by ID
                 return await prisma.monthlyRequest.update({
                     where: { id: approvalId },
@@ -331,17 +331,17 @@ class Approval {
     
     static async deleteApproval(approvalId : any, requestType : any) {
         try {
-            if (requestType === 'PTO Request' || requestType === 'Half PTO Request') {
+            if (requestType === 'PTO' || requestType === 'Half PTO') {
                 // Delete a PTO Request by ID
                 return await prisma.pTORequest.delete({
                   where: { id: approvalId },
                 });
-              } else if (requestType === 'Special PTO Request') {
+              } else if (requestType === 'Special PTO') {
                 // Delete a Special PTO Request by ID
                 return await prisma.specialPTORequest.delete({
                   where: { id: approvalId },
                 });
-              } else if (requestType === 'Month Attendance Request') {
+              } else if (requestType === 'Month Attendance') {
                 // Delete a Monthly Attendance Request by ID
                 return await prisma.monthlyRequest.delete({
                   where: { id: approvalId },
