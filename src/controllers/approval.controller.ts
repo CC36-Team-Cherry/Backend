@@ -1,6 +1,5 @@
 import approvalModel from "../models/approval.model";
 import { PrismaClient } from "@prisma/client";
-import { format } from 'date-fns'
 const prisma = new PrismaClient();
 
 // get all approvals related to that id 
@@ -16,29 +15,31 @@ const getAccountApprovals = async (req : any, res : any) => {
       ...approvalsSent.monthlyRequests.map((sentApproval: any) => ({
         id: sentApproval.id,
         supervisorName: `${sentApproval.supervisor.first_name} ${sentApproval.supervisor.last_name}`,
-        attendanceType: `Month Attendance Request`,
+        attendanceType: `Month Attendance`,
         memo: sentApproval.content,
         status: sentApproval.status,
-        date:  `${sentApproval.year}-${sentApproval.month}`,
-        updated_at: format(new Date(sentApproval.updated_at), 'yyyy-MM-dd h:mm'),
+        date:  `${sentApproval.month}-${sentApproval.year}`,
+        updated_at: sentApproval.updated_at,
       })) || [],
       ...approvalsSent.ptoRequests.map((sentApproval: any) => ({
         id: sentApproval.id, 
         supervisorName: `${sentApproval.supervisor.first_name} ${sentApproval.supervisor.last_name}`,
-        attendanceType: sentApproval.all_day ? `PTO Request` : `Half PTO Request`,  // Conditionally set type
+        attendanceType: sentApproval.all_day ? `PTO` : `Half PTO`,  // Conditionally set type
         memo: sentApproval.content,
         status: sentApproval.status,
         date: sentApproval.day,
-        updated_at: format(new Date(sentApproval.updated_at), 'yyyy-MM-dd h:mm'),
+        updated_at: sentApproval.updated_at,
+        hour_start: sentApproval.hour_start,
+        hour_end: sentApproval.hour_end,
       })) || [],
       ...approvalsSent.specialPTORequests.map((sentApproval: any) => ({
         id: sentApproval.id, 
         supervisorName: `${sentApproval.supervisor.first_name} ${sentApproval.supervisor.last_name}`,
-        attendanceType: `Special PTO Request`,
+        attendanceType: `Special PTO`,
         memo: sentApproval.content,
         status: sentApproval.status,
         date: sentApproval.day,
-        updated_at: format(new Date(sentApproval.updated_at), 'yyyy-MM-dd h:mm'),
+        updated_at: sentApproval.updated_at,
         type: sentApproval.type,
       })) || []
     ]
@@ -46,30 +47,35 @@ const getAccountApprovals = async (req : any, res : any) => {
     const approvalsReceivedData = [
       ...approvalsReceived.monthlyRequests.map((receivedApproval: any) => ({
         id: receivedApproval.id,
+        accountId: receivedApproval.account.id,
         employeeName: `${receivedApproval.account.first_name} ${receivedApproval.account.last_name}`,
-        attendanceType: `Month Attendance Request`,
+        attendanceType: `Month Attendance`,
         memo: receivedApproval.content,
         status: receivedApproval.status,
-        date: `${receivedApproval.year}-${receivedApproval.month}`,  // Format date as MM - YYYY
+        date: `${receivedApproval.month}-${receivedApproval.year}`,  
         updated_at: receivedApproval.updated_at,
       })) || [],
       ...approvalsReceived.ptoRequests.map((receivedApproval: any) => ({
         id: receivedApproval.id,
+        accountId: receivedApproval.account.id,
         employeeName: `${receivedApproval.account.first_name} ${receivedApproval.account.last_name}`,
-        attendanceType: receivedApproval.all_day ? `PTO Request` : `Half PTO Request`,  // Conditionally set type
+        attendanceType: receivedApproval.all_day ? `PTO` : `Half PTO`,  // Conditionally set type
         memo: receivedApproval.content,
         status: receivedApproval.status,
         date: receivedApproval.day,
-        updated_at: format(new Date(receivedApproval.updated_at), 'yyyy-MM-dd h:mm'),
+        updated_at: receivedApproval.updated_at,
+        hour_start: receivedApproval.hour_start,
+        hour_end: receivedApproval.hour_end,
       })) || [],
       ...approvalsReceived.specialPTORequests.map((receivedApproval: any) => ({
         id: receivedApproval.id,
+        accountId: receivedApproval.account.id,
         employeeName: `${receivedApproval.account.first_name} ${receivedApproval.account.last_name}`,
-        attendanceType: `Special PTO Request`,
+        attendanceType: `Special PTO`,
         memo: receivedApproval.content,
         status: receivedApproval.status,
         date: receivedApproval.day,
-        updated_at: format(new Date(receivedApproval.updated_at), 'yyyy-MM-dd h:mm'),
+        updated_at: receivedApproval.updated_at,
         type: receivedApproval.type,
       })) || []
     ];
@@ -91,11 +97,13 @@ const getAccountApprovalsPTO = async (req : any, res : any) => {
     const approvalsSent : any = await approvalModel.getApprovalsSent(accountId) || [];
     const approvalsReceived : any = await approvalModel.getApprovalsReceived(accountId) || [];
 
+    console.log("backend getaccountapprovals", approvalsSent)
+
     const approvalsSentData = [
       ...approvalsSent.ptoRequests.map((sentApproval: any) => ({
         id: sentApproval.id, 
         supervisorName: `${sentApproval.supervisor.first_name} ${sentApproval.supervisor.last_name}`,
-        type: sentApproval.full_day ? `PTO Request` : `Half PTO Request`,  // Conditionally set type
+        type: sentApproval.all_day ? `PTO` : `Half PTO`,  // Conditionally set type
         memo: sentApproval.content,
         status: sentApproval.status,
         date: sentApproval.day,
@@ -104,7 +112,7 @@ const getAccountApprovalsPTO = async (req : any, res : any) => {
       ...approvalsSent.specialPTORequests.map((sentApproval: any) => ({
         id: sentApproval.id, 
         supervisorName: `${sentApproval.supervisor.first_name} ${sentApproval.supervisor.last_name}`,
-        type: `Special PTO Request`,
+        type: `Special PTO`,
         memo: sentApproval.content,
         status: sentApproval.status,
         date: sentApproval.day,

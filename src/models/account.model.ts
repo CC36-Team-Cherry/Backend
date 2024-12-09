@@ -23,7 +23,7 @@ type userAccount = {
   role: string;
   team_id?: number;
   is_admin: string;
-  is_supervisor: string;
+  is_supervisor: boolean;
   remaining_pto: number;
   language_preference: string;
 };
@@ -184,6 +184,15 @@ class Account {
             data: cleanedAccUpdates,
           });
         }
+
+        // If supervisor privilege is set to false, update supervisor_id for all users with this person as the id
+        if (updates.is_supervisor === false) {
+          await prisma.account.updateMany({
+            where: {supervisor_id: accountId},
+            data: {supervisor_id: null},
+          })
+        }
+
         //updates privileges if needed
         if (updates.is_admin || updates.is_supervisor) {
           const privilegesUpdates = {
