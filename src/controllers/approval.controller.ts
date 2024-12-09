@@ -97,8 +97,6 @@ const getAccountApprovalsPTO = async (req : any, res : any) => {
     const approvalsSent : any = await approvalModel.getApprovalsSent(accountId) || [];
     const approvalsReceived : any = await approvalModel.getApprovalsReceived(accountId) || [];
 
-    console.log("backend getaccountapprovals", approvalsSent)
-
     const approvalsSentData = [
       ...approvalsSent.ptoRequests.map((sentApproval: any) => ({
         id: sentApproval.id, 
@@ -187,8 +185,6 @@ const editApprovalStatus = async (req : any, res : any) => {
     const approvalId = parseInt(req.params.approvalId);
     const updatedStatus = req.body.statusChange
     const requestType = req.params.requestType;
-
-    console.log("edit approval status: ", requestType)
 
     const approvalStatusUpdated = await approvalModel.updateApprovalStatus(approvalId, updatedStatus, requestType);
     res.status(200).json(approvalStatusUpdated);
