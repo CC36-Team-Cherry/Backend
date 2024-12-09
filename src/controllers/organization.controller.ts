@@ -19,10 +19,7 @@ const getOrganization = async (req: any, res: any) => {
 const initialRegistration = async (req : any, res : any) => {
     try {
 
-        // TODO: Add validation if email exists (check if firebase handles this)
-
         const newAccount = req.body.newAccount;
-        console.log(newAccount);
 
         // add company and return company id
         const registerOrgId = await organizationModel.addOrg(newAccount.company_name);
@@ -36,7 +33,6 @@ const initialRegistration = async (req : any, res : any) => {
         
         // add account
         const registeredAdminAccount = await accountModel.addAccount(newAccount, newAccount.auth_key);
-        console.log("Registered Admin", registeredAdminAccount)
 
         // return admin data
         res.status(200).json(registeredAdminAccount);

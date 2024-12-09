@@ -207,7 +207,7 @@ class Account {
           });
         }
         //updates pto if needed
-        if (updates.remaining_pto) {
+        if (updates.remaining_pto || updates.remaining_pto === 0) {
           await prisma.pTO.update({
             where: { account_id: accountId },
             data: {
