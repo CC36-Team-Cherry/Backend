@@ -571,10 +571,10 @@ async function main() {
       email: "kimikohayakawa@breeze.com",
       first_name: "Kimiko",
       last_name: "Hayakawa",
-      birthdate: new Date("1993-07-14"),
+      birthdate: new Date("1985-07-14"),
       company_id: seedCompany.id,
       join_date: new Date("2024-09-05"),
-      role: "HR Specialist",
+      role: "HR Manager",
       team_id: seedTeam3.id,
       last_login: new Date("2024-12-08"),
       supervisor_id: null,  // Kimiko is a supervisor, so no supervisor is assigned
@@ -592,8 +592,8 @@ async function main() {
       birthdate: new Date("1994-02-22"),
       company_id: seedCompany.id,
       join_date: new Date("2024-10-15"),
-      role: "Sales Associate",
-      team_id: seedTeam2.id,
+      role: "Engineer",
+      team_id: seedTeam4.id,
       last_login: new Date("2024-12-08"),
       supervisor_id: 1,
     },
@@ -613,7 +613,7 @@ async function main() {
       role: "Accountant",
       team_id: seedTeam1.id,
       last_login: new Date("2024-12-07"),
-      supervisor_id: 1,
+      supervisor_id: null,
     },
   });
   
@@ -628,10 +628,10 @@ async function main() {
       birthdate: new Date("1992-11-19"),
       company_id: seedCompany.id,
       join_date: new Date("2024-09-25"),
-      role: "HR Manager",
+      role: "HR Specialist",
       team_id: seedTeam3.id,
       last_login: new Date("2024-12-06"),
-      supervisor_id: 3,
+      supervisor_id: 1,
     },
   });
   
@@ -664,10 +664,10 @@ async function main() {
       birthdate: new Date("1995-04-10"),
       company_id: seedCompany.id,
       join_date: new Date("2024-09-12"),
-      role: "Operations Analyst",
+      role: "Operations",
       team_id: seedTeam4.id,
       last_login: new Date("2024-12-07"),
-      supervisor_id: 1, 
+      supervisor_id: null, 
     },
   });
   
@@ -685,7 +685,7 @@ async function main() {
       role: "Creative Strategist",
       team_id: seedTeam4.id,
       last_login: new Date("2024-12-06"),
-      supervisor_id: 1,
+      supervisor_id: null,
     },
   });
   
@@ -871,7 +871,7 @@ async function main() {
     create: {
       account_id: seedTim.id,
       is_admin: true,
-      is_supervisor: true,
+      is_supervisor: false,
     },
   });
 
