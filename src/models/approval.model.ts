@@ -187,18 +187,60 @@ class Approval {
     static async updateApprovalStatus(approvalId : any, updatedStatus : any, requestType : any) {
         try {
 
-            // Fetch the current PTO request to get account ID
-            const ptoRequest = await prisma.pTORequest.findUnique({
-                where: { id: approvalId },
-                select: { account_id: true, status: true }
-            });
+            // // Fetch the current PTO request to get account ID
+            // const ptoRequest = await prisma.pTORequest.findUnique({
+            //     where: { id: approvalId },
+            //     select: { account_id: true, status: true }
+            // });
 
-            if (!ptoRequest) {
-                throw new Error("PTO request not found");
+            // if (!ptoRequest) {
+            //     throw new Error("PTO request not found");
+            // }
+
+            // const accountId = ptoRequest.account_id;
+            // const currentStatus = ptoRequest.status;
+
+            let accountId: number;
+
+            // Fetch account_id based on the request type
+            if (requestType === 'PTO' || requestType === 'Half PTO') {
+                const ptoRequest = await prisma.pTORequest.findUnique({
+                    where: { id: approvalId },
+                    select: { account_id: true, status: true },
+                });
+    
+                if (!ptoRequest) {
+                    throw new Error("PTO request not found");
+                }
+                accountId = ptoRequest.account_id;
+            } 
+            else if (requestType === 'Special PTO') {
+                const specialPTORequest = await prisma.specialPTORequest.findUnique({
+                    where: { id: approvalId },
+                    select: { account_id: true, status: true },
+                });
+    
+                if (!specialPTORequest) {
+                    throw new Error("Special PTO request not found");
+                }
+                accountId = specialPTORequest.account_id;
+            } 
+            else if (requestType === 'Month Attendance') {
+                const monthlyRequest = await prisma.monthlyRequest.findUnique({
+                    where: { id: approvalId },
+                    select: { account_id: true, status: true },
+                });
+    
+                if (!monthlyRequest) {
+                    throw new Error("Monthly attendance request not found");
+                }
+                accountId = monthlyRequest.account_id;
+            } else {
+                throw new Error("Invalid request type");
             }
+    
+            const currentStatus = updatedStatus;
 
-            const accountId = ptoRequest.account_id;
-            const currentStatus = ptoRequest.status;
 
             // If the request status is being updated from "Denied" to "Approved"
             if (currentStatus === "Denied" && updatedStatus === "Approved") {

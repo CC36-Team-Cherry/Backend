@@ -185,6 +185,8 @@ const editApprovalStatus = async (req : any, res : any) => {
     const approvalId = parseInt(req.params.approvalId);
     const updatedStatus = req.body.statusChange
     const requestType = req.params.requestType;
+    console.log("status:", requestType);
+    console.log("request type:", requestType);
 
     const approvalStatusUpdated = await approvalModel.updateApprovalStatus(approvalId, updatedStatus, requestType);
     res.status(200).json(approvalStatusUpdated);
