@@ -3,7 +3,8 @@ import teamModel from "../models/team.model";
 // // get list of all teams
 const getTeams = async (req : any, res : any) => {
     try {
-        const organizationId = req.params.activeCompanyId;
+        const organizationId = parseInt(req.params.organizationId);
+        console.log("organizationId: ", organizationId)
 
         const allTeams = await teamModel.getTeams(organizationId);
 
