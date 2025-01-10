@@ -72,7 +72,7 @@ app.delete("/accounts/attendance/:attendanceId", authenticateUser, attendanceCon
 // // approvals and supervisors 
 app.get("/accounts/:accountId/approvals/", authenticateUser, approvalController.getAccountApprovals); // get all approvals related to that id (ALL USERS)
 app.get("/approvals/:supervisorId", authenticateUser, approvalController.getApproveeCalendars); // get all approvals and calendars of users that have set approver as this account (ALL USERS)
-app.get("/supervisors/", authenticateUser, approvalController.getSupervisors); // get all approvals related to that id  (ALL USERS)
+app.get("/organizations/:organizationId/supervisors/", authenticateUser, approvalController.getSupervisors); // get all supervisors for that organization  (ALL USERS)
 app.post("/approvals/monthAttendance/", authenticateUser, approvalController.submitMonthlyAttendance); // add new approval for monthly attendance (ALL USERS)
 app.post("/approvals/pto/", authenticateUser, approvalController.submitPto); // add new approval for PTO (ALL USERS)
 app.post("/approvals/specialPto/", authenticateUser, approvalController.submitSpecialPto); // add new approval for special PTO

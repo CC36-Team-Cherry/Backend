@@ -126,10 +126,11 @@ const getAccountApprovalsPTO = async (req : any, res : any) => {
   }
 };
 
-// get all users that have supervisor status set to true
+// get all users for that org that have supervisor status set to true
 const getSupervisors = async (req : any, res : any) => {
   try {
-    const supervisors = await approvalModel.getSupervisors();
+    const organizationId = parseInt(req.params.organizationId);
+    const supervisors = await approvalModel.getSupervisors(organizationId);
     res.status(200).json(supervisors)
   } catch (err) {
     console.error(err);
@@ -185,8 +186,6 @@ const editApprovalStatus = async (req : any, res : any) => {
     const approvalId = parseInt(req.params.approvalId);
     const updatedStatus = req.body.statusChange
     const requestType = req.params.requestType;
-    console.log("status:", requestType);
-    console.log("request type:", requestType);
 
     const approvalStatusUpdated = await approvalModel.updateApprovalStatus(approvalId, updatedStatus, requestType);
     res.status(200).json(approvalStatusUpdated);

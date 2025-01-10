@@ -488,16 +488,14 @@ class Approval {
         }
     }
 
-    static getSupervisors() {
+    static getSupervisors(organizationId : number) {
         try {
             return prisma.account.findMany({
                 where: {
+                    company_id: organizationId,
                     Privileges: {
                         is_supervisor: true
                     }
-                },
-                include: {
-                    Privileges: true,
                 }
             })
             
